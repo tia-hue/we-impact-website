@@ -25,6 +25,11 @@ if ("IntersectionObserver" in window) {
         if (entry.isIntersecting) {
           entry.target.classList.add("visible");
           observer.unobserve(entry.target);
+          // Drop the reveal classes once the entrance finishes so hover
+          // transitions (lift, shadow) use their own faster timing.
+          setTimeout(() => {
+            entry.target.classList.remove("reveal", "reveal-d1", "reveal-d2", "reveal-d3", "visible");
+          }, 1300);
         }
       });
     },
