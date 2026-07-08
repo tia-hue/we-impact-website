@@ -288,6 +288,22 @@ section { padding: 6.5rem 0; position: relative; }
   text-align: center;
 }
 
+/* Tiny Impact emblem (wordmark cropped away) above every section heading.
+   Pixel-measured: emblem spans rows 100-770 of the 1024px logo. */
+.section-head::before {
+  content: "";
+  display: block;
+  width: 54px;
+  height: 35px; /* shows the full circular emblem, stops before the text */
+  margin: 0 auto 1.1rem;
+  background: url("../assets/logo.png") no-repeat center -5px / 100% auto;
+}
+
+.on-dark .section-head::before {
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
 .section-head .section-lead { margin-left: auto; margin-right: auto; }
 
 /* Balance the eyebrow dashes when centered */
@@ -544,7 +560,20 @@ section { padding: 6.5rem 0; position: relative; }
 
 .hero h1 .h1-line2 em {
   font-style: normal;
-  color: var(--amber);
+  background: linear-gradient(100deg,
+    #c17a2b 0%,
+    #c17a2b 38%,
+    #e9b872 46%,
+    #fdf3d3 50%,
+    #e9b872 54%,
+    #c17a2b 62%,
+    #c17a2b 100%);
+  background-size: 250% 100%;
+  background-position: 130% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: glisten 4.5s ease-in-out 2s infinite;
 }
 
 .hero-sub {
@@ -682,6 +711,116 @@ section { padding: 6.5rem 0; position: relative; }
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   text-align: center;
+}
+
+/* ===== Values band: the circle completes, light pours down ===== */
+.values-band { padding-top: 0; }
+
+/* The old corner rings and column dividers step aside for the circle */
+.values-band::before { display: none; }
+
+.stat-band.values-band .stats > div + div {
+  border-left: none !important;
+  border-top: none !important;
+  padding-top: 0 !important;
+}
+
+/* Mirrored arches — the bottom half of the hero's circle */
+/* Let the lower half of the circle rise above the band's edge into the
+   hero — the rays stay clipped inside their own wrapper */
+.stat-band.values-band { overflow: visible; }
+
+.values-band .rays-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.arches-flipped {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: min(640px, 86vw);
+  margin: -2px auto 0;
+  transform: scaleY(-1);
+  /* Same rhythm and phase as the hero arches: the full circle floats
+     up into the top screen and back down as one piece */
+  animation: archFloatFlipped 7s ease-in-out 2.6s infinite;
+}
+
+.arches-flipped path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: drawArch 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.arches-flipped path:nth-child(1) { animation-delay: 0.5s; }
+.arches-flipped path:nth-child(2) { animation-delay: 0.75s; }
+.arches-flipped path:nth-child(3) { animation-delay: 1s; }
+.arches-flipped path:nth-child(4) { animation-delay: 1.25s; }
+
+/* Same rhythm as the hero arches so the two halves breathe as one circle */
+@keyframes archFloatFlipped {
+  0%, 100% { transform: translateY(0) scaleY(-1); }
+  50% { transform: translateY(-10px) scaleY(-1); }
+}
+
+/* Rays pouring downward from the circle into the values */
+.values-band .rays-down {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2400px;
+  height: 2400px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(233, 184, 114, 0.5) 0%,
+    rgba(233, 184, 114, 0.35) 18%,
+    rgba(240, 203, 138, 0.22) 32%,
+    rgba(248, 228, 178, 0.1) 44%,
+    rgba(248, 228, 178, 0) 55%);
+  -webkit-mask-image: repeating-conic-gradient(from 0deg at 50% 50%,
+    rgba(0, 0, 0, 0) 0deg,
+    rgba(0, 0, 0, 0.25) 3deg,
+    rgba(0, 0, 0, 0.9) 7deg,
+    rgba(0, 0, 0, 0.9) 14deg,
+    rgba(0, 0, 0, 0.25) 18deg,
+    rgba(0, 0, 0, 0) 21deg,
+    rgba(0, 0, 0, 0.5) 26deg,
+    rgba(0, 0, 0, 0.5) 30deg,
+    rgba(0, 0, 0, 0) 34deg,
+    rgba(0, 0, 0, 0) 36deg);
+  mask-image: repeating-conic-gradient(from 0deg at 50% 50%,
+    rgba(0, 0, 0, 0) 0deg,
+    rgba(0, 0, 0, 0.25) 3deg,
+    rgba(0, 0, 0, 0.9) 7deg,
+    rgba(0, 0, 0, 0.9) 14deg,
+    rgba(0, 0, 0, 0.25) 18deg,
+    rgba(0, 0, 0, 0) 21deg,
+    rgba(0, 0, 0, 0.5) 26deg,
+    rgba(0, 0, 0, 0.5) 30deg,
+    rgba(0, 0, 0, 0) 34deg,
+    rgba(0, 0, 0, 0) 36deg);
+  filter: blur(9px);
+  animation: raysSpinDown 90s linear infinite;
+}
+
+@keyframes raysSpinDown {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Four values across */
+.values-band .stats { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 1000px) {
+  .values-band .stats { grid-template-columns: repeat(2, 1fr); row-gap: 2.5rem; }
+}
+
+@media (max-width: 640px) {
+  .values-band .stats { grid-template-columns: 1fr; }
 }
 
 .value-word {
@@ -975,9 +1114,11 @@ section { padding: 6.5rem 0; position: relative; }
 }
 
 .journey-step .num {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 2.6rem;
+  font-family: "Montserrat", var(--sans);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2.1rem;
+  letter-spacing: 0.06em;
   color: var(--amber-soft);
   line-height: 1;
   margin-bottom: 1.2rem;
@@ -1513,9 +1654,11 @@ section { padding: 6.5rem 0; position: relative; }
 .numbered-step:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
 
 .numbered-step .num {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 2.4rem;
+  font-family: "Montserrat", var(--sans);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.9rem;
+  letter-spacing: 0.06em;
   color: var(--amber);
   line-height: 1;
   margin-bottom: 1.1rem;
@@ -1936,6 +2079,9 @@ section { padding: 6.5rem 0; position: relative; }
   .hero .eyebrow { animation: none; background-position: 50% center; }
   .page-hero .container > * { opacity: 1; animation: none; }
   .hero-ctas .btn-primary { animation: none; }
+  .arches-flipped { animation: none; }
+  .arches-flipped path { stroke-dashoffset: 0; animation: none; }
+  .values-band .rays-down { animation: none; }
   .scholarship-icon, .scholarship-icon.draw { animation: none; }
   .scholarship-icon path { stroke-dashoffset: 0; animation: none !important; }
   .scholarship-band::before, .scholarship-band::after { animation: none; }
