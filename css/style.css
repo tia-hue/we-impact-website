@@ -240,9 +240,23 @@ h1, h2, h3 { line-height: 1.12; }
 
 section { padding: 6.5rem 0; position: relative; }
 
-.section-head { margin-bottom: 3.25rem; }
-.section-head.centered { text-align: center; }
-.section-head.centered .section-lead { margin-left: auto; margin-right: auto; }
+.section-head {
+  margin-bottom: 3.25rem;
+  text-align: center;
+}
+
+.section-head .section-lead { margin-left: auto; margin-right: auto; }
+
+/* Balance the eyebrow dashes when centered */
+.section-head .eyebrow::after {
+  content: "";
+  width: 26px;
+  height: 1.5px;
+  background: var(--amber);
+  opacity: 0.7;
+}
+
+.on-dark .section-head .eyebrow::after { background: var(--amber-soft); }
 
 /* On dark sections */
 .on-dark .section-title { color: var(--cream); }
