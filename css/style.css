@@ -34,7 +34,26 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Firefox scrollbar */
+  scrollbar-color: #c17a2b #ede3cc;
+}
+
+/* Golden scrollbar (Chrome/Safari/Edge) */
+::-webkit-scrollbar { width: 13px; }
+
+::-webkit-scrollbar-track { background: #ede3cc; }
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #e9b872 0%, #c17a2b 60%, #ad6c24 100%);
+  border-radius: 999px;
+  border: 3px solid #ede3cc;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #f2cd8b 0%, #c98a2f 60%, #ad6c24 100%);
+}
 
 body {
   font-family: var(--sans);
@@ -90,11 +109,12 @@ a { color: inherit; text-decoration: none; }
 .nav-logo img { width: 46px; height: 46px; object-fit: contain; }
 
 .nav-logo .wordmark {
-  font-family: var(--serif);
-  font-weight: 600;
-  font-size: 1.35rem;
-  letter-spacing: 0.02em;
-  color: var(--green-deep);
+  font-family: "Montserrat", var(--sans);
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #226644;
 }
 
 .nav-links {
@@ -431,12 +451,20 @@ section { padding: 6.5rem 0; position: relative; }
 }
 
 .hero h1 .h1-line2 {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-style: italic;
+  font-family: var(--sans);
+  font-style: normal;
   font-weight: 600;
-  font-size: 0.78em;
+  font-size: 0.34em;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--green);
   display: inline-block;
-  margin-top: 0.3rem;
+  margin-top: 1.1rem;
+}
+
+.hero h1 .h1-line2 em {
+  font-style: normal;
+  color: var(--amber);
 }
 
 .hero-sub {
@@ -557,6 +585,16 @@ section { padding: 6.5rem 0; position: relative; }
   background: var(--green-deep);
   color: var(--cream);
   padding: 3.25rem 0;
+}
+
+.stat-band-label {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--amber-soft);
+  margin-bottom: 2rem;
 }
 
 .stat-band .stats {
@@ -1001,8 +1039,11 @@ section { padding: 6.5rem 0; position: relative; }
 }
 
 .footer-brand .wordmark {
-  font-family: var(--serif);
-  font-size: 1.3rem;
+  font-family: "Montserrat", var(--sans);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--cream);
 }
 
@@ -1547,6 +1588,34 @@ section { padding: 6.5rem 0; position: relative; }
 /* =========== Section tints =========== */
 .tint-sage { background: var(--sage-soft); }
 .tint-paper { background: var(--paper); }
+
+/* =========== Scholarship spotlight =========== */
+.scholarship-band {
+  background: linear-gradient(135deg, #f6e7c5 0%, #f1dcae 50%, #eed3a0 100%);
+  padding: 5.5rem 0;
+}
+
+.scholarship-card {
+  text-align: center;
+  max-width: 46rem;
+  margin: 0 auto;
+}
+
+.scholarship-card .section-title { color: var(--green-deep); }
+
+.scholarship-card .section-lead { color: #5c5442; }
+
+.scholarship-icon {
+  width: 56px;
+  height: 56px;
+  color: var(--amber);
+  margin: 0 auto 1.25rem;
+  display: block;
+}
+
+.scholarship-band .btn-outline {
+  border-color: rgba(20, 55, 38, 0.4);
+}
 
 /* =========== Reveal animations =========== */
 .reveal {
