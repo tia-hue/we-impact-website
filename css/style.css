@@ -1879,6 +1879,22 @@ section { padding: 6.5rem 0; position: relative; }
   color: var(--amber);
   margin: 0 auto 1.25rem;
   display: block;
+  animation: capFloat 5.5s ease-in-out infinite;
+}
+
+/* Graduation cap bobbing gently, like it was just tossed */
+@keyframes capFloat {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-9px) rotate(3deg); }
+}
+
+/* Rings behind the band slowly breathe */
+.scholarship-band::before { animation: ringBreathe 9s ease-in-out infinite; }
+.scholarship-band::after { animation: ringBreathe 9s ease-in-out 4.5s infinite; }
+
+@keyframes ringBreathe {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.12); opacity: 0.45; }
 }
 
 .scholarship-band .btn-outline {
@@ -1910,6 +1926,8 @@ section { padding: 6.5rem 0; position: relative; }
   .hero-particles { display: none; }
   .page-hero .container > * { opacity: 1; animation: none; }
   .hero-ctas .btn-primary { animation: none; }
+  .scholarship-icon { animation: none; }
+  .scholarship-band::before, .scholarship-band::after { animation: none; }
   html { scroll-behavior: auto; }
 }
 
