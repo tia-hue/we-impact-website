@@ -685,14 +685,27 @@ section { padding: 6.5rem 0; position: relative; }
 }
 
 .value-word {
-  font-family: var(--serif);
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 500;
-  line-height: 1.15;
-  background: linear-gradient(180deg, #fdeebc 0%, #e9b872 55%, #cf8c33 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-family: "Montserrat", var(--sans);
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--amber-soft);
+  margin-bottom: 0.4rem;
+}
+
+/* Fine dividers between the three columns */
+.stat-band .stats > div + div {
+  border-left: 1px solid rgba(250, 248, 243, 0.14);
+}
+
+@media (max-width: 640px) {
+  .stat-band .stats > div + div {
+    border-left: none;
+    border-top: 1px solid rgba(250, 248, 243, 0.14);
+    padding-top: 1.75rem;
+  }
 }
 
 .stat-band .stat-value {
