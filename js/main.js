@@ -97,3 +97,25 @@ if (contactForm) {
 document.querySelectorAll("[data-year]").forEach((el) => {
   el.textContent = new Date().getFullYear();
 });
+
+// Header shadow once the page is scrolled
+const header = document.querySelector(".site-header");
+if (header) {
+  const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 12);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+}
+
+// Back-to-top arch button
+const topBtn = document.createElement("button");
+topBtn.className = "back-to-top";
+topBtn.setAttribute("aria-label", "Back to top");
+topBtn.innerHTML =
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
+document.body.appendChild(topBtn);
+topBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+window.addEventListener(
+  "scroll",
+  () => topBtn.classList.toggle("visible", window.scrollY > 600),
+  { passive: true }
+);
