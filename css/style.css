@@ -68,6 +68,12 @@ body {
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 
+/* Anchored sections land below the sticky header */
+section[id], div[id] { scroll-margin-top: 84px; }
+
+/* Branded text selection */
+::selection { background: rgba(233, 184, 114, 0.45); color: var(--green-deep); }
+
 .container {
   max-width: 1160px;
   margin: 0 auto;
@@ -604,6 +610,17 @@ section { padding: 6.5rem 0; position: relative; }
   text-align: center;
 }
 
+.value-word {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  line-height: 1.15;
+  background: linear-gradient(180deg, #fdeebc 0%, #e9b872 55%, #cf8c33 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .stat-band .stat-value {
   font-family: var(--serif);
   font-size: clamp(2.2rem, 4.5vw, 3.4rem);
@@ -710,12 +727,71 @@ section { padding: 6.5rem 0; position: relative; }
   box-shadow: var(--shadow-soft);
 }
 
+/* =========== Decorative ring motifs (echo of the logo) =========== */
+.rings-light,
+.journey,
+.stat-band,
+.scholarship-band,
+.site-footer {
+  position: relative;
+  overflow: hidden;
+}
+
+.journey::before,
+.stat-band::before,
+.site-footer::before {
+  content: "";
+  position: absolute;
+  width: 620px;
+  height: 620px;
+  right: -180px;
+  top: -220px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.5'%3E%3Ccircle cx='100' cy='100' r='96'/%3E%3Ccircle cx='100' cy='100' r='74'/%3E%3Ccircle cx='100' cy='100' r='52'/%3E%3Ccircle cx='100' cy='100' r='30'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain;
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+.stat-band::before {
+  right: auto;
+  left: -200px;
+  top: auto;
+  bottom: -260px;
+}
+
+.scholarship-band::before,
+.scholarship-band::after {
+  content: "";
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='2'%3E%3Ccircle cx='100' cy='100' r='96'/%3E%3Ccircle cx='100' cy='100' r='74'/%3E%3Ccircle cx='100' cy='100' r='52'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.scholarship-band::before { left: -240px; top: -140px; }
+.scholarship-band::after { right: -240px; bottom: -180px; }
+
+.scholarship-band .container,
+.journey .container,
+.stat-band .container,
+.site-footer .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Arch ornament above interior page titles */
+.hero-ornament {
+  display: block;
+  width: 92px;
+  height: auto;
+  margin: 0 auto 1.4rem;
+}
+
 /* =========== Dark journey section =========== */
 .journey {
   background: var(--green-deep);
   color: var(--cream);
-  position: relative;
-  overflow: hidden;
 }
 
 .journey-steps {
@@ -843,6 +919,35 @@ section { padding: 6.5rem 0; position: relative; }
   border-radius: 999px;
   padding: 0.3rem 0.85rem;
   margin-top: 0.8rem;
+}
+
+/* Founding-stories invitation */
+.founding-invite {
+  max-width: 46rem;
+  margin: 0 auto;
+  text-align: center;
+  background: var(--paper);
+  border-radius: var(--radius);
+  padding: 3rem 2.5rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.founding-invite blockquote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.founding-invite blockquote::before {
+  content: "“";
+  display: block;
+  font-size: 3.4rem;
+  line-height: 0.6;
+  color: var(--amber-soft);
+  margin-bottom: 1rem;
+  font-style: normal;
 }
 
 /* =========== Split / editorial =========== */
