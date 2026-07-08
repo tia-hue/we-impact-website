@@ -932,9 +932,11 @@ section { padding: 6.5rem 0; position: relative; }
 .card .btn { margin-top: 1.5rem; }
 
 .card-num {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 1rem;
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
   color: var(--amber);
   margin-bottom: 1.1rem;
 }
