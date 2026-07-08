@@ -709,9 +709,10 @@ section { padding: 6.5rem 0; position: relative; }
 }
 
 .stat-band .stat-value {
-  font-family: var(--serif);
-  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
-  font-weight: 500;
+  font-family: "Montserrat", var(--sans);
+  font-size: clamp(1.9rem, 3.8vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
   color: var(--amber-soft);
   line-height: 1.1;
 }
