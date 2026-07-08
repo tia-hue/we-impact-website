@@ -879,6 +879,16 @@ section { padding: 6.5rem 0; position: relative; }
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.5'%3E%3Ccircle cx='100' cy='100' r='96'/%3E%3Ccircle cx='100' cy='100' r='74'/%3E%3Ccircle cx='100' cy='100' r='52'/%3E%3Ccircle cx='100' cy='100' r='30'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain;
   opacity: 0.07;
   pointer-events: none;
+  animation: ringDrift 11s ease-in-out infinite;
+}
+
+.stat-band::before { animation-delay: 3.5s; }
+.site-footer::before { animation-delay: 7s; }
+
+/* Rings on the dark sections slowly breathe, like ripples of impact */
+@keyframes ringDrift {
+  0%, 100% { transform: scale(1); opacity: 0.06; }
+  50% { transform: scale(1.12); opacity: 0.12; }
 }
 
 .stat-band::before {
@@ -1874,18 +1884,44 @@ section { padding: 6.5rem 0; position: relative; }
 .scholarship-card .section-lead { color: #5c5442; }
 
 .scholarship-icon {
-  width: 56px;
-  height: 56px;
+  width: 68px;
+  height: 68px;
   color: var(--amber);
   margin: 0 auto 1.25rem;
   display: block;
-  animation: capFloat 5.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 14px rgba(233, 184, 114, 0.55));
 }
 
-/* Graduation cap bobbing gently, like it was just tossed */
+/* Cap strokes start invisible, then draw themselves in on scroll */
+.scholarship-icon path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.scholarship-icon.draw path:nth-child(1) {
+  animation: drawArch 1.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.scholarship-icon.draw path:nth-child(2) {
+  animation: drawArch 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.7s forwards;
+}
+
+/* After drawing: a celebratory pop, then a lively float */
+.scholarship-icon.draw {
+  animation:
+    capPop 0.55s ease 1.6s both,
+    capFloat 4.5s ease-in-out 2.2s infinite;
+}
+
+@keyframes capPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.22) rotate(-6deg); }
+  100% { transform: scale(1); }
+}
+
 @keyframes capFloat {
-  0%, 100% { transform: translateY(0) rotate(-2deg); }
-  50% { transform: translateY(-9px) rotate(3deg); }
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-15px) rotate(6deg); }
 }
 
 /* Rings behind the band slowly breathe */
@@ -1926,7 +1962,8 @@ section { padding: 6.5rem 0; position: relative; }
   .hero-particles { display: none; }
   .page-hero .container > * { opacity: 1; animation: none; }
   .hero-ctas .btn-primary { animation: none; }
-  .scholarship-icon { animation: none; }
+  .scholarship-icon, .scholarship-icon.draw { animation: none; }
+  .scholarship-icon path { stroke-dashoffset: 0; animation: none !important; }
   .scholarship-band::before, .scholarship-band::after { animation: none; }
   html { scroll-behavior: auto; }
 }

@@ -98,6 +98,27 @@ document.querySelectorAll("[data-year]").forEach((el) => {
   el.textContent = new Date().getFullYear();
 });
 
+// Scholarship cap draws itself in when scrolled into view
+const cap = document.querySelector(".scholarship-icon");
+if (cap) {
+  if ("IntersectionObserver" in window) {
+    const capObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            cap.classList.add("draw");
+            capObserver.disconnect();
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+    capObserver.observe(cap);
+  } else {
+    cap.classList.add("draw");
+  }
+}
+
 // Header shadow once the page is scrolled
 const header = document.querySelector(".site-header");
 if (header) {
