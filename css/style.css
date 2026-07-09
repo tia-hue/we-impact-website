@@ -1054,6 +1054,71 @@ section { padding: 6.5rem 0; position: relative; }
   filter: drop-shadow(0 10px 22px rgba(20, 55, 38, 0.2));
 }
 
+/* Animated logo (Our Vision): pops onto the screen, then floats
+   with a breathing glow */
+.page-hero .container > img.page-logo-live {
+  animation:
+    logoPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both,
+    logoFloat 5.5s ease-in-out 1.4s infinite;
+}
+
+@keyframes logoPop {
+  0% { opacity: 0; transform: scale(0.25); }
+  70% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Soft emblem watermark behind the Connect section */
+#contact {
+  position: relative;
+  overflow: hidden;
+}
+
+#contact::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 6%;
+  width: min(62vmin, 560px);
+  height: calc(min(62vmin, 560px) * 0.77); /* crops the IMPACT lettering */
+  transform: translateX(-50%);
+  background: url("../assets/logo.png") no-repeat top center / 100% auto;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+#contact .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Soft emblem watermark behind the whole Vision page (wordmark cropped) */
+body.vision-bg::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  left: 50%;
+  top: 14%;
+  width: min(74vmin, 660px);
+  height: calc(min(74vmin, 660px) * 0.77); /* crops the IMPACT lettering */
+  transform: translateX(-50%);
+  background: url("../assets/logo.png") no-repeat top center / 100% auto;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 10px 22px rgba(20, 55, 38, 0.2));
+  }
+  50% {
+    transform: translateY(-9px);
+    filter: drop-shadow(0 16px 30px rgba(193, 122, 43, 0.35));
+  }
+}
+
 /* Section title matching the hero's "We bring the roadmap" treatment:
    spaced uppercase sans in brand green */
 .title-depth {
@@ -1750,15 +1815,19 @@ section { padding: 6.5rem 0; position: relative; }
   margin: 0 auto;
 }
 
+/* Mission statement — modern, centered, framed by fine gold rules */
 .mission-quote {
-  font-family: var(--serif);
-  background: var(--sage);
-  padding: 2.3rem;
-  border-radius: var(--radius);
-  font-size: 1.45rem;
+  font-family: var(--sans);
+  font-size: 1.15rem;
+  font-weight: 500;
   color: var(--ink);
-  line-height: 1.5;
-  margin-bottom: 2.2rem;
+  line-height: 1.7;
+  text-align: center;
+  max-width: 44rem;
+  margin: 0 auto 2.2rem;
+  padding: 1.9rem 0.5rem;
+  border-top: 1px solid rgba(193, 122, 43, 0.45);
+  border-bottom: 1px solid rgba(193, 122, 43, 0.45);
 }
 
 .pillar-row {
@@ -1832,9 +1901,10 @@ section { padding: 6.5rem 0; position: relative; }
 }
 
 .big-stat .n {
-  font-family: var(--serif);
-  font-size: 2.4rem;
-  font-weight: 500;
+  font-family: "Montserrat", var(--sans);
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   color: var(--green-deep);
   line-height: 1.1;
 }
@@ -2080,6 +2150,12 @@ section { padding: 6.5rem 0; position: relative; }
   .god-rays { opacity: 1; animation: none; }
   .hero .eyebrow { animation: none; background-position: 50% center; }
   .page-hero .container > * { opacity: 1; animation: none; }
+  .page-hero .page-logo-live,
+  .page-hero .container > img.page-logo-live {
+    animation: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
   .hero-ctas .btn-primary { animation: none; }
   .arches-flipped { animation: none; }
   .arches-flipped path { stroke-dashoffset: 0; animation: none; }
