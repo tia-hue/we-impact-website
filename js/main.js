@@ -119,6 +119,27 @@ if (cap) {
   }
 }
 
+// On small screens, shrink each section title just enough to fit one line
+function fitSectionTitles() {
+  var titles = document.querySelectorAll(".section-title");
+  titles.forEach(function (el) {
+    el.style.fontSize = "";
+    el.style.whiteSpace = "";
+    if (window.innerWidth > 640) return;
+    el.style.whiteSpace = "nowrap";
+    var size = parseFloat(getComputedStyle(el).fontSize);
+    var guard = 0;
+    while (el.scrollWidth > el.clientWidth && size > 13 && guard < 60) {
+      size -= 0.5;
+      el.style.fontSize = size + "px";
+      guard++;
+    }
+  });
+}
+window.addEventListener("load", fitSectionTitles);
+window.addEventListener("resize", fitSectionTitles);
+fitSectionTitles();
+
 // Header shadow once the page is scrolled
 const header = document.querySelector(".site-header");
 if (header) {

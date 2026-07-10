@@ -896,7 +896,11 @@ section { padding: 6.5rem 0; position: relative; }
   transition: transform 0.3s, box-shadow 0.3s;
   position: relative;
   overflow: hidden;
+  text-align: center;
 }
+
+.card-icon { margin-left: auto; margin-right: auto; }
+.card-tag { justify-content: center; }
 
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
 
@@ -1159,7 +1163,10 @@ body.vision-bg::before {
   display: flex;
   flex-direction: column;
   transition: background 0.35s;
+  text-align: center;
 }
+
+.journey-step a { justify-content: center; }
 
 .journey-step:hover { background: rgba(250, 248, 243, 0.07); }
 
@@ -1322,6 +1329,8 @@ body.vision-bg::before {
 
 .photo-frame:hover img { transform: scale(1.04); }
 
+.prose { text-align: center; }
+
 .prose p {
   color: var(--ink-soft);
   margin-bottom: 1.35rem;
@@ -1431,6 +1440,7 @@ body.vision-bg::before {
   color: var(--cream);
   border-radius: var(--radius);
   padding: 2.4rem;
+  text-align: center;
 }
 
 .aside-card h3 {
@@ -1716,6 +1726,7 @@ body.vision-bg::before {
   padding: 2.1rem 1.9rem;
   box-shadow: var(--shadow-soft);
   transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
 }
 
 .numbered-step:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
@@ -1745,6 +1756,7 @@ body.vision-bg::before {
   background: var(--sage);
   border-radius: var(--radius);
   padding: 2.5rem;
+  text-align: center;
 }
 
 .callout h3 {
