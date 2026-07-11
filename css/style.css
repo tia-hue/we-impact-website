@@ -2562,8 +2562,17 @@ body.gala-bg .nav-toggle { color: var(--cream); }
   body.gala-bg .nav-links { background: #10291b; }
 }
 
-/* Hero on deep evening green — luminous gold rays */
-body.gala-bg .god-rays { mix-blend-mode: screen; }
+/* Hero on deep evening green — luminous gold rays, dialed back */
+body.gala-bg .god-rays {
+  mix-blend-mode: screen;
+  animation:
+    galaRaysIn 2.5s ease 1s forwards,
+    raysSpin 90s linear 1s infinite;
+}
+
+@keyframes galaRaysIn {
+  to { opacity: 0.55; }
+}
 body.gala-bg .page-hero h1 { color: var(--cream); }
 body.gala-bg .page-hero p { color: rgba(250, 246, 236, 0.78); }
 
@@ -2925,6 +2934,7 @@ body.gala-bg .program-caps { color: var(--gala-gold-mid); }
   .gala-band::before,
   .gala-program .program-sheen,
   .welcome-modal::before { animation: none; }
+  body.gala-bg .god-rays { animation: none; opacity: 0.55; }
   .join-backdrop.open .welcome-modal > *,
   .join-backdrop.open .welcome-modal .join-logo,
   .join-backdrop.open .welcome-modal .eyebrow,
