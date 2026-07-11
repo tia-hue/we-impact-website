@@ -760,7 +760,7 @@ section { padding: 6.5rem 0; position: relative; }
   position: relative;
   z-index: 1;
   width: min(640px, 86vw);
-  margin: 0 auto;
+  margin: -1px auto 0; /* kiss the hero half so no background hairline shows at the seam */
   transform: scaleY(-1);
   /* Same rhythm and phase as the hero arches: the full circle floats
      up into the top screen and back down as one piece */
