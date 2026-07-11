@@ -2981,8 +2981,10 @@ body.gala-bg .program-caps { color: var(--gala-gold-mid); }
 }
 
 .gala-invite .invite-line-sub {
-  font-size: clamp(0.8rem, 3vw, 0.9rem);
-  color: rgba(250, 246, 236, 0.6);
+  font-family: var(--serif);
+  font-size: clamp(0.98rem, 3.2vw, 1.12rem);
+  letter-spacing: 0.02em;
+  color: #dcc990;
   margin: 0 0 1rem;
 }
 
