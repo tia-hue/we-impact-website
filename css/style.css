@@ -2332,6 +2332,7 @@ body.vision-bg::before {
 /* Gala hero — later children keep the staggered entrance going */
 .founder-hero .container > *:nth-child(7) { animation-delay: 0.74s; }
 .founder-hero .container > *:nth-child(8) { animation-delay: 0.86s; }
+.founder-hero .container > *:nth-child(9) { animation-delay: 1s; }
 
 .gala-ticket-line { margin-top: 1.6rem; }
 
@@ -2341,6 +2342,172 @@ body.vision-bg::before {
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 1.7rem;
+}
+
+/* Gala date — glistening gold spaced caps */
+.page-hero .container > .gala-date {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: clamp(0.95rem, 2.4vw, 1.15rem);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  max-width: none;
+  background: linear-gradient(100deg,
+    #c17a2b 0%,
+    #c17a2b 38%,
+    #e9b872 46%,
+    #fdf3d3 50%,
+    #e9b872 54%,
+    #c17a2b 62%,
+    #c17a2b 100%);
+  background-size: 250% 100%;
+  background-position: 130% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation:
+    rise 0.9s cubic-bezier(0.2, 0.65, 0.3, 1) 0.5s forwards,
+    glisten 4.5s ease-in-out 2.4s infinite;
+}
+
+/* Ticket pill breathes gold; Reserve button heartbeats */
+.gala-ticket-line .launch-note { animation: pillPulse 3.6s ease-in-out 2.6s infinite; }
+
+@keyframes pillPulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(233, 184, 114, 0); }
+  50% { box-shadow: 0 6px 24px rgba(193, 122, 43, 0.35); }
+}
+
+.gala-ctas .btn-primary { animation: ctaGlow 4s ease-in-out 3s infinite; }
+
+/* Live countdown */
+.gala-countdown {
+  display: flex;
+  gap: clamp(1.2rem, 5vw, 2.8rem);
+  justify-content: center;
+  margin-top: 2.1rem;
+}
+
+.cd-cell { text-align: center; }
+
+.cd-num {
+  display: block;
+  font-family: "Montserrat", var(--sans);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 5vw, 2.9rem);
+  line-height: 1;
+  color: var(--green-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+.cd-label {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.gala-countdown-sm { margin: 0.2rem 0 1.6rem; gap: clamp(1rem, 6vw, 2rem); }
+.gala-countdown-sm .cd-num { font-size: 1.55rem; }
+.gala-countdown-sm .cd-label { font-size: 0.58rem; margin-top: 0.3rem; }
+
+/* Dark gala band — breathing golden light */
+.gala-band {
+  position: relative;
+  overflow: hidden;
+}
+
+.gala-band::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -55%;
+  width: 900px;
+  height: 900px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(233, 184, 114, 0.18), rgba(233, 184, 114, 0) 60%);
+  pointer-events: none;
+  animation: warmGlow 8s ease-in-out infinite;
+}
+
+.gala-band .container { position: relative; z-index: 1; }
+
+/* Gala welcome pop-up — glowing crown, popping logo, staggered entrance */
+.welcome-modal {
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-modal::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(233, 184, 114, 0.45), rgba(233, 184, 114, 0) 65%);
+  filter: blur(6px);
+  pointer-events: none;
+  animation: warmGlow 6s ease-in-out infinite;
+}
+
+.welcome-modal > * { position: relative; }
+
+.join-backdrop.open .welcome-modal > * {
+  opacity: 0;
+  animation: rise 0.7s cubic-bezier(0.2, 0.65, 0.3, 1) forwards;
+}
+
+.join-backdrop.open .welcome-modal > *:nth-child(3) { animation-delay: 0.28s; }
+.join-backdrop.open .welcome-modal > *:nth-child(4) { animation-delay: 0.4s; }
+.join-backdrop.open .welcome-modal > *:nth-child(5) { animation-delay: 0.52s; }
+.join-backdrop.open .welcome-modal > *:nth-child(6) { animation-delay: 0.64s; }
+.join-backdrop.open .welcome-modal > *:nth-child(7) { animation-delay: 0.76s; }
+
+.join-backdrop.open .welcome-modal .join-logo {
+  opacity: 0;
+  animation:
+    logoPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.18s both,
+    logoFloat 5.5s ease-in-out 1.2s infinite;
+}
+
+.join-backdrop.open .welcome-modal .eyebrow {
+  background: linear-gradient(100deg,
+    #c17a2b 0%,
+    #c17a2b 38%,
+    #e9b872 46%,
+    #fdf3d3 50%,
+    #e9b872 54%,
+    #c17a2b 62%,
+    #c17a2b 100%);
+  background-size: 250% 100%;
+  background-position: 130% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation:
+    rise 0.7s cubic-bezier(0.2, 0.65, 0.3, 1) 0.28s forwards,
+    glisten 4.5s ease-in-out 1.6s infinite;
+}
+
+.join-backdrop.open .welcome-modal .btn-primary { animation: rise 0.7s cubic-bezier(0.2, 0.65, 0.3, 1) 0.76s forwards, ctaGlow 4s ease-in-out 2.2s infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-hero .container > .gala-date { animation: none; opacity: 1; background-position: 50% center; }
+  .gala-ticket-line .launch-note,
+  .gala-ctas .btn-primary,
+  .gala-band::before,
+  .welcome-modal::before { animation: none; }
+  .join-backdrop.open .welcome-modal > *,
+  .join-backdrop.open .welcome-modal .join-logo,
+  .join-backdrop.open .welcome-modal .eyebrow,
+  .join-backdrop.open .welcome-modal .btn-primary { animation: none; opacity: 1; }
+  .join-backdrop.open .welcome-modal .eyebrow { background-position: 50% center; }
 }
 
 /* Launch-pricing pill for founding members */

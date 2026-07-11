@@ -140,6 +140,26 @@ if (pillarRow) {
   }
 }
 
+// Live countdown to the Launch Gala
+document.querySelectorAll("[data-countdown]").forEach(function (box) {
+  var target = new Date(box.getAttribute("data-countdown")).getTime();
+  if (isNaN(target)) return;
+  var days = box.querySelector(".cd-days");
+  var hours = box.querySelector(".cd-hours");
+  var mins = box.querySelector(".cd-mins");
+  var secs = box.querySelector(".cd-secs");
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function tick() {
+    var diff = Math.max(0, target - Date.now());
+    if (days) days.textContent = Math.floor(diff / 86400000);
+    if (hours) hours.textContent = pad(Math.floor(diff / 3600000) % 24);
+    if (mins) mins.textContent = pad(Math.floor(diff / 60000) % 60);
+    if (secs) secs.textContent = pad(Math.floor(diff / 1000) % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+});
+
 // Join membership pop-out
 const joinModal = document.getElementById("join-modal");
 if (joinModal) {
