@@ -2510,11 +2510,13 @@ body.vision-bg::before {
   animation: rise 0.7s cubic-bezier(0.2, 0.65, 0.3, 1) forwards;
 }
 
-.join-backdrop.open .welcome-modal > *:nth-child(3) { animation-delay: 0.28s; }
-.join-backdrop.open .welcome-modal > *:nth-child(4) { animation-delay: 0.4s; }
-.join-backdrop.open .welcome-modal > *:nth-child(5) { animation-delay: 0.52s; }
-.join-backdrop.open .welcome-modal > *:nth-child(6) { animation-delay: 0.64s; }
-.join-backdrop.open .welcome-modal > *:nth-child(7) { animation-delay: 0.76s; }
+.join-backdrop.open .welcome-modal > *:nth-child(3) { animation-delay: 0.24s; }
+.join-backdrop.open .welcome-modal > *:nth-child(4) { animation-delay: 0.34s; }
+.join-backdrop.open .welcome-modal > *:nth-child(5) { animation-delay: 0.44s; }
+.join-backdrop.open .welcome-modal > *:nth-child(6) { animation-delay: 0.54s; }
+.join-backdrop.open .welcome-modal > *:nth-child(7) { animation-delay: 0.64s; }
+.join-backdrop.open .welcome-modal > *:nth-child(8) { animation-delay: 0.74s; }
+.join-backdrop.open .welcome-modal > *:nth-child(9) { animation-delay: 0.84s; }
 
 .join-backdrop.open .welcome-modal .join-logo {
   opacity: 0;
@@ -2955,6 +2957,18 @@ body.gala-bg .program-caps { color: var(--gala-gold-mid); }
 }
 
 .gala-invite .eyebrow { color: #dcc990; }
+
+/* The date in its own voice — sleek caps beneath the serif title */
+.gala-invite .invite-date {
+  font-family: "Montserrat", var(--sans);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: #dcc990;
+  margin: 0 0 1.1rem;
+}
+
 .gala-invite .cd-num { color: #dcc990; }
 .gala-invite .cd-label { color: rgba(220, 201, 144, 0.55); }
 .gala-invite .btn-primary { background: #c2a962; }
