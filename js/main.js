@@ -119,6 +119,27 @@ if (cap) {
   }
 }
 
+// Vision mission pillars draw themselves in when scrolled into view
+const pillarRow = document.querySelector(".pillar-row");
+if (pillarRow) {
+  if ("IntersectionObserver" in window) {
+    const pillarObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            pillarRow.classList.add("draw");
+            pillarObserver.disconnect();
+          }
+        });
+      },
+      { threshold: 0.35 }
+    );
+    pillarObserver.observe(pillarRow);
+  } else {
+    pillarRow.classList.add("draw");
+  }
+}
+
 // Join membership pop-out
 const joinModal = document.getElementById("join-modal");
 if (joinModal) {
