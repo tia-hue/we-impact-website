@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /financials.html
+
+Sitemap: https://we-impact.com/sitemap.xml
