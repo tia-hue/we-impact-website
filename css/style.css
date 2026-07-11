@@ -1339,11 +1339,22 @@ body.vision-bg::before {
 
 .prose p:last-child { margin-bottom: 0; }
 
+/* Founder lede — modern statement framed in fine gold rules */
 .prose .lede {
-  font-family: var(--serif);
-  font-size: 1.35rem;
+  font-family: var(--sans);
+  font-size: 1.25rem;
+  font-weight: 500;
   color: var(--ink);
-  line-height: 1.5;
+  line-height: 1.75;
+  padding: 1.7rem 0.25rem;
+  border-top: 1px solid rgba(193, 122, 43, 0.45);
+  border-bottom: 1px solid rgba(193, 122, 43, 0.45);
+  margin-bottom: 1.7rem;
+}
+
+.prose .lede strong {
+  color: var(--green-dark);
+  font-weight: 700;
 }
 
 /* =========== Verse =========== */
