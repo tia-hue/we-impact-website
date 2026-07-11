@@ -2139,6 +2139,77 @@ body.vision-bg::before {
   border-color: rgba(20, 55, 38, 0.4);
 }
 
+/* =========== Join membership pop-out =========== */
+.join-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 3rem 1.25rem;
+  background: rgba(20, 55, 38, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  overflow-y: auto;
+}
+
+.join-backdrop.open { display: flex; }
+
+.join-modal {
+  position: relative;
+  width: 100%;
+  max-width: 1020px;
+  background: var(--cream);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 80px rgba(20, 55, 38, 0.4);
+  padding: 3rem 2.25rem 2.25rem;
+  text-align: center;
+  animation: modalPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.82) translateY(18px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.join-logo {
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  margin: 0 auto 1rem;
+}
+
+.join-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 1.1rem;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(20, 55, 38, 0.08);
+  color: var(--green-deep);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.join-close:hover { background: rgba(20, 55, 38, 0.16); }
+
+.join-note {
+  margin-top: 1.75rem;
+  font-size: 0.82rem;
+  color: var(--ink-faint);
+}
+
+body.modal-open { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .join-modal { animation: none; }
+}
+
 /* =========== Reveal animations =========== */
 .reveal {
   opacity: 0;

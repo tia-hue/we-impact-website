@@ -119,6 +119,35 @@ if (cap) {
   }
 }
 
+// Join membership pop-out
+const joinModal = document.getElementById("join-modal");
+if (joinModal) {
+  const openJoin = () => {
+    joinModal.classList.add("open");
+    document.body.classList.add("modal-open");
+  };
+  const closeJoin = () => {
+    joinModal.classList.remove("open");
+    document.body.classList.remove("modal-open");
+  };
+  document.querySelectorAll("[data-join-open]").forEach((btn) =>
+    btn.addEventListener("click", openJoin)
+  );
+  document.querySelectorAll("[data-join-close]").forEach((btn) =>
+    btn.addEventListener("click", closeJoin)
+  );
+  joinModal.addEventListener("click", (e) => {
+    if (e.target === joinModal) closeJoin();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeJoin();
+  });
+
+  // The pop-out greets every visitor to the membership page —
+  // they must close it to reach the page behind it.
+  setTimeout(openJoin, 700);
+}
+
 // On small screens, shrink each section title just enough to fit one line
 function fitSectionTitles() {
   var titles = document.querySelectorAll(".section-title");
