@@ -199,6 +199,8 @@ if (welcomeModal) {
   const closeWelcome = () => {
     welcomeModal.classList.remove("open");
     document.body.classList.remove("modal-open");
+    // Dismissing the invitation releases the hero rings to draw in
+    document.body.classList.remove("rings-wait");
   };
   welcomeModal.querySelectorAll("[data-welcome-close]").forEach((btn) =>
     btn.addEventListener("click", closeWelcome)

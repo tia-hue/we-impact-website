@@ -772,6 +772,16 @@ section { padding: 6.5rem 0; position: relative; }
 .arches-flipped path:nth-of-type(3) { animation-delay: 2.1s; }
 .arches-flipped path:nth-of-type(4) { animation-delay: 2.9s; }
 
+/* The rings hold their entrance until the gala invitation is dismissed;
+   pausing during the delay phase freezes the whole draw timeline */
+body.rings-wait .hero-arches,
+body.rings-wait .arches-flipped,
+body.rings-wait .hero-arches path,
+body.rings-wait .arches-flipped path,
+body.rings-wait .hero-arches .arch-glow {
+  animation-play-state: paused;
+}
+
 /* Same rhythm as the hero arches so the two halves breathe as one circle */
 @keyframes archFloatFlipped {
   0%, 100% { transform: translateY(0) scaleY(-1); }
