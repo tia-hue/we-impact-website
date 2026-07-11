@@ -2743,6 +2743,125 @@ body.gala-bg .founder-connect::before {
   animation: logoPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.18s both;
 }
 
+/* =========== True-gold palette for the black-tie gala =========== */
+body.gala-bg {
+  --gala-gold: #b8973f;
+  --gala-gold-mid: #d5ba75;
+  --gala-gold-bright: #eee0ad;
+}
+
+body.gala-bg .site-header { border-bottom-color: rgba(213, 186, 117, 0.22); }
+body.gala-bg .nav-links a:hover { color: var(--gala-gold-bright); background: rgba(213, 186, 117, 0.1); }
+body.gala-bg .nav-links a.active { color: var(--gala-gold-mid); }
+body.gala-bg .nav-links a.nav-cta { background: var(--gala-gold); }
+body.gala-bg .nav-logo img { box-shadow: 0 0 0 1.5px rgba(213, 186, 117, 0.6); }
+
+body.gala-bg .page-logo {
+  box-shadow:
+    0 0 0 1.5px rgba(213, 186, 117, 0.65),
+    0 0 0 7px rgba(213, 186, 117, 0.15),
+    0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+body.gala-bg .page-hero .container > .eyebrow-gold,
+body.gala-bg .page-hero .container > .gala-date {
+  background: linear-gradient(100deg,
+    var(--gala-gold) 0%,
+    var(--gala-gold) 38%,
+    var(--gala-gold-bright) 46%,
+    #faf3d9 50%,
+    var(--gala-gold-bright) 54%,
+    var(--gala-gold) 62%,
+    var(--gala-gold) 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+body.gala-bg .founder-hero .container > .founder-rule {
+  background: linear-gradient(90deg,
+    rgba(184, 151, 63, 0),
+    var(--gala-gold) 20%,
+    var(--gala-gold-bright) 50%,
+    var(--gala-gold) 80%,
+    rgba(184, 151, 63, 0));
+}
+
+body.gala-bg .gala-details-line { color: var(--gala-gold-mid); }
+body.gala-bg .gala-details-line::before { background: linear-gradient(90deg, rgba(213, 186, 117, 0), var(--gala-gold-mid)); }
+body.gala-bg .gala-details-line::after { background: linear-gradient(90deg, var(--gala-gold-mid), rgba(213, 186, 117, 0)); }
+
+body.gala-bg .btn-primary { background: var(--gala-gold); }
+body.gala-bg .btn-primary:hover { background: #9d8034; }
+body.gala-bg .btn-outline { border-color: rgba(238, 224, 173, 0.5); }
+
+body.gala-bg .cd-num { color: var(--gala-gold-bright); }
+body.gala-bg .cd-label { color: rgba(238, 224, 173, 0.55); }
+body.gala-bg .eyebrow { color: var(--gala-gold-mid); }
+body.gala-bg .eyebrow::before,
+body.gala-bg .eyebrow.centered::after { background: var(--gala-gold-mid); }
+body.gala-bg .title-depth { color: var(--gala-gold-mid); }
+
+body.gala-bg .card { border-color: rgba(213, 186, 117, 0.2); }
+body.gala-bg .card-icon { background: rgba(213, 186, 117, 0.13); }
+body.gala-bg .card-icon svg { color: var(--gala-gold-mid); }
+
+body.gala-bg .gala-band {
+  border-top-color: rgba(213, 186, 117, 0.2);
+  border-bottom-color: rgba(213, 186, 117, 0.2);
+}
+
+body.gala-bg .gala-band::before {
+  background: radial-gradient(circle, rgba(238, 224, 173, 0.15), rgba(238, 224, 173, 0) 60%);
+}
+
+body.gala-bg .verse cite { color: var(--gala-gold-mid); }
+
+body.gala-bg .gala-program { border-color: rgba(213, 186, 117, 0.55); }
+body.gala-bg .gala-program::before { border-color: rgba(213, 186, 117, 0.28); }
+body.gala-bg .program-rule {
+  background: linear-gradient(90deg, rgba(184, 151, 63, 0), var(--gala-gold-mid) 50%, rgba(184, 151, 63, 0));
+}
+body.gala-bg .program-list li + li::before { color: var(--gala-gold-mid); }
+body.gala-bg .program-caps { color: var(--gala-gold-mid); }
+
+/* Invitation pop-up in the same true gold */
+.welcome-modal.gala-invite { border-color: rgba(213, 186, 117, 0.5); }
+.welcome-modal.gala-invite::after { border-color: rgba(213, 186, 117, 0.28); }
+
+.welcome-modal.gala-invite::before {
+  background: radial-gradient(circle, rgba(238, 224, 173, 0.38), rgba(238, 224, 173, 0) 65%);
+}
+
+.gala-invite .join-logo {
+  box-shadow:
+    0 0 0 1.5px rgba(213, 186, 117, 0.65),
+    0 0 0 6px rgba(213, 186, 117, 0.15),
+    0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.gala-invite .eyebrow { color: #d5ba75; }
+.gala-invite .cd-num { color: #eee0ad; }
+.gala-invite .cd-label { color: rgba(238, 224, 173, 0.55); }
+.gala-invite .btn-primary { background: #b8973f; }
+.gala-invite .btn-primary:hover { background: #9d8034; }
+
+.join-backdrop.open .welcome-modal.gala-invite .eyebrow {
+  background: linear-gradient(100deg,
+    #b8973f 0%,
+    #b8973f 38%,
+    #eee0ad 46%,
+    #faf3d9 50%,
+    #eee0ad 54%,
+    #b8973f 62%,
+    #b8973f 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .page-hero .container > .gala-date { animation: none; opacity: 1; background-position: 50% center; }
   .gala-ticket-line .launch-note,
