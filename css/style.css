@@ -660,19 +660,19 @@ section { padding: 6.5rem 0; position: relative; }
   display: block;
   width: min(640px, 86vw);
   margin: 3.5rem auto -2px;
-  animation: archFloat 7s ease-in-out 2.6s infinite;
+  animation: archFloat 7s ease-in-out 7s infinite;
 }
 
 .hero-arches path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  animation: drawArch 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: drawArch 3.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .hero-arches path:nth-child(1) { animation-delay: 0.5s; }
-.hero-arches path:nth-child(2) { animation-delay: 0.75s; }
-.hero-arches path:nth-child(3) { animation-delay: 1s; }
-.hero-arches path:nth-child(4) { animation-delay: 1.25s; }
+.hero-arches path:nth-child(2) { animation-delay: 1.3s; }
+.hero-arches path:nth-child(3) { animation-delay: 2.1s; }
+.hero-arches path:nth-child(4) { animation-delay: 2.9s; }
 
 @keyframes drawArch {
   to { stroke-dashoffset: 0; }
@@ -757,19 +757,19 @@ section { padding: 6.5rem 0; position: relative; }
   transform: scaleY(-1);
   /* Same rhythm and phase as the hero arches: the full circle floats
      up into the top screen and back down as one piece */
-  animation: archFloatFlipped 7s ease-in-out 2.6s infinite;
+  animation: archFloatFlipped 7s ease-in-out 7s infinite;
 }
 
 .arches-flipped path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  animation: drawArch 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: drawArch 3.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .arches-flipped path:nth-child(1) { animation-delay: 0.5s; }
-.arches-flipped path:nth-child(2) { animation-delay: 0.75s; }
-.arches-flipped path:nth-child(3) { animation-delay: 1s; }
-.arches-flipped path:nth-child(4) { animation-delay: 1.25s; }
+.arches-flipped path:nth-child(2) { animation-delay: 1.3s; }
+.arches-flipped path:nth-child(3) { animation-delay: 2.1s; }
+.arches-flipped path:nth-child(4) { animation-delay: 2.9s; }
 
 /* Same rhythm as the hero arches so the two halves breathe as one circle */
 @keyframes archFloatFlipped {
