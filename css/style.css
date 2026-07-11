@@ -2440,14 +2440,16 @@ body.modal-open { overflow: hidden; }
   50% { opacity: 0.95; transform: scale(1.12); }
 }
 
-/* Handwritten signature closing her story */
+/* Classy italic serif sign-off closing her story */
 .founder-story .signature {
-  font-family: "Great Vibes", cursive;
-  font-weight: 400;
-  font-size: 2.9rem;
+  font-family: "Cormorant Garamond", var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 2.2rem;
+  letter-spacing: 0.04em;
   line-height: 1;
   color: var(--green-dark);
-  margin-top: 1.8rem;
+  margin-top: 1.9rem;
 }
 
 /* Verse band — breathing golden light and an oversized quote mark */
