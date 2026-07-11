@@ -666,6 +666,10 @@ section { padding: 6.5rem 0; position: relative; }
 .hero-arches path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
+  /* Multiply lets the rings soak up the warm glow behind them
+     instead of sitting on top of it */
+  mix-blend-mode: multiply;
+  opacity: 0.62;
   animation: drawArch 3.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
@@ -764,6 +768,10 @@ section { padding: 6.5rem 0; position: relative; }
 .arches-flipped path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
+  /* Screen melts the lower rings into the dark band as ripples of light,
+     fading out toward their darker gradient ends */
+  mix-blend-mode: screen;
+  opacity: 0.55;
   animation: drawArch 3.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
