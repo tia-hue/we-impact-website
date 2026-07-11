@@ -659,7 +659,7 @@ section { padding: 6.5rem 0; position: relative; }
 .hero-arches {
   display: block;
   width: min(640px, 86vw);
-  margin: 3.5rem auto -2px;
+  margin: 3.5rem auto 0;
   animation: archFloat 7s ease-in-out 7s infinite;
 }
 
@@ -671,7 +671,7 @@ section { padding: 6.5rem 0; position: relative; }
      continuously across the seam where they meet */
   stroke-width: 26;
   filter: blur(1.1px);
-  opacity: 0.78;
+  opacity: 0.75;
   animation: drawArch 3.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
@@ -760,7 +760,7 @@ section { padding: 6.5rem 0; position: relative; }
   position: relative;
   z-index: 1;
   width: min(640px, 86vw);
-  margin: -2px auto 0;
+  margin: 0 auto;
   transform: scaleY(-1);
   /* Same rhythm and phase as the hero arches: the full circle floats
      up into the top screen and back down as one piece */
@@ -774,7 +774,7 @@ section { padding: 6.5rem 0; position: relative; }
      so the full circle reads as one continuous gradient */
   stroke-width: 26;
   filter: blur(1.1px);
-  opacity: 0.72;
+  opacity: 0.75;
   animation: drawArch 3.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
