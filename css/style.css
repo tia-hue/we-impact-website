@@ -2206,6 +2206,53 @@ body.vision-bg::before {
 
 body.modal-open { overflow: hidden; }
 
+/* Welcome pop-up variant */
+.welcome-modal { max-width: 580px; }
+
+.welcome-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.9rem 0 1.1rem;
+  color: var(--ink-faint);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.welcome-divider::before,
+.welcome-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.welcome-email-row {
+  display: flex;
+  gap: 0.6rem;
+  max-width: 30rem;
+  margin: 0 auto;
+}
+
+.welcome-email-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.85rem 1.05rem;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 0.98rem;
+  background: var(--paper);
+}
+
+.welcome-email-row input:focus { outline: none; border-color: var(--green); }
+
+@media (max-width: 520px) {
+  .welcome-email-row { flex-direction: column; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .join-modal { animation: none; }
 }

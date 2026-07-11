@@ -148,6 +148,46 @@ if (joinModal) {
   setTimeout(openJoin, 700);
 }
 
+// Welcome pop-up (home page) — greets each visitor once
+const welcomeModal = document.getElementById("welcome-modal");
+if (welcomeModal) {
+  const openWelcome = () => {
+    welcomeModal.classList.add("open");
+    document.body.classList.add("modal-open");
+  };
+  const closeWelcome = () => {
+    welcomeModal.classList.remove("open");
+    document.body.classList.remove("modal-open");
+    try { localStorage.setItem("impactWelcomeSeen", "1"); } catch (e) {}
+  };
+  welcomeModal.querySelectorAll("[data-welcome-close]").forEach((btn) =>
+    btn.addEventListener("click", closeWelcome)
+  );
+  welcomeModal.addEventListener("click", (e) => {
+    if (e.target === welcomeModal) closeWelcome();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeWelcome();
+  });
+  const emailForm = document.getElementById("welcome-email");
+  if (emailForm) {
+    emailForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("welcome-email-input").value;
+      window.location.href =
+        "mailto:info@we-impact.com?subject=" +
+        encodeURIComponent("Keep me posted") +
+        "&body=" +
+        encodeURIComponent("Please add me to the Impact updates list: " + email);
+      closeWelcome();
+    });
+  }
+  let seen = null;
+  try { seen = localStorage.getItem("impactWelcomeSeen"); } catch (e) {}
+  const force = window.location.search.indexOf("welcome=1") !== -1;
+  if (!seen || force) setTimeout(openWelcome, 900);
+}
+
 // On small screens, shrink each section title just enough to fit one line
 function fitSectionTitles() {
   var titles = document.querySelectorAll(".section-title");
