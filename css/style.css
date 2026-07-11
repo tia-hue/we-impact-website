@@ -2647,21 +2647,25 @@ body.gala-bg .founder-connect::before {
   pointer-events: none;
 }
 
-/* Impact seal crowning the invitation card */
-.program-seal {
-  display: block;
-  width: 74px;
-  height: 74px;
-  object-fit: contain;
-  background: var(--cream);
-  border-radius: 50%;
-  padding: 11px;
-  margin: 0 auto 1.3rem;
-  box-shadow:
-    0 0 0 1.5px rgba(213, 186, 117, 0.65),
-    0 0 0 5px rgba(213, 186, 117, 0.15),
-    0 10px 26px rgba(0, 0, 0, 0.35);
+/* Soft Impact emblem watermark behind the whole invitation card */
+.gala-program { overflow: hidden; }
+
+.gala-program::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 50%;
+  width: min(78%, 430px);
+  aspect-ratio: 1 / 0.77; /* crops the IMPACT lettering */
+  transform: translate(-50%, -50%);
+  background: url("../assets/logo.png") no-repeat top center / 100% auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.05;
+  pointer-events: none;
 }
+
+.gala-program > * { position: relative; z-index: 1; }
 
 .program-rule {
   width: 130px;
