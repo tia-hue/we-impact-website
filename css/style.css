@@ -2329,6 +2329,20 @@ body.vision-bg::before {
   color: var(--ink-faint);
 }
 
+/* Gala hero — later children keep the staggered entrance going */
+.founder-hero .container > *:nth-child(7) { animation-delay: 0.74s; }
+.founder-hero .container > *:nth-child(8) { animation-delay: 0.86s; }
+
+.gala-ticket-line { margin-top: 1.6rem; }
+
+.gala-ctas {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.7rem;
+}
+
 /* Launch-pricing pill for founding members */
 .launch-note {
   display: inline-block;

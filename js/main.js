@@ -179,7 +179,7 @@ if (welcomeModal) {
   const closeWelcome = () => {
     welcomeModal.classList.remove("open");
     document.body.classList.remove("modal-open");
-    try { localStorage.setItem("impactWelcomeSeen", "1"); } catch (e) {}
+    try { localStorage.setItem("impactGalaSeen", "1"); } catch (e) {}
   };
   welcomeModal.querySelectorAll("[data-welcome-close]").forEach((btn) =>
     btn.addEventListener("click", closeWelcome)
@@ -204,7 +204,7 @@ if (welcomeModal) {
     });
   }
   let seen = null;
-  try { seen = localStorage.getItem("impactWelcomeSeen"); } catch (e) {}
+  try { seen = localStorage.getItem("impactGalaSeen"); } catch (e) {}
   const force = window.location.search.indexOf("welcome=1") !== -1;
   if (!seen || force) setTimeout(openWelcome, 900);
 }
