@@ -2652,13 +2652,22 @@ body.gala-bg .founder-connect::before {
 /* The engraved invitation card — What's Included */
 .gala-program {
   position: relative;
-  max-width: 640px;
+  max-width: 540px;
   margin: 0 auto;
-  padding: 4rem 2.6rem 3.6rem;
+  padding: 3.1rem 2.1rem 2.8rem;
   text-align: center;
   background: rgba(250, 246, 236, 0.04);
   border: 1px solid rgba(220, 201, 144, 0.5);
 }
+
+/* Scaled-down type inside the smaller card */
+.gala-program .section-title { font-size: clamp(1.7rem, 4vw, 2.2rem); }
+
+.gala-program .program-list li {
+  font-size: clamp(0.76rem, 1.7vw, 0.86rem);
+}
+
+.gala-program .program-note { font-size: 0.9rem; }
 
 .gala-program::before {
   content: "";
