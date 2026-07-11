@@ -2334,7 +2334,13 @@ body.vision-bg::before {
 .founder-hero .container > *:nth-child(8) { animation-delay: 0.86s; }
 .founder-hero .container > *:nth-child(9) { animation-delay: 1s; }
 
-.gala-ticket-line { margin-top: 1.6rem; }
+.gala-ticket-line {
+  margin-top: 1.6rem;
+  display: flex;
+  gap: 0.7rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
 .gala-ctas {
   display: flex;
