@@ -2647,6 +2647,22 @@ body.gala-bg .founder-connect::before {
   pointer-events: none;
 }
 
+/* Impact seal crowning the invitation card */
+.program-seal {
+  display: block;
+  width: 74px;
+  height: 74px;
+  object-fit: contain;
+  background: var(--cream);
+  border-radius: 50%;
+  padding: 11px;
+  margin: 0 auto 1.3rem;
+  box-shadow:
+    0 0 0 1.5px rgba(213, 186, 117, 0.65),
+    0 0 0 5px rgba(213, 186, 117, 0.15),
+    0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
 .program-rule {
   width: 130px;
   height: 1px;
