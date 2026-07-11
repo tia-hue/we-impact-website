@@ -2631,9 +2631,9 @@ body.gala-bg .founder-connect::before {
 /* The engraved invitation card — What's Included */
 .gala-program {
   position: relative;
-  max-width: 620px;
+  max-width: 640px;
   margin: 0 auto;
-  padding: 3.2rem 2.4rem 2.8rem;
+  padding: 4rem 2.6rem 3.6rem;
   text-align: center;
   background: rgba(250, 246, 236, 0.04);
   border: 1px solid rgba(220, 201, 144, 0.5);
@@ -2682,20 +2682,28 @@ body.gala-bg .founder-connect::before {
 .program-list li {
   font-family: var(--sans);
   font-weight: 500;
-  font-size: clamp(0.88rem, 2vw, 1rem);
+  font-size: clamp(0.82rem, 1.9vw, 0.94rem);
   color: var(--cream);
-  letter-spacing: 0.3em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
 }
 
 .program-list li + li::before {
   content: "\00B7";
   display: block;
-  color: var(--amber-soft);
-  font-size: 1.1rem;
+  color: #dcc990;
+  font-size: 0.95rem;
   line-height: 1;
-  margin: 1.05rem auto;
-  opacity: 0.85;
+  margin: 1.2rem auto;
+  opacity: 0.7;
+}
+
+/* Attire note directly beneath the title */
+.program-caps.program-attire {
+  margin: 0 0 2rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.36em;
+  color: #dcc990;
 }
 
 .program-note {
