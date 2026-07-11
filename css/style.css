@@ -2667,6 +2667,29 @@ body.gala-bg .founder-connect::before {
 
 .gala-program > * { position: relative; z-index: 1; }
 
+/* Gold sheen darting across the card, edge to edge */
+.gala-program .program-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(115deg,
+    rgba(240, 230, 197, 0) 40%,
+    rgba(240, 230, 197, 0.1) 48%,
+    rgba(255, 250, 235, 0.22) 51%,
+    rgba(240, 230, 197, 0.1) 54%,
+    rgba(240, 230, 197, 0) 62%);
+  background-size: 250% 100%;
+  background-position: 130% center;
+  animation: sheenSweep 5.5s ease-in-out 1.5s infinite;
+}
+
+@keyframes sheenSweep {
+  0% { background-position: 130% center; }
+  40% { background-position: -30% center; }
+  100% { background-position: -30% center; }
+}
+
 .program-rule {
   width: 130px;
   height: 1px;
@@ -2897,6 +2920,7 @@ body.gala-bg .program-caps { color: var(--gala-gold-mid); }
   .gala-ticket-line .launch-note,
   .gala-ctas .btn-primary,
   .gala-band::before,
+  .gala-program .program-sheen,
   .welcome-modal::before { animation: none; }
   .join-backdrop.open .welcome-modal > *,
   .join-backdrop.open .welcome-modal .join-logo,
