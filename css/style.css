@@ -784,13 +784,26 @@ section { padding: 6.5rem 0; position: relative; }
 .arches-flipped path:nth-of-type(3) { animation-delay: 2.1s; }
 .arches-flipped path:nth-of-type(4) { animation-delay: 2.9s; }
 
+/* A soft band of light sweeps across the rings every few seconds,
+   masked to the ring strokes so only they catch the shine */
+.ring-sheen {
+  animation: ringSheenSweep 8s ease-in-out 7.5s infinite;
+}
+
+@keyframes ringSheenSweep {
+  0% { transform: translateX(0); }
+  45% { transform: translateX(1240px); }
+  100% { transform: translateX(1240px); }
+}
+
 /* The rings hold their entrance until the gala invitation is dismissed;
    pausing during the delay phase freezes the whole draw timeline */
 body.rings-wait .hero-arches,
 body.rings-wait .arches-flipped,
 body.rings-wait .hero-arches path,
 body.rings-wait .arches-flipped path,
-body.rings-wait .hero-arches .arch-glow {
+body.rings-wait .hero-arches .arch-glow,
+body.rings-wait .ring-sheen {
   animation-play-state: paused;
 }
 
@@ -3185,6 +3198,7 @@ body.modal-open { overflow: hidden; }
   .hero-arches { animation: none; }
   .hero-arches path { stroke-dashoffset: 0; animation: none; }
   .arch-glow { opacity: 1; animation: none; }
+  .ring-sheen { animation: none; } /* rests off-canvas, so it simply never appears */
   .hero::before { opacity: 1; animation: none; }
   .god-rays { opacity: 1; animation: none; }
   .hero .eyebrow { animation: none; background-position: 50% center; }
