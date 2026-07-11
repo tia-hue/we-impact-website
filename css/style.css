@@ -2510,13 +2510,14 @@ body.vision-bg::before {
   animation: rise 0.7s cubic-bezier(0.2, 0.65, 0.3, 1) forwards;
 }
 
-.join-backdrop.open .welcome-modal > *:nth-child(3) { animation-delay: 0.24s; }
-.join-backdrop.open .welcome-modal > *:nth-child(4) { animation-delay: 0.34s; }
-.join-backdrop.open .welcome-modal > *:nth-child(5) { animation-delay: 0.44s; }
-.join-backdrop.open .welcome-modal > *:nth-child(6) { animation-delay: 0.54s; }
-.join-backdrop.open .welcome-modal > *:nth-child(7) { animation-delay: 0.64s; }
-.join-backdrop.open .welcome-modal > *:nth-child(8) { animation-delay: 0.74s; }
-.join-backdrop.open .welcome-modal > *:nth-child(9) { animation-delay: 0.84s; }
+.join-backdrop.open .welcome-modal > *:nth-child(3) { animation-delay: 0.22s; }
+.join-backdrop.open .welcome-modal > *:nth-child(4) { animation-delay: 0.32s; }
+.join-backdrop.open .welcome-modal > *:nth-child(5) { animation-delay: 0.42s; }
+.join-backdrop.open .welcome-modal > *:nth-child(6) { animation-delay: 0.52s; }
+.join-backdrop.open .welcome-modal > *:nth-child(7) { animation-delay: 0.62s; }
+.join-backdrop.open .welcome-modal > *:nth-child(8) { animation-delay: 0.72s; }
+.join-backdrop.open .welcome-modal > *:nth-child(9) { animation-delay: 0.82s; }
+.join-backdrop.open .welcome-modal > *:nth-child(10) { animation-delay: 0.92s; }
 
 .join-backdrop.open .welcome-modal .join-logo {
   opacity: 0;
@@ -2967,6 +2968,44 @@ body.gala-bg .program-caps { color: var(--gala-gold-mid); }
   text-transform: uppercase;
   color: #dcc990;
   margin: 0 0 1.1rem;
+}
+
+/* One graceful line for the evening's promise */
+.gala-invite .invite-line {
+  font-family: var(--sans);
+  font-size: clamp(0.92rem, 3.4vw, 1.05rem);
+  color: rgba(250, 246, 236, 0.8);
+  white-space: nowrap;
+  margin: 0 0 1rem;
+}
+
+/* Practical details in a quieter, distinct voice */
+.gala-invite .invite-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(250, 246, 236, 0.6);
+  white-space: nowrap;
+  margin: 0 0 1.4rem;
+}
+
+.gala-invite .invite-meta::before,
+.gala-invite .invite-meta::after {
+  content: "";
+  width: 18px;
+  height: 1px;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, rgba(220, 201, 144, 0), rgba(220, 201, 144, 0.7));
+}
+
+.gala-invite .invite-meta::after {
+  background: linear-gradient(90deg, rgba(220, 201, 144, 0.7), rgba(220, 201, 144, 0));
 }
 
 .gala-invite .cd-num { color: #dcc990; }
