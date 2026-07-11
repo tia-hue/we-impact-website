@@ -199,7 +199,6 @@ if (welcomeModal) {
   const closeWelcome = () => {
     welcomeModal.classList.remove("open");
     document.body.classList.remove("modal-open");
-    try { localStorage.setItem("impactGalaSeen", "1"); } catch (e) {}
   };
   welcomeModal.querySelectorAll("[data-welcome-close]").forEach((btn) =>
     btn.addEventListener("click", closeWelcome)
@@ -223,10 +222,8 @@ if (welcomeModal) {
       closeWelcome();
     });
   }
-  let seen = null;
-  try { seen = localStorage.getItem("impactGalaSeen"); } catch (e) {}
-  const force = window.location.search.indexOf("welcome=1") !== -1;
-  if (!seen || force) setTimeout(openWelcome, 900);
+  // The gala invitation greets every visit — guests must close it to continue
+  setTimeout(openWelcome, 900);
 }
 
 // On small screens, shrink each section title just enough to fit one line
