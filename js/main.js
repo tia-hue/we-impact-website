@@ -211,7 +211,7 @@ if (welcomeModal) {
 
 // On small screens, shrink each section title just enough to fit one line
 function fitSectionTitles() {
-  var titles = document.querySelectorAll(".section-title");
+  var titles = document.querySelectorAll(".section-title, .page-hero h1");
   titles.forEach(function (el) {
     // Titles inside pop-outs are hidden at load (unmeasurable) — let them wrap
     if (el.closest(".join-backdrop")) return;
