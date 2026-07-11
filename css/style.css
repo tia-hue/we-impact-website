@@ -2440,15 +2440,14 @@ body.modal-open { overflow: hidden; }
   50% { opacity: 0.95; transform: scale(1.12); }
 }
 
-/* Sleek spaced-caps sign-off to her story */
+/* Handwritten signature closing her story */
 .founder-story .signature {
-  font-family: "Montserrat", var(--sans);
-  font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--amber);
-  margin-top: 2rem;
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-size: 2.9rem;
+  line-height: 1;
+  color: var(--green-dark);
+  margin-top: 1.8rem;
 }
 
 /* Verse band — breathing golden light and an oversized quote mark */
