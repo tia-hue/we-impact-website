@@ -2314,3 +2314,252 @@ body.modal-open { overflow: hidden; }
   .slide { page-break-after: always; box-shadow: none; margin: 0; border-radius: 0; }
   section { padding: 0; }
 }
+
+/* =========== Founder page =========== */
+.founder-hero { padding-bottom: 4.5rem; }
+.founder-hero .container { position: relative; z-index: 1; }
+
+/* Later hero children keep the staggered entrance going */
+.founder-hero .container > *:nth-child(5) { animation-delay: 0.5s; }
+.founder-hero .container > *:nth-child(6) { animation-delay: 0.62s; }
+
+/* Gold glistening eyebrow (matches the home hero) */
+.page-hero .container > .eyebrow-gold {
+  background: linear-gradient(100deg,
+    #c17a2b 0%,
+    #c17a2b 38%,
+    #e9b872 46%,
+    #fdf3d3 50%,
+    #e9b872 54%,
+    #c17a2b 62%,
+    #c17a2b 100%);
+  background-size: 250% 100%;
+  background-position: 130% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation:
+    rise 0.9s cubic-bezier(0.2, 0.65, 0.3, 1) 0.18s forwards,
+    glisten 4.5s ease-in-out 2.2s infinite;
+}
+
+.founder-hero h1 em { font-style: italic; color: var(--green); }
+
+/* Fine gold rule that draws itself beneath the name */
+.founder-hero .container > .founder-rule {
+  width: 130px;
+  height: 2px;
+  margin: 0.2rem auto 1.2rem;
+  background: linear-gradient(90deg,
+    rgba(193, 122, 43, 0),
+    var(--amber) 20%,
+    var(--amber-soft) 50%,
+    var(--amber) 80%,
+    rgba(193, 122, 43, 0));
+  animation: ruleDraw 0.9s cubic-bezier(0.2, 0.65, 0.3, 1) 0.55s forwards;
+}
+
+@keyframes ruleDraw {
+  from { opacity: 1; transform: scaleX(0); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+
+.founder-role {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: clamp(0.85rem, 2vw, 1.02rem);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+
+/* What-she-brings chips — pop in one by one */
+.founder-chips {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.9rem;
+}
+
+.founder-chips .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--paper);
+  border: 1px solid rgba(193, 122, 43, 0.35);
+  border-radius: 999px;
+  padding: 0.55rem 1.15rem;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: var(--green-dark);
+  box-shadow: 0 6px 18px rgba(20, 55, 38, 0.08);
+  opacity: 0;
+  animation: chipPop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.founder-chips .chip:nth-child(1) { animation-delay: 0.78s; }
+.founder-chips .chip:nth-child(2) { animation-delay: 0.94s; }
+.founder-chips .chip:nth-child(3) { animation-delay: 1.1s; }
+
+.founder-chips .chip:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(20, 55, 38, 0.15);
+  border-color: var(--amber);
+}
+
+.founder-chips .chip svg {
+  width: 16px;
+  height: 16px;
+  color: var(--amber);
+  flex-shrink: 0;
+}
+
+@keyframes chipPop {
+  0% { opacity: 0; transform: scale(0.6) translateY(8px); }
+  70% { opacity: 1; transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Portrait: floating offset gold frame + warm breathing glow */
+.founder-photo { position: relative; }
+
+.founder-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(193, 122, 43, 0.5);
+  border-radius: 200px 200px var(--radius) var(--radius);
+  transform: translate(16px, -16px);
+  z-index: 0;
+  pointer-events: none;
+  animation: frameDrift 7s ease-in-out infinite;
+}
+
+.founder-photo::after {
+  content: "";
+  position: absolute;
+  left: -40px;
+  bottom: -30px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(233, 184, 114, 0.5), rgba(233, 184, 114, 0) 70%);
+  filter: blur(18px);
+  z-index: 0;
+  pointer-events: none;
+  animation: warmGlow 6s ease-in-out infinite;
+}
+
+.founder-photo .photo-frame {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.2, 0.65, 0.3, 1), box-shadow 0.6s ease;
+}
+
+.founder-photo:hover .photo-frame {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(20, 55, 38, 0.22);
+}
+
+@keyframes frameDrift {
+  0%, 100% { transform: translate(16px, -16px); }
+  50% { transform: translate(21px, -23px); }
+}
+
+@keyframes warmGlow {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.95; transform: scale(1.12); }
+}
+
+/* Handwritten-style close to her story */
+.founder-story .signature {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--amber);
+  margin-top: 1.6rem;
+}
+
+/* Verse band — breathing golden light and an oversized quote mark */
+.founder-verse {
+  position: relative;
+  overflow: hidden;
+}
+
+.founder-verse::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -55%;
+  width: 900px;
+  height: 900px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(233, 184, 114, 0.16), rgba(233, 184, 114, 0) 60%);
+  pointer-events: none;
+  animation: warmGlow 8s ease-in-out infinite;
+}
+
+.founder-verse .container { position: relative; z-index: 1; }
+
+.founder-verse .verse {
+  position: relative;
+  padding-top: 3.6rem;
+}
+
+.founder-verse .verse::before {
+  content: "\201C";
+  position: absolute;
+  top: -0.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--serif);
+  font-size: 7rem;
+  line-height: 1;
+  color: var(--amber-soft);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Connect — soft emblem watermark + heartbeat on the main button */
+.founder-connect {
+  position: relative;
+  overflow: hidden;
+}
+
+.founder-connect::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 8%;
+  width: min(62vmin, 560px);
+  height: calc(min(62vmin, 560px) * 0.77); /* crops the IMPACT lettering */
+  transform: translateX(-50%);
+  background: url("../assets/logo.png") no-repeat top center / 100% auto;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.founder-connect .container { position: relative; z-index: 1; }
+
+.founder-connect .btn-primary { animation: ctaGlow 4s ease-in-out 2.5s infinite; }
+
+@media (max-width: 640px) {
+  .founder-photo::before { transform: translate(10px, -10px); }
+  .founder-chips { gap: 0.5rem; }
+  .founder-chips .chip { padding: 0.45rem 0.9rem; font-size: 0.78rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-hero .container > .eyebrow-gold { animation: none; opacity: 1; background-position: 50% center; }
+  .founder-hero .container > .founder-rule { animation: none; opacity: 1; transform: none; }
+  .founder-chips .chip { animation: none; opacity: 1; }
+  .founder-photo::before,
+  .founder-photo::after,
+  .founder-verse::before { animation: none; }
+  .founder-connect .btn-primary { animation: none; }
+}
