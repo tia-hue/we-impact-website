@@ -213,6 +213,8 @@ if (welcomeModal) {
 function fitSectionTitles() {
   var titles = document.querySelectorAll(".section-title");
   titles.forEach(function (el) {
+    // Titles inside pop-outs are hidden at load (unmeasurable) — let them wrap
+    if (el.closest(".join-backdrop")) return;
     el.style.fontSize = "";
     el.style.whiteSpace = "";
     if (window.innerWidth > 640) return;

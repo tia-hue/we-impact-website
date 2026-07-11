@@ -2318,6 +2318,20 @@ body.vision-bg::before {
   color: var(--ink-faint);
 }
 
+/* Pop-out titles always wrap inside the box */
+.join-modal .section-title {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 640px) {
+  .join-backdrop { padding: 1.5rem 0.9rem; }
+  .join-modal { padding: 2.9rem 1.15rem 1.6rem; }
+  .join-modal .section-title { font-size: 1.42rem; line-height: 1.25; }
+  .join-modal .section-lead { font-size: 0.98rem; }
+  .join-logo { width: 64px; height: 64px; }
+}
+
 body.modal-open { overflow: hidden; }
 
 /* Welcome pop-up variant */
