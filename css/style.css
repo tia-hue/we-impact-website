@@ -2342,6 +2342,35 @@ body.vision-bg::before {
   flex-wrap: wrap;
 }
 
+/* Engraved details line — hairline gold rules flanking small caps */
+.page-hero .container > .gala-details-line {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--amber-soft);
+  max-width: none;
+  margin-top: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.gala-details-line::before,
+.gala-details-line::after {
+  content: "";
+  width: 36px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(233, 184, 114, 0), var(--amber-soft));
+  flex-shrink: 0;
+}
+
+.gala-details-line::after {
+  background: linear-gradient(90deg, var(--amber-soft), rgba(233, 184, 114, 0));
+}
+
 .gala-ctas {
   display: flex;
   gap: 1rem;
@@ -2517,7 +2546,12 @@ body.gala-bg .site-header {
 }
 
 body.gala-bg .wordmark { color: var(--cream); }
-body.gala-bg .nav-logo img { filter: brightness(0) invert(1); }
+body.gala-bg .nav-logo img {
+  background: var(--cream);
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 0 0 1.5px rgba(233, 184, 114, 0.55);
+}
 body.gala-bg .nav-links a { color: rgba(250, 246, 236, 0.82); }
 body.gala-bg .nav-links a:hover { color: var(--amber-soft); background: rgba(233, 184, 114, 0.1); }
 body.gala-bg .nav-links a.active { color: var(--amber-soft); }
@@ -2533,11 +2567,20 @@ body.gala-bg .god-rays { mix-blend-mode: screen; }
 body.gala-bg .page-hero h1 { color: var(--cream); }
 body.gala-bg .page-hero p { color: rgba(250, 246, 236, 0.78); }
 
+/* The emblem as a wax-seal medallion — cream disc, hairline gold rings */
 body.gala-bg .page-logo {
-  filter: brightness(0) invert(1) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
+  width: 128px;
+  height: 128px;
+  background: var(--cream);
+  border-radius: 50%;
+  padding: 20px;
+  box-shadow:
+    0 0 0 1.5px rgba(233, 184, 114, 0.6),
+    0 0 0 7px rgba(233, 184, 114, 0.14),
+    0 16px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* Keep the pop, skip the float — its glow keyframes would undo the white logo */
+/* Keep the pop, skip the float — its glow keyframes would fight the seal shadow */
 body.gala-bg .page-hero .container > img.page-logo-live {
   animation: logoPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
 }
@@ -2683,9 +2726,20 @@ body.gala-bg .founder-connect::before {
 
 .gala-invite .join-close:hover { background: rgba(250, 246, 236, 0.22); }
 
-/* White logo in the dark invitation; keep the pop, skip the float */
+/* Seal-medallion logo in the dark invitation; keep the pop, skip the float */
+.gala-invite .join-logo {
+  width: 92px;
+  height: 92px;
+  background: var(--cream);
+  border-radius: 50%;
+  padding: 14px;
+  box-shadow:
+    0 0 0 1.5px rgba(233, 184, 114, 0.6),
+    0 0 0 6px rgba(233, 184, 114, 0.14),
+    0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
 .join-backdrop.open .welcome-modal.gala-invite .join-logo {
-  filter: brightness(0) invert(1) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
   animation: logoPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.18s both;
 }
 
