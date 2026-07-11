@@ -666,12 +666,12 @@ section { padding: 6.5rem 0; position: relative; }
 .hero-arches path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  /* Thick, feathered strokes close the gaps so the four rings read as
-     one radiant form; multiply soaks them into the glow behind */
+  /* Thick, feathered strokes close the gaps so the four rings read as one
+     radiant form; both halves render identically so the color runs
+     continuously across the seam where they meet */
   stroke-width: 26;
   filter: blur(1.1px);
-  mix-blend-mode: multiply;
-  opacity: 0.55;
+  opacity: 0.78;
   animation: drawArch 3.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
@@ -770,12 +770,11 @@ section { padding: 6.5rem 0; position: relative; }
 .arches-flipped path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  /* Same thick feathered strokes; screen melts the lower rings into the
-     dark band as ripples of light fading toward their edges */
+  /* Matches the hero half exactly — same stroke, blur, and opacity —
+     so the full circle reads as one continuous gradient */
   stroke-width: 26;
   filter: blur(1.1px);
-  mix-blend-mode: screen;
-  opacity: 0.5;
+  opacity: 0.72;
   animation: drawArch 3.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
