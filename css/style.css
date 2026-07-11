@@ -2505,6 +2505,14 @@ body.vision-bg::before {
 
 .welcome-modal > * { position: relative; }
 
+/* Keep the close button pinned to the card's top-right corner (above the sheen) */
+.welcome-modal > .join-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 1.1rem;
+  z-index: 4;
+}
+
 .join-backdrop.open .welcome-modal > * {
   opacity: 0;
   animation: rise 0.7s cubic-bezier(0.2, 0.65, 0.3, 1) forwards;
