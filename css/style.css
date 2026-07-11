@@ -2982,8 +2982,9 @@ body.gala-bg .program-caps { color: var(--gala-gold-mid); }
 
 .gala-invite .invite-line-sub {
   font-family: var(--serif);
-  font-size: clamp(0.98rem, 3.2vw, 1.12rem);
-  letter-spacing: 0.02em;
+  font-size: clamp(0.82rem, 2.8vw, 0.95rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   color: #dcc990;
   margin: 0 0 1rem;
 }
