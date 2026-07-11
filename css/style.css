@@ -2518,6 +2518,7 @@ body.vision-bg::before {
 .join-backdrop.open .welcome-modal > *:nth-child(8) { animation-delay: 0.72s; }
 .join-backdrop.open .welcome-modal > *:nth-child(9) { animation-delay: 0.82s; }
 .join-backdrop.open .welcome-modal > *:nth-child(10) { animation-delay: 0.92s; }
+.join-backdrop.open .welcome-modal > *:nth-child(11) { animation-delay: 1.02s; }
 
 .join-backdrop.open .welcome-modal .join-logo {
   opacity: 0;
@@ -2976,6 +2977,12 @@ body.gala-bg .program-caps { color: var(--gala-gold-mid); }
   font-size: clamp(0.92rem, 3.4vw, 1.05rem);
   color: rgba(250, 246, 236, 0.8);
   white-space: nowrap;
+  margin: 0 0 0.35rem;
+}
+
+.gala-invite .invite-line-sub {
+  font-size: clamp(0.8rem, 3vw, 0.9rem);
+  color: rgba(250, 246, 236, 0.6);
   margin: 0 0 1rem;
 }
 
