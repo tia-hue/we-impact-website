@@ -2829,6 +2829,27 @@ body.gala-bg .founder-connect::before {
   animation: logoPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.18s both;
 }
 
+/* Gold sheen darting across the invitation, matching the Launch Night card */
+.gala-invite .program-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(115deg,
+    rgba(240, 230, 197, 0) 40%,
+    rgba(240, 230, 197, 0.1) 48%,
+    rgba(255, 250, 235, 0.22) 51%,
+    rgba(240, 230, 197, 0.1) 54%,
+    rgba(240, 230, 197, 0) 62%);
+  background-size: 250% 100%;
+  background-position: 130% center;
+}
+
+.join-backdrop.open .welcome-modal.gala-invite .program-sheen {
+  opacity: 1;
+  animation: sheenSweep 5.5s ease-in-out 1.8s infinite;
+}
+
 /* =========== True-gold palette for the black-tie gala =========== */
 body.gala-bg {
   --gala-gold: #c2a962;
@@ -2960,6 +2981,7 @@ body.gala-bg .program-caps { color: var(--gala-gold-mid); }
   .gala-ctas .btn-primary,
   .gala-band::before,
   .gala-program .program-sheen,
+  .join-backdrop.open .welcome-modal.gala-invite .program-sheen,
   .welcome-modal::before { animation: none; }
   body.gala-bg .god-rays { animation: none; opacity: 0.35; }
   .join-backdrop.open .welcome-modal > *,
