@@ -361,6 +361,17 @@ section { padding: 6.5rem 0; position: relative; }
   box-shadow: 0 12px 28px rgba(193, 122, 43, 0.32);
 }
 
+.btn-cream {
+  background: var(--cream);
+  color: var(--green-deep);
+}
+
+.btn-cream:hover {
+  background: #fffdf6;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(20, 55, 38, 0.35);
+}
+
 .btn-outline {
   background: transparent;
   border: 1.5px solid rgba(20, 55, 38, 0.35);
