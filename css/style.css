@@ -2503,6 +2503,192 @@ body.vision-bg::before {
 
 .join-backdrop.open .welcome-modal .btn-primary { animation: rise 0.7s cubic-bezier(0.2, 0.65, 0.3, 1) 0.76s forwards, ctaGlow 4s ease-in-out 2.2s infinite; }
 
+/* =========== Black-tie gala theme =========== */
+body.gala-bg {
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(233, 184, 114, 0.09), rgba(233, 184, 114, 0) 55%),
+    linear-gradient(180deg, #0e2418 0%, #143726 55%, #0e2418 100%);
+  color: var(--cream);
+}
+
+body.gala-bg .site-header {
+  background: rgba(14, 36, 24, 0.9);
+  border-bottom: 1px solid rgba(233, 184, 114, 0.16);
+}
+
+body.gala-bg .wordmark { color: var(--cream); }
+body.gala-bg .nav-logo img { filter: brightness(0) invert(1); }
+body.gala-bg .nav-links a { color: rgba(250, 246, 236, 0.82); }
+body.gala-bg .nav-links a:hover { color: var(--amber-soft); background: rgba(233, 184, 114, 0.1); }
+body.gala-bg .nav-links a.active { color: var(--amber-soft); }
+body.gala-bg .nav-links a.nav-cta { background: var(--amber); color: #fff; }
+body.gala-bg .nav-toggle { color: var(--cream); }
+
+@media (max-width: 900px) {
+  body.gala-bg .nav-links { background: #10291b; }
+}
+
+/* Hero on deep evening green — luminous gold rays */
+body.gala-bg .god-rays { mix-blend-mode: screen; }
+body.gala-bg .page-hero h1 { color: var(--cream); }
+body.gala-bg .page-hero p { color: rgba(250, 246, 236, 0.78); }
+
+body.gala-bg .page-logo {
+  filter: brightness(0) invert(1) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
+}
+
+/* Keep the pop, skip the float — its glow keyframes would undo the white logo */
+body.gala-bg .page-hero .container > img.page-logo-live {
+  animation: logoPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+body.gala-bg .launch-note {
+  background: rgba(233, 184, 114, 0.1);
+  border-color: rgba(233, 184, 114, 0.45);
+  color: var(--amber-soft);
+}
+
+body.gala-bg .btn-primary { background: var(--amber); }
+body.gala-bg .btn-primary:hover { background: #ad6c24; }
+body.gala-bg .btn-outline { border-color: rgba(250, 246, 236, 0.45); color: var(--cream); }
+
+body.gala-bg .cd-num { color: var(--amber-soft); }
+body.gala-bg .cd-label { color: rgba(250, 246, 236, 0.6); }
+
+/* Sections melt into the evening backdrop */
+body.gala-bg .tint-sage,
+body.gala-bg .tint-paper { background: transparent; }
+body.gala-bg .section-title { color: var(--cream); }
+body.gala-bg .title-depth { color: var(--amber-soft); }
+body.gala-bg .section-lead { color: rgba(250, 246, 236, 0.75); }
+body.gala-bg .eyebrow { color: var(--amber-soft); }
+
+body.gala-bg .card {
+  background: rgba(250, 246, 236, 0.05);
+  border: 1px solid rgba(233, 184, 114, 0.18);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+}
+
+body.gala-bg .card h3 { color: var(--cream); }
+body.gala-bg .card p { color: rgba(250, 246, 236, 0.72); }
+body.gala-bg .card-icon { background: rgba(233, 184, 114, 0.12); }
+body.gala-bg .card-icon svg { color: var(--amber-soft); }
+
+body.gala-bg .gala-band {
+  background: rgba(250, 246, 236, 0.03);
+  border-top: 1px solid rgba(233, 184, 114, 0.18);
+  border-bottom: 1px solid rgba(233, 184, 114, 0.18);
+}
+
+body.gala-bg .founder-connect::before {
+  filter: brightness(0) invert(1);
+  opacity: 0.04;
+}
+
+/* The engraved invitation card — What's Included */
+.gala-program {
+  position: relative;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 3.2rem 2.4rem 2.8rem;
+  text-align: center;
+  background: rgba(250, 246, 236, 0.04);
+  border: 1px solid rgba(233, 184, 114, 0.5);
+}
+
+.gala-program::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(233, 184, 114, 0.25);
+  pointer-events: none;
+}
+
+.program-rule {
+  width: 130px;
+  height: 1px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, rgba(193, 122, 43, 0), var(--amber) 50%, rgba(193, 122, 43, 0));
+}
+
+.program-list {
+  list-style: none;
+  margin: 1.7rem 0;
+}
+
+.program-list li {
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 3vw, 1.55rem);
+  color: var(--cream);
+  letter-spacing: 0.03em;
+}
+
+.program-list li + li::before {
+  content: "\2726";
+  display: block;
+  color: var(--amber);
+  font-size: 0.6rem;
+  margin: 0.95rem auto;
+  opacity: 0.9;
+}
+
+.program-note {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(250, 246, 236, 0.72);
+  max-width: 30rem;
+  margin: 1.7rem auto 0;
+}
+
+.program-caps {
+  margin-top: 1.4rem;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--amber-soft);
+}
+
+/* The pop-up as a formal dark invitation */
+.welcome-modal.gala-invite {
+  background: linear-gradient(180deg, #10291b 0%, #143726 100%);
+  border: 1px solid rgba(233, 184, 114, 0.4);
+}
+
+.welcome-modal.gala-invite::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(233, 184, 114, 0.22);
+  border-radius: calc(var(--radius-lg) - 8px);
+  pointer-events: none;
+}
+
+.gala-invite .section-title { color: var(--cream); }
+.gala-invite .section-lead { color: rgba(250, 246, 236, 0.75); }
+.gala-invite .eyebrow { color: var(--amber-soft); }
+.gala-invite .cd-num { color: var(--amber-soft); }
+.gala-invite .cd-label { color: rgba(250, 246, 236, 0.6); }
+.gala-invite .btn-primary { background: var(--amber); }
+.gala-invite .btn-primary:hover { background: #ad6c24; }
+.gala-invite .btn-outline { border-color: rgba(250, 246, 236, 0.45); color: var(--cream); }
+
+.gala-invite .join-close {
+  background: rgba(250, 246, 236, 0.12);
+  color: var(--cream);
+}
+
+.gala-invite .join-close:hover { background: rgba(250, 246, 236, 0.22); }
+
+/* White logo in the dark invitation; keep the pop, skip the float */
+.join-backdrop.open .welcome-modal.gala-invite .join-logo {
+  filter: brightness(0) invert(1) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
+  animation: logoPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.18s both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .page-hero .container > .gala-date { animation: none; opacity: 1; background-position: 50% center; }
   .gala-ticket-line .launch-note,
