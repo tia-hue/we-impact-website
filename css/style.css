@@ -2329,6 +2329,20 @@ body.vision-bg::before {
   color: var(--ink-faint);
 }
 
+/* Launch-pricing pill for founding members */
+.launch-note {
+  display: inline-block;
+  padding: 0.45rem 1.15rem;
+  border-radius: 999px;
+  background: rgba(193, 122, 43, 0.1);
+  border: 1px solid rgba(193, 122, 43, 0.4);
+  color: var(--amber);
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+}
+
 /* Pop-out titles always wrap inside the box */
 .join-modal .section-title {
   white-space: normal;
