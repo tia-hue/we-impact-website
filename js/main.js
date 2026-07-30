@@ -307,43 +307,56 @@ if (applyModal) {
   });
 
   if (form) {
+    // The exact question the applicant read, section-numbered to match the form.
+    // These used to be shortened third-person summaries ("What they charge, and
+    // for what"), which made the email read like a form dump instead of a
+    // filled-in application. Key order here is the row order in the email, so it
+    // mirrors the order the applicant answered in.
     const LABELS = {
       name: "Name",
       email: "Email",
       phone: "Phone",
       city: "City & state",
       businessname: "Business name",
-      idea: "What the business is, and who it's for",
-      customer: "Ideal customer / customer conversations",
-      different: "Competition & why choose them",
-      price: "What they charge, and for what",
-      cost: "What it costs them to deliver",
-      stage: "Current stage",
-      revenue: "Revenue to date",
-      location: "Location / vehicle / equipment needed",
-      traction: "What they've already built with little/no money",
-      invested: "What they've personally invested",
-      time: "Hours per week available",
-      team: "Solo or team",
-      budget: "How the $50,000 would be spent",
-      first90: "First 90 days",
-      sustain: "How the business sustains itself after the award",
-      breakeven: "Monthly costs to cover, and when they reach it",
-      otherfunding: "Other funding applied for / received",
-      legal: "Licenses, permits, certifications, insurance",
-      priorbiz: "Prior business experience",
-      kill: "Most likely to kill it in year one",
-      advisor: "Who they've talked to who has done this",
-      year: "What must be true in a year",
-      obstacle: "Biggest obstacle right now",
-      ifnot: "What happens if they don't win",
-      coachable: "A time they were wrong and changed course",
-      giveback: "How the business gives back",
-      profit: "What they do once it makes more than it spends",
-      why: "Why this business, why them",
-      availability: "Interview availability",
-      link: "Website / social / video pitch",
-      anything: "Anything else",
+
+      idea: "2.1 What is the business?",
+      customer: "2.2 Who is your ideal customer?",
+      different: "2.3 Who are your competitors, and what makes you different?",
+      price: "2.4 How much do you charge, and for what?",
+      cost: "2.5 What does it cost you to deliver that?",
+
+      stage: "3.1 What stage are you at right now?",
+      traction: "3.2 What have you already done or built with little or no money?",
+      invested: "3.3 What have you personally put into this so far — money, hours, or sacrifice?",
+      revenue: "3.4 Has the business made any money yet? How much, and over what period?",
+      location: "3.5 Does this business need a physical location, vehicle, or equipment to operate — and do you have it?",
+      time: "3.6 Hours per week you can give this",
+      team: "3.7 Solo, or do you have partners / a team?",
+
+      budget: "4.1 Break down how you would spend the $50,000. Give us real numbers.",
+      first90: "4.2 What would you do in your first 90 days with the money?",
+      sustain: "4.3 After the $50,000 is spent, how does the business keep going?",
+      breakeven: "4.4 What does it take each month to cover your costs — and when do you expect to reach it?",
+      otherfunding: "4.5 Have you applied for or received any other funding — loans, grants, investors, family?",
+
+      legal: "5.1 What licenses, permits, certifications, or insurance does this business legally require — and which do you already have?",
+      priorbiz: "5.2 Have you run a business before? What happened to it?",
+      kill: "5.3 What is most likely to kill this business in its first year?",
+      advisor: "5.4 Who have you talked to who has actually done this before?",
+
+      year: "6.1 A year from now, what has to be true for this to be working?",
+      obstacle: "6.2 What is the single biggest thing standing in your way right now?",
+      ifnot: "6.3 If you don't win this scholarship, what happens to this business?",
+      coachable: "6.4 Tell us about a time you were wrong about something and changed course.",
+
+      giveback: "7.1 How would this business give back to your community?",
+      profit: "7.2 Once the business is making more than it spends, what do you do with that money?",
+      why: "7.3 Why this business, and why you?",
+
+      availability: "8.1 When are you available for an interview and a pitch?",
+
+      link: "9.1 Website, social page, or video pitch",
+      anything: "9.2 Anything else we should know?",
     };
 
     form.addEventListener("submit", (e) => {
@@ -385,20 +398,31 @@ if (applyModal) {
         (a) => form.querySelector('[name="' + a + '"]').checked
       );
 
-      // readable labels, so the email reads like an application and not a form dump
-      const payload = new FormData();
-      payload.append("_subject", "Scholarship Application \u2014 " + name);
-      payload.append("_template", "table");
-      payload.append("_captcha", "false");
-      payload.append(
-        "Commitments",
-        allAcked
-          ? "Confirmed: truthful \u00b7 monthly mentorship \u00b7 accountable for funds"
-          : "NOT fully confirmed"
-      );
+      // Send this as JSON, NOT as FormData. FormSubmit slugifies the field names
+      // of a multipart body \u2014 "City & state" arrived in the inbox as
+      // "City_&_state" and the questions came out mangled. A JSON body keeps every
+      // label exactly as written. Verified both ways against the live endpoint.
+      const payload = {
+        _subject: "Scholarship Application \u2014 " + name,
+        _template: "table",
+        _captcha: "false",
+      };
+
+      // so hitting Reply in the inbox goes straight to the applicant
+      const applicantEmail = (data.get("email") || "").toString().trim();
+      if (applicantEmail) payload._replyto = applicantEmail;
+
+      // honeypot: only sent when a bot filled the hidden field, so FormSubmit drops it
+      const honey = (data.get("_honey") || "").toString().trim();
+      if (honey) payload._honey = honey;
+
+      payload.Commitments = allAcked
+        ? "Confirmed: truthful \u00b7 monthly mentorship \u00b7 accountable for funds"
+        : "NOT fully confirmed";
+
       Object.keys(LABELS).forEach((k) => {
         const v = (data.get(k) || "").toString().trim();
-        if (v) payload.append(LABELS[k], v);
+        if (v) payload[LABELS[k]] = v;
       });
 
       // plain-text copy kept locally, so a network failure never loses their work
@@ -425,8 +449,8 @@ if (applyModal) {
 
       fetch("https://formsubmit.co/ajax/f52ca603e6c8d6445c964b76509a766d", {
         method: "POST",
-        body: payload,
-        headers: { Accept: "application/json" },
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
       })
         .then((r) => {
           if (!r.ok) throw new Error("bad status " + r.status);
