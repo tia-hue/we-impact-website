@@ -40,9 +40,6 @@
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     "url": "https://we-impact.com/founder.html",
-    "isPartOf": {
-      "@id": "https://we-impact.com/#website"
-    },
     "mainEntity": {
       "@type": "Person",
       "name": "Tia Lambert",
@@ -50,7 +47,18 @@
       "url": "https://we-impact.com/founder.html",
       "image": "https://we-impact.com/assets/founder.jpg",
       "worksFor": {
-        "@id": "https://we-impact.com/#organization"
+        "@type": "NonprofitOrganization",
+        "name": "Impact",
+        "url": "https://we-impact.com/",
+        "logo": "https://we-impact.com/assets/logo.png",
+        "email": "info@we-impact.com",
+        "telephone": "+1-619-541-2454",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "San Diego",
+          "addressRegion": "CA",
+          "addressCountry": "US"
+        }
       },
       "homeLocation": {
         "@type": "Place",
