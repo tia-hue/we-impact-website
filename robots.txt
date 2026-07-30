@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /financials.html
+Disallow: /pitch-deck.html
 
 Sitemap: https://we-impact.com/sitemap.xml
