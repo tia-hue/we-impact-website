@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found — Impact</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <meta name="theme-color" content="#226644">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --green-deep:#143726; --green-dark:#226644; --logo-green:#095b29;
+      --paper:#faf6ec; --cream:#e8dcc2; --ink:#17201b; --ink-soft:#4a544e;
+      --line:#d2c4a2; --amber:#c17a2b;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:var(--paper); color:var(--ink);
+      font-family:'Inter',system-ui,-apple-system,sans-serif;
+      padding:2rem 1.5rem; text-align:center; -webkit-font-smoothing:antialiased;
+    }
+    .wrap{max-width:640px}
+    img.mark{width:96px;height:auto;margin:0 auto 2rem;display:block}
+    .eyebrow{
+      font-size:.78rem; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--amber); font-weight:600; margin-bottom:1.25rem;
+    }
+    h1{
+      font-family:'Playfair Display',Georgia,serif; font-weight:500;
+      font-size:clamp(2rem,6vw,3.1rem); line-height:1.12;
+      color:var(--green-deep); margin-bottom:1rem;
+    }
+    p{font-size:1.06rem;line-height:1.65;color:var(--ink-soft);margin-bottom:2.25rem}
+    .links{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center}
+    a.btn{
+      display:inline-block; padding:.85rem 1.6rem; border-radius:999px;
+      text-decoration:none; font-weight:600; font-size:.97rem;
+      border:1.5px solid var(--green-dark); transition:.18s ease;
+    }
+    a.solid{background:var(--green-dark);color:var(--paper)}
+    a.solid:hover{background:var(--green-deep);border-color:var(--green-deep)}
+    a.ghost{background:transparent;color:var(--green-dark)}
+    a.ghost:hover{background:var(--cream)}
+    .foot{
+      margin-top:2.75rem; padding-top:1.5rem; border-top:1px solid var(--line);
+      font-size:.86rem; color:var(--ink-soft);
+    }
+    .foot a{color:var(--logo-green);text-decoration:none;font-weight:600}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <img class="mark" src="/assets/logo.png" alt="Impact logo">
+    <div class="eyebrow">Error 404</div>
+    <h1>This page moved on.</h1>
+    <p>The link you followed doesn't exist anymore — but everything Impact is building is still right here.</p>
+    <div class="links">
+      <a class="btn solid" href="/">Home</a>
+      <a class="btn ghost" href="/scholarship.html">$50,000 Scholarship</a>
+      <a class="btn ghost" href="/membership.html">Membership</a>
+      <a class="btn ghost" href="/gala.html">Launch Gala</a>
+    </div>
+    <div class="foot">
+      San Diego, California &middot;
+      <a href="mailto:info@we-impact.com">info@we-impact.com</a> &middot;
+      <a href="tel:+16195412454">(619) 541-2454</a>
+    </div>
+  </main>
+</body>
+</html>
