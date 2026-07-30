@@ -423,7 +423,7 @@ if (applyModal) {
         btn.textContent = "Sending your application\u2026";
       }
 
-      fetch("https://formsubmit.co/ajax/info@we-impact.com", {
+      fetch("https://formsubmit.co/ajax/f52ca603e6c8d6445c964b76509a766d", {
         method: "POST",
         body: payload,
         headers: { Accept: "application/json" },
