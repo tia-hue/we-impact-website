@@ -1485,6 +1485,28 @@ body.vision-bg::before {
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
+/* The gala hero names the scholarship winner announcement — the strongest
+   reason on the page to buy a seat. Gold so it reads as a link on the dark hero. */
+.gala-lead-scholarship {
+  margin: 0.9rem auto 0;
+  max-width: 29rem;
+  text-wrap: balance;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--paper);
+}
+.gala-lead-scholarship a {
+  color: var(--amber-soft);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(233, 184, 114, 0.45);
+  transition: border-color 0.2s, color 0.2s;
+}
+.gala-lead-scholarship a:hover {
+  color: #f3d9ae;
+  border-bottom-color: #f3d9ae;
+}
+
 /* room under the submit button so the on-screen keyboard can't cover it */
 @media (max-width: 640px) {
   .join-modal { padding-bottom: 5rem; }
