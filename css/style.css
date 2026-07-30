@@ -1477,11 +1477,40 @@ body.vision-bg::before {
   border: 1.5px solid var(--line);
   border-radius: var(--radius-sm);
   font-family: inherit;
-  font-size: 0.98rem;
+  /* 16px minimum: iOS Safari zooms the whole page on focus below this, which on
+     a 36-field form meant fighting the zoom on every single question */
+  font-size: 1rem;
   background: var(--cream);
   color: var(--ink);
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
+
+/* room under the submit button so the on-screen keyboard can't cover it */
+@media (max-width: 640px) {
+  .join-modal { padding-bottom: 5rem; }
+}
+
+/* the validation message promises "we've highlighted them below" — make it so */
+.form-group input.field-missing,
+.form-group textarea.field-missing {
+  border-color: #a33;
+  background: #fdf4f2;
+  box-shadow: 0 0 0 3px rgba(170, 51, 51, 0.12);
+}
+label.field-missing { color: #a33; font-weight: 600; }
+
+.apply-note {
+  border: 1.5px solid var(--line);
+  border-left: 3px solid var(--amber);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  padding: 0.9rem 1.1rem;
+  margin: 0 0 1.4rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  text-align: left;
+}
+.apply-note a { color: var(--logo-green); font-weight: 600; }
 
 .form-group input:focus,
 .form-group textarea:focus {

@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=83">
+  <link rel="stylesheet" href="css/style.css?v=85">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -320,7 +320,7 @@
 
   <!-- ============ APPLICATION POP-OUT ============ -->
   <div class="join-backdrop" id="apply-modal" aria-hidden="true">
-    <div class="join-modal" role="dialog" aria-modal="true" aria-label="Rising Leaders Scholarship application">
+    <div class="join-modal" role="dialog" aria-modal="true" tabindex="-1" aria-label="Rising Leaders Scholarship application">
       <button type="button" class="join-close" data-apply-close aria-label="Close">&times;</button>
       <img src="assets/logo.png" alt="Impact logo" class="join-logo">
       <h2 class="section-title" style="margin-bottom:0.5rem;">Rising Leaders Scholarship</h2>
@@ -334,6 +334,11 @@
         <input type="hidden" name="_next" value="https://we-impact.com/scholarship.html?submitted=1">
         <!-- spam trap: real people never fill this in -->
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <div id="apply-restored" class="apply-note" style="display:none;">
+          We brought your answers back from <strong data-restored-when></strong>.
+          Pick up where you left off, or <a href="#" id="apply-startover">start over</a>.
+        </div>
 
         <h3 class="subhead" style="margin-top:0;">1 · About you</h3>
         <div class="form-row">
@@ -521,7 +526,15 @@
           <textarea id="ap-anything" name="anything" style="min-height:90px;"></textarea>
         </div>
 
-        <p id="apply-error" style="display:none; color:#a33; font-size:0.92rem; margin:0 0 1rem;"></p>
+        <p id="apply-error" role="alert" aria-live="assertive" style="display:none; color:#a33; font-size:0.92rem; margin:0 0 1rem;"></p>
+        <div id="apply-recover" class="apply-note" style="display:none;">
+          <p style="margin:0 0 0.6rem;"><strong>Your application, in full.</strong> Copy this somewhere safe, or download it — then email it to <a href="mailto:info@we-impact.com">info@we-impact.com</a> and we'll take it from there.</p>
+          <textarea readonly rows="8" style="width:100%; font-size:0.85rem; font-family:ui-monospace, SFMono-Regular, Menlo, monospace;"></textarea>
+          <p style="margin:0.6rem 0 0;">
+            <a data-recover-download href="#"><strong>Download as a file</strong></a> &middot;
+            <a data-recover-mail href="mailto:info@we-impact.com">Open an email</a>
+          </p>
+        </div>
         <button type="submit" class="btn btn-primary btn-block" style="font-size:1.03rem; padding:1rem 2rem;">Submit My Application</button>
         <p class="join-note" style="margin-top:1rem;">Take your time — thoughtful answers matter far more than polished ones.</p>
       </form>
@@ -562,6 +575,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=84"></script>
+  <script src="js/main.js?v=85"></script>
 </body>
 </html>

@@ -165,10 +165,12 @@ const joinModal = document.getElementById("join-modal");
 if (joinModal) {
   const openJoin = () => {
     joinModal.classList.add("open");
+    joinModal.removeAttribute("aria-hidden");
     document.body.classList.add("modal-open");
   };
   const closeJoin = () => {
     joinModal.classList.remove("open");
+    joinModal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
   };
   document.querySelectorAll("[data-join-open]").forEach((btn) =>
@@ -194,10 +196,12 @@ const welcomeModal = document.getElementById("welcome-modal");
 if (welcomeModal) {
   const openWelcome = () => {
     welcomeModal.classList.add("open");
+    welcomeModal.removeAttribute("aria-hidden");
     document.body.classList.add("modal-open");
   };
   const closeWelcome = () => {
     welcomeModal.classList.remove("open");
+    welcomeModal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
     // Dismissing the invitation releases the hero rings to draw in
     document.body.classList.remove("rings-wait");
@@ -282,29 +286,212 @@ if (applyModal) {
   const done = document.getElementById("apply-done");
   const errBox = document.getElementById("apply-error");
 
+  const dialog = applyModal.querySelector(".join-modal");
+  const DRAFT_KEY = "impact-scholarship-draft-v2";
+  let lastTrigger = null;
+  let submitted = false;
+
+  // ---- draft: save every keystroke, restore it on the way back in.
+  // A 36-question application is 30-60 minutes of work. Previously nothing was
+  // written until a fully valid submit and nothing ever read it back, so any
+  // reload, accidental close or phone discarding the tab destroyed all of it.
+  const fieldEls = () =>
+    form
+      ? [...form.querySelectorAll("input, textarea, select")].filter(
+          (el) => el.name && el.name.charAt(0) !== "_"
+        )
+      : [];
+
+  const saveDraft = () => {
+    if (!form || submitted) return;
+    const d = {};
+    fieldEls().forEach((el) => {
+      if (el.type === "checkbox") {
+        if (el.checked) d[el.name] = true;
+      } else if (el.value.trim()) {
+        d[el.name] = el.value;
+      }
+    });
+    try {
+      if (Object.keys(d).length) {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify({ at: Date.now(), d: d }));
+      } else {
+        localStorage.removeItem(DRAFT_KEY);
+      }
+    } catch (_) {}
+  };
+
+  const readDraft = () => {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return null;
+      const p = JSON.parse(raw);
+      return p && p.d && Object.keys(p.d).length ? p : null;
+    } catch (_) {
+      return null;
+    }
+  };
+
+  const clearDraft = () => {
+    try {
+      localStorage.removeItem(DRAFT_KEY);
+    } catch (_) {}
+  };
+
+  const isDirty = () => fieldEls().some((el) =>
+    el.type === "checkbox" ? el.checked : el.value.trim()
+  );
+
+  let saveTimer = null;
+  if (form) {
+    form.addEventListener("input", () => {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveDraft, 400);
+    });
+    form.addEventListener("change", saveDraft);
+    // a phone backgrounding or discarding the tab fires pagehide, not unload
+    window.addEventListener("pagehide", saveDraft);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") saveDraft();
+    });
+    window.addEventListener("beforeunload", (e) => {
+      if (!submitted && isDirty()) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    });
+  }
+
+  const restoreDraft = () => {
+    const p = readDraft();
+    if (!p || !form) return;
+    let n = 0;
+    Object.keys(p.d).forEach((k) => {
+      const el = form.querySelector('[name="' + k + '"]');
+      if (!el) return;
+      if (el.type === "checkbox") el.checked = !!p.d[k];
+      else el.value = p.d[k];
+      n++;
+    });
+    const banner = document.getElementById("apply-restored");
+    if (banner && n) {
+      const when = new Date(p.at);
+      banner.querySelector("[data-restored-when]").textContent =
+        when.toLocaleDateString(undefined, { month: "short", day: "numeric" }) +
+        " at " +
+        when.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+      banner.style.display = "block";
+    }
+  };
+
   const openApply = (e) => {
-    if (e) e.preventDefault();
+    if (e) {
+      e.preventDefault();
+      lastTrigger = e.currentTarget;
+    }
     applyModal.classList.add("open");
+    applyModal.removeAttribute("aria-hidden");
     document.body.classList.add("modal-open");
-    const first = form && form.querySelector("input, textarea");
-    if (first) setTimeout(() => first.focus(), 250);
+    restoreDraft();
+    // Focus the dialog itself. Focusing the first input used to land on the
+    // hidden _subject field, which is not focusable, so focus never moved at all.
+    if (dialog) setTimeout(() => dialog.focus(), 60);
+    if (!history.state || history.state.applyOpen !== true) {
+      try {
+        history.pushState({ applyOpen: true }, "");
+      } catch (_) {}
+    }
   };
-  const closeApply = () => {
+
+  const reallyClose = () => {
     applyModal.classList.remove("open");
+    applyModal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
+    if (lastTrigger) {
+      try {
+        lastTrigger.focus();
+      } catch (_) {}
+    }
   };
+
+  // Closing used to be instant and silent. On a 36-question form that means one
+  // stray tap on the backdrop gutter throws the whole application away.
+  const closeApply = () => {
+    if (!submitted && isDirty()) {
+      saveDraft();
+      if (
+        !confirm(
+          "Close the application?\n\nYour answers are saved on this device — " +
+            "reopen this page and they'll be waiting for you."
+        )
+      )
+        return;
+    }
+    reallyClose();
+  };
+
   document.querySelectorAll("[data-apply-open]").forEach((b) =>
     b.addEventListener("click", openApply)
   );
   document.querySelectorAll("[data-apply-close]").forEach((b) =>
     b.addEventListener("click", closeApply)
   );
+  applyModal.addEventListener("mousedown", (e) => {
+    // mousedown, not click: a text-selection drag that ends on the backdrop
+    // used to register as a click and close the form mid-answer
+    if (e.target === applyModal) applyModal.dataset.pressedBackdrop = "1";
+    else delete applyModal.dataset.pressedBackdrop;
+  });
   applyModal.addEventListener("click", (e) => {
-    if (e.target === applyModal) closeApply();
+    if (e.target === applyModal && applyModal.dataset.pressedBackdrop === "1") {
+      delete applyModal.dataset.pressedBackdrop;
+      closeApply();
+    }
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && applyModal.classList.contains("open")) closeApply();
+    if (!applyModal.classList.contains("open")) return;
+    if (e.key === "Escape") {
+      closeApply();
+      return;
+    }
+    // keep Tab inside the dialog; it used to walk out into the page behind
+    if (e.key === "Tab" && dialog) {
+      const f = [...dialog.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )].filter((el) => el.offsetParent !== null);
+      if (!f.length) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
   });
+  // browser Back / iOS edge-swipe should close the form, not navigate away from it
+  window.addEventListener("popstate", () => {
+    if (applyModal.classList.contains("open")) {
+      if (!submitted && isDirty()) saveDraft();
+      reallyClose();
+    }
+  });
+  const startOver = document.getElementById("apply-startover");
+  if (startOver) {
+    startOver.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (!confirm("Clear every answer and start over? This can't be undone.")) return;
+      clearDraft();
+      fieldEls().forEach((el) => {
+        if (el.type === "checkbox") el.checked = false;
+        else el.value = "";
+      });
+      const banner = document.getElementById("apply-restored");
+      if (banner) banner.style.display = "none";
+    });
+  }
 
   if (form) {
     // The exact question the applicant read, section-numbered to match the form.
@@ -374,17 +561,40 @@ if (applyModal) {
       const email = form.querySelector("#ap-email");
       const badEmail = email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
 
+      // clear any previous marks
+      form.querySelectorAll(".field-missing").forEach((el) => {
+        el.classList.remove("field-missing");
+        el.removeAttribute("aria-invalid");
+      });
+
       if (missing.length || badEmail) {
+        // the message said "the highlighted questions" but nothing was ever
+        // highlighted, and scrollIntoView moved the page rather than the modal
+        missing.forEach((f) => {
+          const mark = f.type === "checkbox" ? f.closest("label") || f : f;
+          mark.classList.add("field-missing");
+          f.setAttribute("aria-invalid", "true");
+        });
+        if (badEmail) {
+          email.classList.add("field-missing");
+          email.setAttribute("aria-invalid", "true");
+        }
         const target = missing[0] || email;
         const firstIsBox = missing.length && missing[0].type === "checkbox";
+        const n = missing.length;
         errBox.textContent = badEmail && !missing.length
           ? "That email address doesn't look right — we need it to reach you."
           : firstIsBox
           ? "Please confirm the three statements at the bottom to submit your application."
-          : "Please answer the highlighted questions so we can consider your application.";
+          : n === 1
+          ? "One question still needs an answer — we've highlighted it below."
+          : n + " questions still need answers — we've highlighted them below.";
         errBox.style.display = "block";
-        target.focus();
-        target.scrollIntoView({ block: "center", behavior: "smooth" });
+        target.focus({ preventScroll: true });
+        // scroll the modal's own scroll container, not the document
+        const box = applyModal;
+        const top = target.getBoundingClientRect().top - box.getBoundingClientRect().top;
+        box.scrollTo({ top: box.scrollTop + top - box.clientHeight / 2, behavior: "smooth" });
         return;
       }
       errBox.style.display = "none";
@@ -436,9 +646,7 @@ if (applyModal) {
         (allAcked ? "Confirmed: truthful \u00b7 monthly mentorship \u00b7 accountable for funds\n" : "") +
         "Submitted from we-impact.com\n\n" +
         lines.join("\n");
-      try {
-        localStorage.setItem("impact-scholarship-draft", body);
-      } catch (_) {}
+      saveDraft();
 
       const btn = form.querySelector('button[type="submit"]');
       const btnText = btn ? btn.textContent : "";
@@ -452,41 +660,83 @@ if (applyModal) {
         body: JSON.stringify(payload),
         headers: { "Content-Type": "application/json", Accept: "application/json" },
       })
-        .then((r) => {
-          if (!r.ok) throw new Error("bad status " + r.status);
-          return r.json();
-        })
-        .then(() => {
+        // Read the body and gate on FormSubmit's own success flag. A rejected
+        // submission (deactivated form, spam filter, rate limit) still answers
+        // 2xx, so checking r.ok alone showed the applicant a success screen for
+        // an application that was never delivered. Fall back to the HTTP status
+        // if the body isn't JSON, so a real submission is never wrongly failed.
+        .then((r) => r.text().then((t) => ({ ok: r.ok, status: r.status, t: t })))
+        .then((res) => {
+          let j = null;
           try {
-            localStorage.removeItem("impact-scholarship-draft");
+            j = JSON.parse(res.t);
           } catch (_) {}
+          const rejected = j && "success" in j && String(j.success) !== "true";
+          if (!res.ok || rejected) {
+            const err = new Error((j && j.message) || "bad status " + res.status);
+            err.rejected = !!rejected;
+            throw err;
+          }
+          submitted = true;
+          clearDraft();
           form.style.display = "none";
           done.style.display = "block";
           applyModal.scrollTop = 0;
+          if (dialog) dialog.focus();
         })
-        .catch(() => {
-          // Never lose an application. If the post fails, hand it to their mail
-          // app as a fallback and tell them plainly what happened.
+        .catch((err) => {
+          // Never lose an application. The old fallback built a mailto URL out of
+          // the whole 36-answer body \u2014 about 13,000 characters against a limit
+          // near 2,000 \u2014 so it truncated or did nothing at all on a phone, and
+          // failed hardest on the longest, strongest applications. Hand them the
+          // text itself plus a download, neither of which can truncate.
           if (btn) {
             btn.disabled = false;
             btn.textContent = btnText;
           }
-          errBox.innerHTML =
-            "We couldn't send that automatically \u2014 possibly a connection issue. " +
-            'Your answers are saved. <a href="mailto:info@we-impact.com?subject=' +
-            encodeURIComponent("Scholarship Application \u2014 " + name) +
-            "&body=" +
-            encodeURIComponent(body) +
-            '"><strong>Click here to send it by email instead</strong></a>, or try again.';
+          saveDraft();
+          const lead =
+            err && err.rejected
+              ? "The form handler didn't accept that submission."
+              : "We couldn't send that automatically \u2014 it may be a connection problem.";
+          errBox.textContent =
+            lead +
+            " Nothing is lost \u2014 your answers are saved on this device, and the full text is in the box below.";
           errBox.style.display = "block";
-          errBox.scrollIntoView({ block: "center", behavior: "smooth" });
+
+          const panel = document.getElementById("apply-recover");
+          if (panel) {
+            const ta = panel.querySelector("textarea");
+            if (ta) ta.value = body;
+            const dl = panel.querySelector("[data-recover-download]");
+            if (dl) {
+              try {
+                dl.href = URL.createObjectURL(
+                  new Blob([body], { type: "text/plain;charset=utf-8" })
+                );
+                dl.download =
+                  "Impact scholarship application - " + (name || "draft") + ".txt";
+              } catch (_) {}
+            }
+            const mail = panel.querySelector("[data-recover-mail]");
+            if (mail) {
+              // deliberately short \u2014 it just opens a message; the text gets pasted
+              mail.href =
+                "mailto:info@we-impact.com?subject=" +
+                encodeURIComponent("Scholarship Application \u2014 " + (name || ""));
+            }
+            panel.style.display = "block";
+          }
+
+          const box = applyModal;
+          const t = errBox.getBoundingClientRect().top - box.getBoundingClientRect().top;
+          box.scrollTo({ top: box.scrollTop + t - 80, behavior: "smooth" });
         });
     });
 
-    // restore a draft if they came back after a hand-off
+    // the old draft key only ever set a flag nothing read; clear it out
     try {
-      const saved = localStorage.getItem("impact-scholarship-draft");
-      if (saved) form.dataset.hadDraft = "1";
+      localStorage.removeItem("impact-scholarship-draft");
     } catch (_) {}
   }
 }
