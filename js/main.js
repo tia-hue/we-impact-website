@@ -272,3 +272,197 @@ window.addEventListener(
   () => topBtn.classList.toggle("visible", window.scrollY > 600),
   { passive: true }
 );
+
+// Rising Leaders Scholarship application pop-out.
+// Answers are delivered to info@we-impact.com. Unlike the membership pop-out
+// this one never auto-opens — it only appears when an Apply button is clicked.
+const applyModal = document.getElementById("apply-modal");
+if (applyModal) {
+  const form = document.getElementById("apply-form");
+  const done = document.getElementById("apply-done");
+  const errBox = document.getElementById("apply-error");
+
+  const openApply = (e) => {
+    if (e) e.preventDefault();
+    applyModal.classList.add("open");
+    document.body.classList.add("modal-open");
+    const first = form && form.querySelector("input, textarea");
+    if (first) setTimeout(() => first.focus(), 250);
+  };
+  const closeApply = () => {
+    applyModal.classList.remove("open");
+    document.body.classList.remove("modal-open");
+  };
+  document.querySelectorAll("[data-apply-open]").forEach((b) =>
+    b.addEventListener("click", openApply)
+  );
+  document.querySelectorAll("[data-apply-close]").forEach((b) =>
+    b.addEventListener("click", closeApply)
+  );
+  applyModal.addEventListener("click", (e) => {
+    if (e.target === applyModal) closeApply();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && applyModal.classList.contains("open")) closeApply();
+  });
+
+  if (form) {
+    const LABELS = {
+      name: "Name",
+      email: "Email",
+      phone: "Phone",
+      city: "City & state",
+      businessname: "Business name",
+      idea: "What the business is, and who it's for",
+      customer: "Ideal customer / customer conversations",
+      different: "Competition & why choose them",
+      price: "What they charge, and for what",
+      cost: "What it costs them to deliver",
+      stage: "Current stage",
+      revenue: "Revenue to date",
+      location: "Location / vehicle / equipment needed",
+      traction: "What they've already built with little/no money",
+      invested: "What they've personally invested",
+      time: "Hours per week available",
+      team: "Solo or team",
+      budget: "How the $50,000 would be spent",
+      first90: "First 90 days",
+      sustain: "How the business sustains itself after the award",
+      breakeven: "Monthly costs to cover, and when they reach it",
+      otherfunding: "Other funding applied for / received",
+      legal: "Licenses, permits, certifications, insurance",
+      priorbiz: "Prior business experience",
+      kill: "Most likely to kill it in year one",
+      advisor: "Who they've talked to who has done this",
+      year: "What must be true in a year",
+      obstacle: "Biggest obstacle right now",
+      ifnot: "What happens if they don't win",
+      coachable: "A time they were wrong and changed course",
+      giveback: "How the business gives back",
+      profit: "What they do once it makes more than it spends",
+      why: "Why this business, why them",
+      availability: "Interview availability",
+      link: "Website / social / video pitch",
+      anything: "Anything else",
+    };
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      // validate, and point the applicant at the first thing they missed
+      const missing = [];
+      form.querySelectorAll("[required]").forEach((f) => {
+        if (f.type === "checkbox") {
+          if (!f.checked) missing.push(f);
+        } else if (!f.value.trim()) {
+          missing.push(f);
+        }
+      });
+      const email = form.querySelector("#ap-email");
+      const badEmail = email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+
+      if (missing.length || badEmail) {
+        const target = missing[0] || email;
+        const firstIsBox = missing.length && missing[0].type === "checkbox";
+        errBox.textContent = badEmail && !missing.length
+          ? "That email address doesn't look right — we need it to reach you."
+          : firstIsBox
+          ? "Please confirm the three statements at the bottom to submit your application."
+          : "Please answer the highlighted questions so we can consider your application.";
+        errBox.style.display = "block";
+        target.focus();
+        target.scrollIntoView({ block: "center", behavior: "smooth" });
+        return;
+      }
+      errBox.style.display = "none";
+
+      // Post the application straight to info@we-impact.com through the form
+      // handler. The applicant never touches their own email app.
+      const data = new FormData(form);
+      const name = (data.get("name") || "").toString().trim();
+      const acks = ["ack_truthful", "ack_mentorship", "ack_accountable"];
+      const allAcked = acks.every(
+        (a) => form.querySelector('[name="' + a + '"]').checked
+      );
+
+      // readable labels, so the email reads like an application and not a form dump
+      const payload = new FormData();
+      payload.append("_subject", "Scholarship Application \u2014 " + name);
+      payload.append("_template", "table");
+      payload.append("_captcha", "false");
+      payload.append(
+        "Commitments",
+        allAcked
+          ? "Confirmed: truthful \u00b7 monthly mentorship \u00b7 accountable for funds"
+          : "NOT fully confirmed"
+      );
+      Object.keys(LABELS).forEach((k) => {
+        const v = (data.get(k) || "").toString().trim();
+        if (v) payload.append(LABELS[k], v);
+      });
+
+      // plain-text copy kept locally, so a network failure never loses their work
+      const lines = [];
+      Object.keys(LABELS).forEach((k) => {
+        const v = (data.get(k) || "").toString().trim();
+        if (v) lines.push(LABELS[k] + ":\n" + v + "\n");
+      });
+      const body =
+        "RISING LEADERS SCHOLARSHIP APPLICATION\n" +
+        (allAcked ? "Confirmed: truthful \u00b7 monthly mentorship \u00b7 accountable for funds\n" : "") +
+        "Submitted from we-impact.com\n\n" +
+        lines.join("\n");
+      try {
+        localStorage.setItem("impact-scholarship-draft", body);
+      } catch (_) {}
+
+      const btn = form.querySelector('button[type="submit"]');
+      const btnText = btn ? btn.textContent : "";
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Sending your application\u2026";
+      }
+
+      fetch("https://formsubmit.co/ajax/info@we-impact.com", {
+        method: "POST",
+        body: payload,
+        headers: { Accept: "application/json" },
+      })
+        .then((r) => {
+          if (!r.ok) throw new Error("bad status " + r.status);
+          return r.json();
+        })
+        .then(() => {
+          try {
+            localStorage.removeItem("impact-scholarship-draft");
+          } catch (_) {}
+          form.style.display = "none";
+          done.style.display = "block";
+          applyModal.scrollTop = 0;
+        })
+        .catch(() => {
+          // Never lose an application. If the post fails, hand it to their mail
+          // app as a fallback and tell them plainly what happened.
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = btnText;
+          }
+          errBox.innerHTML =
+            "We couldn't send that automatically \u2014 possibly a connection issue. " +
+            'Your answers are saved. <a href="mailto:info@we-impact.com?subject=' +
+            encodeURIComponent("Scholarship Application \u2014 " + name) +
+            "&body=" +
+            encodeURIComponent(body) +
+            '"><strong>Click here to send it by email instead</strong></a>, or try again.';
+          errBox.style.display = "block";
+          errBox.scrollIntoView({ block: "center", behavior: "smooth" });
+        });
+    });
+
+    // restore a draft if they came back after a hand-off
+    try {
+      const saved = localStorage.getItem("impact-scholarship-draft");
+      if (saved) form.dataset.hadDraft = "1";
+    } catch (_) {}
+  }
+}
