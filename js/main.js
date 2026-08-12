@@ -499,7 +499,30 @@ if (applyModal) {
     // for what"), which made the email read like a form dump instead of a
     // filled-in application. Key order here is the row order in the email, so it
     // mirrors the order the applicant answered in.
-    const LABELS = {
+    // ---- the deadline actually closes the form -------------------------------
+  // Applications close at the end of September 1, 2026, Pacific. Without this
+  // the page keeps saying "open now" and keeps taking submissions forever.
+  const DEADLINE = new Date("2026-09-02T00:00:00-07:00").getTime();
+  function applicationsClosed() {
+    return Date.now() >= DEADLINE;
+  }
+  function closeApplications() {
+    document.querySelectorAll(".launch-note").forEach((el) => {
+      if (/applications/i.test(el.textContent)) {
+        el.textContent = "Applications closed September 1, 2026";
+      }
+    });
+    document.querySelectorAll("[data-apply-open]").forEach((b) => {
+      b.setAttribute("disabled", "disabled");
+      b.setAttribute("aria-disabled", "true");
+      b.style.opacity = "0.55";
+      b.style.pointerEvents = "none";
+      if (/apply/i.test(b.textContent)) b.textContent = "Applications are closed";
+    });
+  }
+  if (applicationsClosed()) closeApplications();
+
+  const LABELS = {
       name: "Name",
       email: "Email",
       phone: "Phone",
@@ -542,7 +565,10 @@ if (applyModal) {
 
       availability: "8.1 When are you available for an interview and a pitch?",
 
-      link: "9.1 Website, social page, or video pitch",
+      ack_eligible: "8.4 Confirms eligibility (18+, US, can pitch in person)",
+    ack_conflict: "8.5 Confirms no conflict of interest",
+    video: "9.1 Video submission (required)",
+    link: "9.2 Website or social page",
       anything: "9.2 Anything else we should know?",
     };
 
@@ -567,7 +593,18 @@ if (applyModal) {
         el.removeAttribute("aria-invalid");
       });
 
-      if (missing.length || badEmail) {
+      // The video link is the one field where a typo silently costs them the
+    // application — we cannot read a link that does not resolve. Check its shape.
+    const vid = form.querySelector("#ap-video");
+    let badVideo = false;
+    if (vid && vid.value.trim()) {
+      badVideo = !/^https?:\/\/[^\s.]+\.[^\s]{2,}$/i.test(vid.value.trim());
+    }
+    if (badVideo) {
+      vid.classList.add("field-missing");
+      vid.setAttribute("aria-invalid", "true");
+    }
+    if (missing.length || badEmail || badVideo) {
         // the message said "the highlighted questions" but nothing was ever
         // highlighted, and scrollIntoView moved the page rather than the modal
         missing.forEach((f) => {
@@ -579,10 +616,12 @@ if (applyModal) {
           email.classList.add("field-missing");
           email.setAttribute("aria-invalid", "true");
         }
-        const target = missing[0] || email;
+        const target = missing[0] || (badVideo ? vid : email);
         const firstIsBox = missing.length && missing[0].type === "checkbox";
         const n = missing.length;
-        errBox.textContent = badEmail && !missing.length
+        errBox.textContent = badVideo && !missing.length && !badEmail
+          ? "That video link doesn't look like a web address — paste the full link, starting with https://"
+          : badEmail && !missing.length
           ? "That email address doesn't look right — we need it to reach you."
           : firstIsBox
           ? "Please confirm the three statements at the bottom to submit your application."

@@ -3567,3 +3567,166 @@ body.gala-bg .page-hero p.gala-lead-sub { font-family: Georgia, "Times New Roman
   font-weight: 700;
   letter-spacing: -0.01em;
 }
+
+
+/* The eligibility cards hold short, scannable facts. The shared .features-list
+   is a two-column grid, which squeezed each fact into a ~14-character column
+   inside an already-narrow card. One column per card reads properly. */
+#eligibility .features-list {
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+#eligibility .card h3 {
+  margin-bottom: 0.85rem;
+}
+
+
+/* ---------------------------------------------------------------------------
+   Scholarship page, pre-launch polish
+   --------------------------------------------------------------------------- */
+
+/* "Fifty thousand dollars. Yes — fifty thousand." needs 957px on one line at
+   its desktop size, but .section-head/.scholarship-card caps content at 736px,
+   so it wrapped on desktop while mobile (which sets nowrap at 17px) kept it on
+   one line. Widen just this card so desktop matches mobile. */
+@media (min-width: 1024px) {
+  .scholarship-card .section-title { max-width: none; white-space: nowrap; }
+  .scholarship-card { max-width: 64rem; }
+}
+
+/* The two hero notes: they arrive rather than just being there, and they
+   answer the mouse the way the Apply button does. */
+.launch-note {
+  transition: background-color 0.22s ease, border-color 0.22s ease,
+              color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+  cursor: default;
+}
+.launch-note:hover,
+.launch-note:focus-visible {
+  background: var(--green-deep);
+  border-color: var(--green-deep);
+  color: var(--cream);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -10px rgba(20, 55, 38, 0.55);
+}
+
+/* populate in: each note rises and fades, the second a beat after the first */
+@keyframes noteIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.965); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.launch-note-anim {
+  opacity: 0;
+  animation: noteIn 0.62s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+.launch-note-anim.note-1 { animation-delay: 0.45s; }
+.launch-note-anim.note-2 { animation-delay: 0.72s; }
+/* the arrival must not fight the hover lift */
+.launch-note-anim:hover { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .launch-note-anim { animation: none; opacity: 1; }
+  .launch-note:hover { transform: none; }
+}
+
+
+/* The process is FOUR steps but the grid is three columns, which left step 04
+   stranded on its own row. Four across on wide screens, two-by-two on tablets. */
+@media (min-width: 1180px) {
+  .numbered-steps { grid-template-columns: repeat(4, 1fr); gap: 1.15rem; }
+  .numbered-step { padding: 1.9rem 1.35rem; }
+  .numbered-step p { font-size: 0.92rem; }
+}
+@media (min-width: 760px) and (max-width: 1179px) {
+  .numbered-steps { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* The hover state has to beat the gala-scoped .launch-note rule, which sets
+   background/border/colour at higher specificity on that page and was winning
+   here too. */
+.launch-note:hover,
+.launch-note:focus-visible,
+body .launch-note:hover,
+body .launch-note:focus-visible {
+  background: var(--green-deep) !important;
+  border-color: var(--green-deep) !important;
+  color: var(--cream) !important;
+}
+
+
+/* ---------------------------------------------------------------------------
+   Desktop typography: stop sentences breaking badly
+   --------------------------------------------------------------------------- */
+/* These apply at EVERY width. Mobile is where a stranded word hurts most —
+   the column is narrow, so "…and stay open." was dropping "open." onto a line
+   by itself. `pretty` is specifically the property that prevents that. */
+h1, h2, h3,
+.section-title, .page-hero h1, .hero h1 {
+  /* `text-wrap` is a shorthand for mode + style. Setting it to `balance` alone
+     left the MODE resolving to nowrap on the .title-depth headings, which then
+     ran 381px wide inside a 342px column on a phone. Declaring wrap first pins
+     the mode, then balance applies only to the style. */
+  text-wrap: wrap;
+  text-wrap-style: balance;
+}
+p, .section-lead, .lead, li, .card p, .numbered-step p, dd {
+  text-wrap: wrap;
+  text-wrap-style: pretty;
+}
+
+/* nowrap only where there is room for it — on a phone it would overflow */
+@media (min-width: 1024px) {
+  .keep-together { white-space: nowrap; }
+}
+
+
+/* ---------------------------------------------------------------------------
+   Mobile: stop the page being wider than the phone
+   ---------------------------------------------------------------------------
+   The decorative ring pseudo-elements on .scholarship-band and .site-footer are
+   520-620px wide and deliberately positioned off-canvas (left:-240px etc).
+   With nothing clipping them the document became 494px wide inside a 390px
+   phone, so every centred line sat 52px right of where it should and long
+   headings were cut off at the screen edge. That is what was making the copy
+   look badly spaced on mobile — the text was fine, the page was shifted. */
+html, body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+.scholarship-band,
+.site-footer,
+.page-hero,
+section {
+  overflow-x: clip;
+}
+
+/* headings must wrap on a phone; the one-line treatment is desktop-only */
+@media (max-width: 1023px) {
+  /* .section-title.title-depth is the tracked uppercase variant and carries
+     white-space:nowrap at (0,2,0), which beat a plain .section-title override.
+     These two headings were running 470px wide inside a 342px column. */
+  .scholarship-card .section-title,
+  .section-title,
+  .section-title.title-depth,
+  h2.section-title.title-depth {
+    white-space: normal;
+    max-width: 100%;
+  }
+  /* the wide tracking is what made them too long to fit at all */
+  .section-title.title-depth { letter-spacing: 0.14em; }
+}
+
+
+/* The .title-depth headings still resolved to text-wrap-mode:nowrap on a phone
+   after every ordinary override, and ran ~40px past their column. I could not
+   pin down which declaration was contributing the mode, so this forces it on
+   the two elements that actually break. Scoped to mobile; desktop is untouched. */
+@media (max-width: 1023px) {
+  .section-title,
+  .section-title.title-depth,
+  h2.section-title.title-depth {
+    text-wrap: wrap !important;
+    white-space: normal !important;
+    overflow-wrap: break-word;
+  }
+}
