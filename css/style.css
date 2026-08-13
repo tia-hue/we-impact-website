@@ -156,7 +156,10 @@ section[id], div[id] { scroll-margin-top: 84px; }
   gap: 0.75rem;
 }
 
-.nav-logo img { width: 46px; height: 46px; object-fit: contain; }
+.nav-logo img { width: 31px; height: 31px; object-fit: contain; }
+/* emblem.png is the mark with the baked wordmark cropped away — the nav's
+   wordmark is typeset beside it, so the built-in one rendered at 3.6px and
+   read as a blur. 31px keeps the emblem at exactly the size it rendered before. */
 
 .nav-logo .wordmark {
   font-family: "Montserrat", var(--sans);
