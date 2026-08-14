@@ -4760,3 +4760,29 @@ p.fine-print,
 [data-square-pending="gala-price-mismatch"]::after {
   content: "Opens shortly";
 }
+
+/* T1. "That's what Impact Days are for." carries alone — Tia considers it the
+   strong line and it was buried at the head of a paragraph. */
+.impact-days-answer {
+  max-width: 44rem;
+  margin: 0 auto 0.8rem;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--green-deep);
+  text-wrap: balance;
+}
+
+/* The open-ended sponsorship tier. Deliberately quieter than the four named
+   levels — it is an escape hatch for someone who wants to give more or give
+   between, not a fifth option competing with them. */
+.sponsor-custom {
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+}
+
+.sponsor-custom .sponsor-price {
+  color: var(--green-deep);
+  font-size: 1.6rem;
+}
