@@ -34,13 +34,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=104">
+  <link rel="stylesheet" href="css/style.css?v=130">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "url": "https://we-impact.com/scholarship.html",
     "name": "Rising Leaders Scholarship",
+    "isPartOf": {
+      "@type": "WebPage",
+      "name": "The Impact Scholarship Program",
+      "url": "https://we-impact.com/scholarships.html"
+    },
     "mainEntity": {
       "@type": "MonetaryGrant",
       "name": "Impact Rising Leaders Scholarship",
@@ -96,6 +101,12 @@
       {
         "@type": "ListItem",
         "position": 2,
+        "name": "The Impact Scholarship Program",
+        "item": "https://we-impact.com/scholarships.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
         "name": "Rising Leaders Scholarship",
         "item": "https://we-impact.com/scholarship.html"
       }
@@ -117,7 +128,7 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="founder.html">Founder</a></li>
-        <li><a href="scholarship.html" class="active">Scholarship</a></li>
+        <li><a href="scholarships.html" class="active">Impact Scholarship Program</a></li>
         <li><a href="membership.html">Membership</a></li>
         <li><a href="vision.html">Our Vision</a></li>
         <li><a href="gala.html">Launch Gala</a></li>
@@ -129,18 +140,38 @@
 
   <main>
 
-    <section class="page-hero">
+    <!-- Rising Leaders is one tier of the Impact Scholarship Program; the crumb
+         gives that context before the hero without disturbing the hero's own
+         staggered entrance animation. -->
+    <nav class="scholarship-crumbs" aria-label="Breadcrumb" style="padding:1.15rem 0 0;">
+      <div class="container">
+        <ol style="list-style:none; display:flex; flex-wrap:wrap; align-items:center; gap:0.45rem; margin:0; padding:0; font-size:0.74rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-faint);">
+          <li><a href="index.html" style="color:var(--ink-faint);">Home</a></li>
+          <li aria-hidden="true" style="color:var(--line);">&rsaquo;</li>
+          <li><a href="scholarships.html" style="color:var(--green-dark);">The Impact Scholarship Program</a></li>
+          <li aria-hidden="true" style="color:var(--line);">&rsaquo;</li>
+          <li aria-current="page">Rising Leaders</li>
+        </ol>
+      </div>
+    </nav>
+
+    <section class="page-hero" style="padding-top:3rem;">
       <div class="container">
         <img src="assets/logo.png" alt="Impact logo" class="page-logo page-logo-live">
-        <span class="eyebrow centered">Impact — Rising Leaders Scholarship</span>
+        <span class="eyebrow centered eyebrow-stack">Impact Scholarship Program<span class="eyebrow-tier">Rising Leaders</span></span>
         <h1>Your business is one pitch away</h1>
-        <p>We're giving one entrepreneur <span class="green-amount">$50,000</span> to start their business — and everything they need to launch it right.</p>
-        <div class="hero-ctas" style="margin-top:2rem;">
+        <p>We're giving one entrepreneur <span class="green-amount">$50,000</span> to start their business — and everything they need to&nbsp;launch&nbsp;it&nbsp;right.</p>
+        <!-- Punch list #4: these two facts used to sit in amber pills BELOW the
+             button. They are now plain bullets above it, styled off the
+             homepage's .scholarship-facts so both pages read as one system. -->
+        <ul class="scholarship-facts scholarship-facts-list">
+          <li>Applications are open now and close <strong>September 1, 2026</strong></li>
+          <li>The winner is announced live at our Launch Gala &mdash; <strong>Saturday, September 26</strong></li>
+        </ul>
+        <div class="hero-ctas" style="margin-top:0;">
           <a href="#apply" data-apply-open class="btn btn-primary">Apply for the Scholarship</a>
           <a href="#how" class="btn btn-outline">See how it works</a>
         </div>
-        <p style="margin-top:1.25rem;"><span class="launch-note launch-note-anim note-1" tabindex="0">Applications are open now and close September 1, 2026</span></p>
-        <p style="margin-top:0.75rem;"><span class="launch-note launch-note-anim note-2" tabindex="0">The winner is announced live at our Launch Gala &mdash; Saturday, September 26</span></p>
       </div>
     </section>
 
@@ -222,7 +253,7 @@
           <div class="numbered-step reveal">
             <div class="num">01</div>
             <h3>Apply</h3>
-            <p>Tell us who you are, what you want to build, and what the $50,000 would make possible &mdash; in writing, plus a <strong>60&ndash;90 second video</strong>. Applications are open now through September 1, 2026.</p>
+            <p>Tell us who you are, what you want to build, and what the $50,000 would make possible &mdash; in writing, plus a <strong>three minute video</strong>. Applications are open now through September 1, 2026.</p>
           </div>
           <div class="numbered-step reveal reveal-d1">
             <div class="num">02</div>
@@ -232,7 +263,7 @@
           <div class="numbered-step reveal reveal-d2">
             <div class="num">03</div>
             <h3>Pitch in person</h3>
-            <p>The ten finalists pitch their business <strong>live and in person in San Diego</strong>, between <strong>September 8 and 18</strong>, to a panel of five judges &mdash; founders and business leaders who have built something themselves. Finalists travelling from outside San Diego cover their own travel.</p>
+            <p>The ten finalists pitch their business <strong>live and in person in San Diego</strong>, between <strong>September 8 and 18</strong>, to a panel of five judges &mdash; founders and business leaders who have built something themselves. Finalists traveling from outside San Diego cover their own travel.</p>
           </div>
           <div class="numbered-step reveal reveal-d3">
             <div class="num">04</div>
@@ -251,7 +282,7 @@
           <h2 class="section-title title-depth">You already know what it is.</h2>
           <p class="section-lead">You've felt it for years — in your notes app, on napkins, at 11pm scrolling past someone already living the life you keep picturing. <span class="keep-together">Nobody ever handed you the map.</span></p>
         </div>
-        <div class="reveal">
+        <div class="reveal for-you">
           <h3 class="subhead">This scholarship is for you if:</h3>
           <ul class="features-list">
             <li>You have a named business and an idea you believe in, and haven't been able to fund it</li>
@@ -284,25 +315,35 @@
               <li>Entrepreneurs <strong>anywhere in the United States</strong></li>
               <li>You must be <strong>18 or older</strong> and legally able to work in the US</li>
               <li>You have a <strong>named business</strong> &mdash; already operating, or ready to launch</li>
-              <li>You can submit a <strong>60&ndash;90 second video</strong> with your application</li>
+              <li>You can submit a <strong>three minute video</strong> with your application</li>
               <li>You can <strong>pitch in person in San Diego</strong> between September 8 and 18 if you're chosen as a finalist</li>
               <li>Employees, board members and judges of Impact, and their immediate families, are not eligible</li>
             </ul>
-            <p style="margin-top:0.9rem;color:var(--ink-soft);font-size:0.95rem;">Finalists travelling from outside San Diego cover their own travel. Your seat at the gala is on us.</p>
+            <p class="fine-print">Finalists traveling from outside San Diego cover their own travel. Your seat at the gala is on us.</p>
           </div>
           <div class="card reveal reveal-d1">
-            <h3>How the $50,000 is paid</h3>
+            <h3>How the $50,000 works</h3>
             <ul class="features-list">
               <li>The award goes <strong>to the business, not to you personally</strong></li>
               <li>You'll need a <strong>business entity</strong> &mdash; we'll help you form one if you don't have it yet, and that's covered under legal fees</li>
-              <li>Funds are released <strong>against real costs</strong> as you spend them, not as a single lump sum</li>
+              <li>How and when the money reaches the business is <strong>agreed with the winner</strong> before anything is spent</li>
               <li>You'll account to Impact for every dollar, and meet an Impact mentor monthly for the first year</li>
             </ul>
             <p style="margin-top:0.9rem;color:var(--ink-soft);font-size:0.95rem;"><strong>Tax:</strong> this award may be taxable and Impact may be required to issue a 1099. We can't give tax advice &mdash; please speak to a tax professional about your situation before you apply.</p>
           </div>
         </div>
+        <!-- Punch list #10: these were one run-on paragraph. Split into the
+             outcome line and a visually separate, bolded contact line. -->
         <div class="reveal" style="max-width:46rem;margin:2rem auto 0;text-align:center;">
-          <p style="color:var(--ink-soft);">One winner is chosen. If you're not selected, we'll tell you &mdash; and you're welcome at our workshops and community either way. Questions before you start? Email <a href="mailto:info@we-impact.com">info@we-impact.com</a> or call <a href="tel:+16195412454">(619) 541-2454</a>.</p>
+          <p class="either-way">One winner is chosen. <strong>If you're not selected, we'll tell you &mdash; and you're welcome at our workshops and community either way.</strong></p>
+          <p class="contact-line">
+            <span class="contact-label">Questions before you start?</span>
+            <span class="contact-bits">
+              <a href="mailto:info@we-impact.com">info@we-impact.com</a>
+              <span class="contact-or">or</span>
+              <a href="tel:+16195412454">(619)&nbsp;541-2454</a>
+            </span>
+          </p>
         </div>
       </div>
     </section>
@@ -316,16 +357,16 @@
           <p class="section-lead">Applications are open now through September 1, 2026. Finalists are chosen by September 5 and pitch in person September 8&ndash;18. The winner is announced live at our <a href="gala.html">Launch Gala on Saturday, September 26</a>.</p>
         </div>
         <div class="reveal" style="max-width:46rem;margin:0 auto;">
-          <p style="margin-bottom:1.2rem;color:var(--ink-soft);">The application opens right here on the page. It asks serious questions, because <span class="green-amount">$50,000</span> is a serious award and we're choosing one person out of everyone who applies. Set aside <strong>30–45 minutes</strong> and answer it properly — thoughtful beats polished every time. You'll also record a <strong>60&ndash;90 second video</strong>, so have a way to film yourself and upload it.</p>
+          <p style="margin-bottom:1.2rem;color:var(--ink-soft);">The application opens right here on the page and it asks a lot of you. Set aside <strong>30&ndash;45 minutes</strong> and answer it properly &mdash; your progress saves as you go, so you can stop and come back.</p>
           <ul class="features-list">
             <li>Who you are, and your business name</li>
             <li>The business — what it is, who buys it, who else does it, what you'll charge and what it costs you</li>
             <li>Where you are today, and what you've already built with little or no money</li>
             <li>A real line-by-line breakdown of how you'd spend the $50,000</li>
             <li>Your break-even math, and how the business sustains itself after the award</li>
-            <li>Licenses and permits you need, and what could kill this in year one</li>
+            <li>Licenses and permits you need</li>
             <li>Your biggest obstacle — and what happens if you don't win</li>
-              <li><strong>A 60&ndash;90 second video</strong> — you, on camera, telling us what you'd build</li>
+              <li><strong>A three minute video</strong> — you, on camera, telling us what you'd build</li>
             <li>How the business gives back, and why this one is yours to build</li>
           </ul>
           <p style="margin-top:1.2rem;color:var(--ink-soft);font-size:0.95rem;">You'll also confirm that you'll meet with an Impact mentor monthly and account for how the funds are spent. This award was funded by people who gave — we steward it carefully.</p>
@@ -353,7 +394,33 @@
         </div>
         <div class="callout reveal" style="margin-top:3rem;">
           <h3>Tax-deductible giving</h3>
-          <p>Impact is a 501(c)(3) nonprofit, so your gift to the scholarship fund may be tax-deductible as a charitable contribution. You'll receive an official receipt for your records. Consult your tax advisor about your eligibility.</p>
+          <p class="fine-print">Impact is a 501(c)(3) nonprofit, so your gift to the scholarship fund may be tax-deductible as a charitable contribution. You'll receive an official receipt for your records. Consult your tax advisor about your eligibility.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rising Leaders in the context of the wider program -->
+    <section class="tint-sage">
+      <div class="container">
+        <div class="section-head centered reveal">
+          <span class="eyebrow centered">The Wider Program</span>
+          <h2 class="section-title">This is one of three.</h2>
+          <p class="section-lead">The Rising Leaders Scholarship is the flagship of the Impact Scholarship Program &mdash; but it isn't the only way in. There are two more, for founders at different points in the story.</p>
+        </div>
+        <div class="grid grid-2" style="max-width:60rem;margin:0 auto;">
+          <div class="card reveal">
+            <h3>Roadmap Scholarship</h3>
+            <p>A full year inside Impact, given to a founder who needs the map more than the money: a year of membership, a seat in a cohort, six coaching sessions, a dedicated mentor and the complete resource library.</p>
+            <a href="scholarships.html#roadmap" class="btn btn-outline">See the Roadmap Scholarship</a>
+          </div>
+          <div class="card reveal reveal-d1">
+            <h3>First Step Scholarship</h3>
+            <p>A quarterly cash award of $5,000 to $10,000 for founders at the very beginning. In development &mdash; we'll announce a cycle once the funding for it is committed.</p>
+            <a href="scholarships.html#first-step" class="btn btn-outline">Read about First Step</a>
+          </div>
+        </div>
+        <div class="reveal" style="text-align:center; padding-top:2.4rem;">
+          <a href="scholarships.html" class="btn btn-primary">See the whole Scholarship Program</a>
         </div>
       </div>
     </section>
@@ -569,7 +636,7 @@
         <h3 class="subhead">9 · Your video</h3>
         <div class="form-group">
           <p class="field-note">Record a short video and paste the link below. Phone camera is fine &mdash; we are not judging production. Upload it to YouTube (unlisted is fine), Loom, Google Drive or Dropbox and <strong>check the link opens for someone who isn't signed in</strong>.</p>
-              <p class="field-note"><strong>60&ndash;90 seconds. Tell us who you are, what you'd build, and why it's yours to build.</strong></p>
+              <p class="field-note"><strong>Up to three minutes. Tell us who you are, what you'd build, and why it's yours to build.</strong></p>
               <label for="ap-video">Link to your video *</label>
           <input type="url" id="ap-video" name="video" required placeholder="https://youtu.be/… or a Loom / Drive / Dropbox link">
         </div>
@@ -589,6 +656,11 @@
         </div>
         <button type="submit" class="btn btn-primary btn-block" style="font-size:1.03rem; padding:1rem 2rem;">Submit My Application</button>
         <p class="join-note" style="margin-top:1rem;">Take your time — thoughtful answers matter far more than polished ones.</p>
+        <!-- Punch list #12: contact details inside the application itself, bolded. -->
+        <p class="contact-line" style="text-align:center;">
+          <strong>Questions?</strong><br>
+          Email <a href="mailto:info@we-impact.com?subject=Rising%20Leaders%20Scholarship%20Question"><strong>info@we-impact.com</strong></a> or call <a href="tel:+16195412454"><strong>(619) 541-2454</strong></a>.
+        </p>
       </form>
 
       <div id="apply-done" style="display:none; text-align:center; padding:1rem 0;">
@@ -613,7 +685,7 @@
         <ul class="footer-links">
           <li><a href="index.html">Home</a></li>
           <li><a href="founder.html">Founder</a></li>
-          <li><a href="scholarship.html">Scholarship</a></li>
+          <li><a href="scholarships.html">Scholarships</a></li>
           <li><a href="membership.html">Membership</a></li>
           <li><a href="vision.html">Our Vision</a></li>
         <li><a href="gala.html">Launch Gala</a></li>

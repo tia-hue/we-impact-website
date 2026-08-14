@@ -665,6 +665,12 @@ section { padding: 6.5rem 0; position: relative; }
   width: min(640px, 86vw);
   margin: 3.5rem auto 0;
   animation: archFloat 7s ease-in-out 7s infinite;
+  /* Hold both halves on their own stable composited layers so the browser
+     rasterises them at matching sub-pixel offsets while they float. Without
+     this the two layers round independently and a hairline of background
+     opens along the seam every time the circle moves. */
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .hero-arches path {
@@ -689,9 +695,12 @@ section { padding: 6.5rem 0; position: relative; }
   to { stroke-dashoffset: 0; }
 }
 
+/* translate3d on both halves (rather than translateY on one and a composed
+   translateY+scaleY on the other) so the two get identical layer treatment
+   and move as one piece. */
 @keyframes archFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
 }
 
 /* Light glowing from behind the arches */
@@ -764,8 +773,16 @@ section { padding: 6.5rem 0; position: relative; }
   position: relative;
   z-index: 1;
   width: min(640px, 86vw);
-  margin: -1px auto 0; /* kiss the hero half so no background hairline shows at the seam */
+  /* Overlap the hero half by 2px rather than kissing it at -1px. One pixel was
+     not enough once both halves are resampled mid-float, and a pale line opened
+     across the circle. Measured across -1px to -6px at the top of the float:
+     -2px gives the flattest seam (brightness deviation 3.7 vs 10.3 at -1px).
+     More overlap is worse, not better — the strokes double-draw at 0.75 opacity
+     and the seam turns into a dark line instead of a light one. */
+  margin: -2px auto 0;
   transform: scaleY(-1);
+  will-change: transform;
+  backface-visibility: hidden;
   /* Same rhythm and phase as the hero arches: the full circle floats
      up into the top screen and back down as one piece */
   animation: archFloatFlipped 7s ease-in-out 7s infinite;
@@ -812,8 +829,8 @@ body.rings-wait .ring-sheen {
 
 /* Same rhythm as the hero arches so the two halves breathe as one circle */
 @keyframes archFloatFlipped {
-  0%, 100% { transform: translateY(0) scaleY(-1); }
-  50% { transform: translateY(-10px) scaleY(-1); }
+  0%, 100% { transform: translate3d(0, 0, 0) scaleY(-1); }
+  50% { transform: translate3d(0, -10px, 0) scaleY(-1); }
 }
 
 /* Rays pouring downward from the circle into the values */
@@ -1905,6 +1922,13 @@ label.field-missing { color: #a33; font-weight: 600; }
 
 .numbered-step:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
 
+/* The emphasised facts inside each step — the video length, the finalist count,
+   the dates — carry Impact green rather than reading as plain black bold. */
+.numbered-step strong {
+  color: var(--logo-green);
+  font-weight: 600;
+}
+
 .numbered-step .num {
   font-family: "Montserrat", var(--sans);
   font-style: normal;
@@ -2365,10 +2389,153 @@ label.field-missing { color: #a33; font-weight: 600; }
 .scholarship-icon {
   width: 68px;
   height: 68px;
+  /* Gold, and it stays gold. Tia had this back within minutes of seeing it green
+     — the cap is the scholarship's mark and it is not up for restyling. */
   color: var(--amber);
   margin: 0 auto 1.25rem;
   display: block;
   filter: drop-shadow(0 0 14px rgba(233, 184, 114, 0.55));
+}
+
+/* The same feathered green rule locked for the Instagram set — one line only,
+   colour is #095B29 and the sheen comes from opacity, never a lighter green. */
+.scholarship-rule {
+  height: 3px;
+  width: 320px;
+  max-width: 62%;
+  margin: 0 auto 1.6rem;
+  background: linear-gradient(
+    90deg,
+    rgba(9, 91, 41, 0) 0%,
+    rgba(9, 91, 41, 0.55) 14%,
+    rgba(9, 91, 41, 1) 50%,
+    rgba(9, 91, 41, 0.55) 86%,
+    rgba(9, 91, 41, 0) 100%
+  );
+}
+
+/* Marks which programs carry a member rate vs. which are included outright.
+   Green rather than amber — this is a membership benefit, and the page already
+   carries enough gold. */
+.member-rate {
+  display: inline-block;
+  margin: 0 auto 0.65rem;
+  padding: 0.28rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(9, 91, 41, 0.09);
+  border: 1px solid rgba(9, 91, 41, 0.28);
+  color: var(--logo-green);
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.member-rate-free {
+  background: rgba(9, 91, 41, 0.16);
+  border-color: rgba(9, 91, 41, 0.42);
+}
+
+/* Replaces three amber pills. One streamlined line, green separators. */
+.scholarship-facts {
+  max-width: 44rem;
+  margin: 0 auto 2.25rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  line-height: 2;
+  color: #4a4436;
+}
+
+/* Each fact is an inline-block so it moves to the next line whole. Left as plain
+   inline text, the line broke mid-phrase — "…60-90 second" / "video · Winner…"
+   The separator is generated on the fact that FOLLOWS it, so it travels with that
+   fact instead of dangling at the end of the line above. */
+.scholarship-facts .fact {
+  display: inline-block;
+}
+
+.scholarship-facts .fact + .fact::before {
+  content: "\00b7";
+  color: var(--logo-green);
+  font-weight: 700;
+  opacity: 0.55;
+  padding: 0 0.7rem;
+}
+
+.scholarship-facts strong {
+  color: var(--green-deep);
+  font-weight: 600;
+}
+
+.scholarship-facts a {
+  color: var(--logo-green);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.scholarship-facts .sep {
+  color: var(--logo-green);
+  font-weight: 700;
+  padding: 0 0.7rem;
+  opacity: 0.55;
+}
+
+/* On a phone the line breaks into three, so an inline separator would dangle at
+   the end of a line. Hide it and let the line break do the separating. */
+@media (max-width: 640px) {
+  .scholarship-facts {
+    line-height: 1.75;
+  }
+  .scholarship-facts .sep {
+    display: block;
+    font-size: 0;
+    padding: 0.35rem 0;
+  }
+}
+
+/* Bulleted variant of the same treatment, used in the Rising Leaders hero where
+   two amber pills used to sit. Same type and green accents as the homepage line;
+   `display:table` shrink-wraps the list so the block centres while the text
+   itself stays left-aligned and readable on a phone. */
+.scholarship-facts-list {
+  list-style: none;
+  display: table;
+  padding: 0;
+  max-width: 30rem;
+  margin: 1.6rem auto 2rem;
+  text-align: left;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.scholarship-facts-list li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.scholarship-facts-list li + li {
+  margin-top: 0.55rem;
+}
+
+.scholarship-facts-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--logo-green);
+  opacity: 0.6;
+}
+
+@media (max-width: 640px) {
+  .scholarship-facts-list {
+    font-size: 0.92rem;
+    margin: 1.4rem auto 1.8rem;
+  }
 }
 
 /* Cap strokes start invisible, then draw themselves in on scroll */
@@ -3728,8 +3895,868 @@ section {
   .section-title,
   .section-title.title-depth,
   h2.section-title.title-depth {
-    text-wrap: wrap !important;
+    /* `white-space: normal` is what actually undoes the nowrap that was pushing
+       these past their column. `text-wrap` was belt-and-braces here, but setting
+       it to `wrap !important` also killed the line balancing below — so it now
+       carries `balance`, which wraps AND distributes the words evenly. */
+    text-wrap: balance !important;
     white-space: normal !important;
     overflow-wrap: break-word;
   }
+}
+
+/* =========== Rising Leaders — mobile punch list (13 Aug 2026) =========== */
+
+/* #7 The Process: the bolded dates and facts read as black lumps. Impact green
+   scoped tightly to that section's step copy — <strong> is untouched elsewhere. */
+#how .numbered-step p strong {
+  color: var(--logo-green);
+}
+
+/* #8 "This scholarship is for you if:" — centred over its list, with the
+   heading and the list given room to breathe on a phone. */
+.for-you .subhead {
+  text-align: center;
+  font-size: 1.45rem;
+  line-height: 1.3;
+  margin-bottom: 1.75rem;
+}
+
+.for-you .features-list {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 640px) {
+  .for-you .subhead {
+    font-size: 1.28rem;
+    margin-bottom: 1.4rem;
+  }
+  .for-you .features-list {
+    max-width: 24rem;
+    gap: 1.05rem;
+  }
+}
+
+/* #10 / #12 Contact lines — set apart from the copy above them and bolded. */
+.contact-line {
+  margin-top: 1.15rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid rgba(9, 91, 41, 0.18);
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.contact-line strong {
+  color: var(--green-deep);
+  font-weight: 700;
+}
+
+.contact-line a strong {
+  color: var(--logo-green);
+}
+
+.contact-line a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Headline line-breaking on narrow screens.
+
+   Tia's actual objection was never the number of lines — it was a single word
+   left stranded on its own below the rest of the sentence. Forcing one line
+   fixed the orphan but shrank each headline by a different amount, so they
+   stopped reading as a set.
+
+   text-wrap: balance makes the browser distribute the words evenly across the
+   lines instead of filling line one and dumping the remainder on line two. Every
+   headline keeps its full size, and none of them ends on a lone word. Measured at
+   375px: "Founders, dreamers," / "and doers." · "Three ways we" / "walk with you."
+   · "The first stories" / "are being written." · "Business as a force" / "for
+   lasting good."
+
+   `pretty` is the fallback for browsers without `balance` — it does not even the
+   lines out, but it does specifically prevent orphans, which is the thing that
+   bothered her. */
+/* Applied site-wide, not just to headlines. Tia's objection was never about any
+   one sentence — it is a single word stranded on its own line, anywhere it
+   happens: card copy, list items, leads, buttons, captions.
+
+   `balance` evens the lines out and suits short text — headings, card titles,
+   anything up to a few lines. Browsers stop balancing past ~6 lines, which is
+   why body copy gets `pretty` instead: it does not even the lines, but it will
+   not leave a lone word on the last line, which is the actual complaint. */
+h1, h2, h3, h4,
+.section-title,
+.page-hero h1,
+.card h3,
+.numbered-step h3,
+.price-card h3,
+.eyebrow,
+.btn {
+  text-wrap: balance;
+}
+
+p,
+li,
+.section-lead,
+.price-desc,
+.join-note,
+.card p,
+figcaption,
+label {
+  text-wrap: pretty;
+}
+
+/* =========== Round 2, mobile polish — 14 Aug 2026 =========== */
+
+/* Fine print. Tia: the travel caveat and every tax note should recede — they are
+   conditions, not selling points, and at body size they were competing with the
+   copy that matters. */
+/* p.fine-print, not .fine-print — `.card p` is (0,1,1) and was beating a bare
+   class selector, so the "fine print" rendered LARGER than the body copy. */
+p.fine-print,
+.card p.fine-print,
+.callout p.fine-print {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--ink-faint);
+  text-wrap: pretty;
+}
+
+/* The opposite treatment: "you're welcome either way" is the warmest line on the
+   scholarship page and was the quietest thing on it. */
+.either-way {
+  max-width: 34rem;
+  margin: 0 auto 1.6rem;
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.either-way strong {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--green-deep);
+  font-weight: 600;
+  font-size: 1.08rem;
+}
+
+/* Contact line. "Email … or call …" was breaking so the number fell away from the
+   word "call". The label sits on its own line, then the two contact details sit
+   in a flex row that wraps as whole units — a phone number can never be split
+   from what introduces it. */
+.contact-line {
+  margin-top: 1.5rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.contact-label {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+  margin-bottom: 0.55rem;
+}
+
+.contact-bits {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.15rem 0.55rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.contact-bits a {
+  color: var(--logo-green);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.contact-or {
+  color: var(--ink-faint);
+}
+
+/* Founding-member rate — was a pill, which read heavy and boxed-in against a
+   price. Same amber, no container: a small tracked label with the promise under
+   it. Tia: "take that out of a bubble, make it more streamlined. I do like the
+   colour." */
+.founding-line {
+  display: block;
+  max-width: 28rem;
+  margin: 0 auto;
+  font-family: var(--sans);
+  /* R17: the label stays gold — Tia loves it there — but the promise underneath
+     now reads dark green. Gold on gold made the whole thing one soft blur; the
+     green gives the label something to sit against, and it matches every other
+     piece of body copy on the page. */
+  color: var(--green-deep);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+/* Below ~370px the promise cannot hold one line at any readable size, so it is
+   allowed to wrap rather than overflow the card. */
+@media (max-width: 370px) {
+  .founding-line {
+    white-space: normal;
+    text-wrap: balance;
+  }
+}
+
+.founding-label {
+  display: block;
+  color: var(--amber);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.22rem;
+}
+
+/* Card headings on a phone. Two- and three-word titles — "Community-changing
+   leaders", "Servant leadership support", "Tax-deductible membership" — were a
+   few pixels too wide for the card and broke with the last word alone. Every
+   card heading steps down together so they stay a matched set, and the ones
+   that were breaking now sit on one line. */
+@media (max-width: 640px) {
+  .card h3 {
+    font-size: 1.18rem;
+  }
+}
+
+/* "Three ways we walk with you" — the two lines under the heading were the same
+   size and read as one grey slab. The first line is the section's promise and
+   keeps section-lead size; this one is a practical footnote about money, so it
+   steps down. Tia: "Members pay member rates" said member twice — now
+   "Member rates on 1:1 coaching…". */
+.member-note {
+  max-width: 40rem;
+  margin: 1.1rem auto 0;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.member-note strong {
+  color: var(--logo-green);
+  font-weight: 600;
+}
+
+/* Its own line so it can never break mid-phrase, and smaller than the note. */
+.member-note-link {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--logo-green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+/* =========== R9: one button size, site-wide =========== */
+/* Tia: shrink every button and make them cohesive. They were 0.98rem type in
+   0.95x1.9rem padding, which read heavy — especially stacked on a phone where
+   three of them in a column dominated the section they belonged to. One size
+   everywhere so nothing has to be judged per-section. */
+.btn {
+  font-size: 0.9rem;
+  padding: 0.78rem 1.5rem;
+}
+
+/* Block buttons inside pricing cards keep full width but the same height. */
+.btn-block {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (max-width: 640px) {
+  .btn {
+    font-size: 0.86rem;
+    padding: 0.72rem 1.3rem;
+  }
+}
+
+/* R7: "Impact Days are included with membership" was wrapping onto two lines
+   inside the pill. Held on one line and stepped down a touch further so a long
+   label still reads as a button rather than a paragraph in a capsule. */
+.btn-oneline {
+  white-space: nowrap;
+  font-size: 0.82rem;
+  padding: 0.7rem 1.35rem;
+}
+
+@media (max-width: 400px) {
+  .btn-oneline {
+    font-size: 0.75rem;
+    padding: 0.65rem 1.05rem;
+    letter-spacing: -0.005em;
+  }
+}
+
+/* R5: the MEMBER RATE / INCLUDED WITH MEMBERSHIP tags were nearly the weight of
+   a button. They are a label on a card, not an action — much smaller. */
+/* S5. Tia said these lost their colour and looked un-animated. The colour was
+   never touched — but at 0.62rem (about 10px) a 9% green wash and thin green
+   type simply stop reading as green. Smaller than the original, with the wash
+   and border strengthened to compensate so the green is as present as it was. */
+.member-rate {
+  padding: 0.24rem 0.68rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.55rem;
+  background: rgba(9, 91, 41, 0.15);
+  border-color: rgba(9, 91, 41, 0.45);
+}
+
+.member-rate-free {
+  background: rgba(9, 91, 41, 0.24);
+  border-color: rgba(9, 91, 41, 0.6);
+}
+
+/* They sit on a card that lifts on hover; the tag now lifts with it rather than
+   sitting inert while everything around it moves. */
+.card:hover .member-rate {
+  background: rgba(9, 91, 41, 0.22);
+  border-color: rgba(9, 91, 41, 0.55);
+}
+
+/* =========== Round 4 — 14 Aug =========== */
+
+/* S2. The three scholarship facts were at body size and carried a lot of visual
+   weight for what is essentially a summary of dates. Stepped down so the
+   headline and the price keep the emphasis. */
+.scholarship-facts {
+  font-size: 0.85rem;
+  line-height: 1.85;
+}
+
+@media (max-width: 640px) {
+  .scholarship-facts {
+    font-size: 0.8rem;
+    line-height: 1.75;
+  }
+}
+
+/* S3. "see the whole Scholarship Program" was breaking across two lines. Its own
+   line, held whole. */
+.one-of-three-link {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--green-deep);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+/* S4. Down again — this is a footnote about money, not a second promise. */
+.member-note {
+  font-size: 0.85rem;
+}
+
+.member-note-link {
+  font-size: 0.8rem;
+}
+
+/* S6. The question was buried inside the paragraph. Lifted out onto its own
+   line, sized so it holds one line on a phone, and given the green so it reads
+   as an invitation rather than the first sentence of a block of text. */
+.give-back-q {
+  max-width: 44rem;
+  margin: 0 auto 0.75rem;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--logo-green);
+  white-space: nowrap;
+}
+
+@media (max-width: 400px) {
+  .give-back-q {
+    font-size: 0.86rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .give-back-q {
+    white-space: normal;
+    text-wrap: balance;
+  }
+}
+
+/* S7. The eyebrow ran "Impact Scholarship Program — Rising Leaders" onto two
+   ragged lines. The programme holds one line; the tier sits under it, smaller
+   and in green, so the hierarchy is legible at a glance. */
+.eyebrow-stack {
+  display: block;
+  white-space: nowrap;
+}
+
+.eyebrow-tier {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--logo-green);
+  font-size: 0.92em;
+  letter-spacing: 0.2em;
+}
+
+@media (max-width: 380px) {
+  .eyebrow-stack {
+    font-size: 0.66rem;
+  }
+}
+
+/* S9. Sections carry 6.5rem (104px) top AND bottom. On a desktop that is a
+   comfortable breath; stacked on a 375px screen it becomes two 104px bands of
+   empty cream back to back — Tia saw it between "Notice what we're not asking
+   for" and the fine print, but it was happening at every section boundary on
+   every page. Reduced on phones only; desktop rhythm is untouched. */
+@media (max-width: 640px) {
+  section {
+    padding: 4rem 0;
+  }
+
+  .section-head {
+    margin-bottom: 2.25rem;
+  }
+}
+
+/* S1. The hero paragraph. A non-breaking space had tied "their communities."
+   together, which fixed the orphan but pushed the break earlier and left two
+   short ragged lines at the bottom. Balancing distributes all five lines
+   evenly instead, which is what Tia actually wants — the paragraph reading as a
+   block, not tapering off. */
+.hero-sub {
+  text-wrap: balance;
+}
+
+/* S8. Tia asked whether shrinking the philanthropy paragraph would break the
+   site's cohesion. It would — every .section-lead on the site is the same size,
+   and making one smaller would read as a mistake. The actual problem was that
+   this one lead was 234 characters doing two jobs, so it ran to seven lines
+   with a badly uneven rag. Split instead: the promise stays a full-size lead,
+   the detail about what a gift buys steps down. Same pattern as the member-rates
+   note under "Three ways we walk with you", so it is MORE consistent, not less. */
+.lead-detail {
+  max-width: 40rem;
+  margin: 0.9rem auto 0;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* =========== Two-tier membership + gala sponsorship — 14 Aug =========== */
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  max-width: 58rem;
+  margin: 2.5rem auto 0;
+  align-items: start;
+}
+
+.tier {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 2rem 1.7rem 1.8rem;
+  box-shadow: var(--shadow-soft);
+  text-align: left;
+}
+
+/* The Member tier is the one we want chosen — lifted, green-edged, flagged. */
+.tier-featured {
+  border-color: var(--green-deep);
+  box-shadow: 0 14px 38px -18px rgba(20, 55, 38, 0.55);
+}
+
+.tier-flag {
+  position: absolute;
+  top: -0.8rem;
+  left: 1.7rem;
+  background: var(--amber);
+  color: #fff;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 0.64rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  padding: 0.36rem 0.8rem;
+  border-radius: 999px;
+}
+
+.tier-name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: var(--green-deep);
+  margin-bottom: 0.15rem;
+}
+
+.tier-who {
+  font-family: var(--sans);
+  font-size: 0.84rem;
+  color: var(--ink-faint);
+  margin-bottom: 1.1rem;
+  text-wrap: pretty;
+}
+
+.tier-price {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--green-deep);
+}
+
+.tier-price s {
+  font-size: 0.42em;
+  font-weight: 400;
+  opacity: 0.42;
+  margin-right: 0.3em;
+}
+
+.tier-price span {
+  font-family: var(--sans);
+  font-size: 0.34em;
+  font-weight: 400;
+  opacity: 0.7;
+  letter-spacing: 0.01em;
+}
+
+.tier-annual {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0.5rem 0 1.2rem;
+  text-wrap: pretty;
+}
+
+.tier-list {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.tier-list li {
+  position: relative;
+  padding-left: 1.4rem;
+  margin-bottom: 0.6rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.tier-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.52em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--logo-green);
+  opacity: 0.55;
+}
+
+.tier-list li strong {
+  color: var(--green-deep);
+}
+
+/* The "everything in Community, plus:" line is a heading, not a bullet. */
+.tier-list li:first-child strong {
+  display: block;
+}
+
+.tier-featured .tier-list li:first-child::before {
+  display: none;
+}
+
+.tier-featured .tier-list li:first-child {
+  padding-left: 0;
+  margin-bottom: 0.8rem;
+}
+
+.tier-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tier-guest {
+  text-align: center;
+  margin: 1.6rem auto 0;
+  max-width: 32rem;
+}
+
+@media (max-width: 780px) {
+  .tier-grid {
+    grid-template-columns: 1fr;
+    max-width: 26rem;
+  }
+}
+
+/* ---- Gala: members-free note ---- */
+.gala-member-note {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 1.6rem 1.7rem;
+  background: rgba(9, 91, 41, 0.06);
+  border: 1px solid rgba(9, 91, 41, 0.25);
+  border-radius: var(--radius);
+}
+
+.gala-member-label {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--logo-green);
+  margin-bottom: 0.6rem;
+}
+
+.gala-member-note p {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.1rem;
+  text-wrap: pretty;
+}
+
+.gala-free {
+  color: var(--logo-green);
+  font-weight: 600;
+}
+
+/* ---- Gala: sponsorship tiers ---- */
+.sponsor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem;
+  max-width: 58rem;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.sponsor-tier {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.8rem 1.6rem;
+  box-shadow: var(--shadow-soft);
+  text-align: left;
+}
+
+.sponsor-headline {
+  grid-column: 1 / -1;
+  border-color: var(--amber);
+  background: linear-gradient(150deg, #fffdf7 0%, #fbf3e2 100%);
+}
+
+.sponsor-flag {
+  position: absolute;
+  top: -0.75rem;
+  right: 1.6rem;
+  background: var(--green-deep);
+  color: var(--cream);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  padding: 0.34rem 0.78rem;
+  border-radius: 999px;
+}
+
+.sponsor-tier h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.3rem;
+  color: var(--green-deep);
+  margin-bottom: 0.2rem;
+}
+
+.sponsor-price {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--amber);
+  margin-bottom: 1rem;
+}
+
+.sponsor-headline .sponsor-price {
+  font-size: 2.6rem;
+}
+
+.sponsor-tier ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.sponsor-tier li {
+  position: relative;
+  padding-left: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.sponsor-tier li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--amber);
+  opacity: 0.6;
+}
+
+@media (max-width: 780px) {
+  .sponsor-grid {
+    grid-template-columns: 1fr;
+    max-width: 26rem;
+  }
+  .sponsor-headline {
+    grid-column: auto;
+  }
+}
+
+/* The tier grid also appears inside the join pop-out, where it has less room. */
+.tier-grid-modal {
+  margin-top: 1.5rem;
+  gap: 1.1rem;
+}
+
+.tier-grid-modal .tier {
+  padding: 1.6rem 1.3rem 1.4rem;
+}
+
+.tier-grid-modal .tier-price {
+  font-size: 2.1rem;
+}
+
+/* Placeholder buttons for the two Community products until Square exists.
+   Visibly inert so nobody clicks expecting a checkout, and impossible to miss
+   in review. Swap the href and delete data-square-pending when the URL lands. */
+[data-square-pending] {
+  opacity: 0.55;
+  pointer-events: none;
+  position: relative;
+}
+
+[data-square-pending]::after {
+  content: "Square link pending";
+  position: absolute;
+  left: 50%;
+  bottom: -1.15rem;
+  transform: translateX(-50%);
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  white-space: nowrap;
+}
+
+.tier-cta { padding-bottom: 0.4rem; }
+
+/* Sponsors get both doors: buy now if they have decided, or ask first if they
+   have not. Tia: "I think we should have both options." */
+.sponsor-btn {
+  margin-top: 1.3rem;
+}
+
+.sponsor-ask {
+  display: block;
+  margin-top: 0.85rem;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sponsor-ask:hover {
+  color: var(--green-deep);
+}
+
+/* The pending badge sits below the button, so sponsor cards need room for it. */
+.sponsor-tier [data-square-pending] {
+  margin-bottom: 0.4rem;
+}
+
+/* The gala seat rules — four cases, so a list rather than a sentence. Saying
+   "free for members, unless monthly Community, in which case $95" in prose reads
+   as small print; as four lines it reads as a fair deal. */
+.gala-seat-rules {
+  list-style: none;
+  margin: 0 0 1.1rem;
+  padding: 0;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.gala-seat-rules li {
+  position: relative;
+  padding-left: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.gala-seat-rules li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--logo-green);
+  opacity: 0.55;
+}
+
+.gala-seat-rules strong { color: var(--green-deep); }
+
+/* Checkout buttons whose advertised price does not yet match Square. Inert and
+   labelled so nobody transacts at the wrong amount. Delete the attribute and
+   restore the href once Square is updated. */
+[data-square-pending="member-price-mismatch"]::after,
+[data-square-pending="gala-price-mismatch"]::after {
+  content: "Opens shortly";
 }

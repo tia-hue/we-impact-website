@@ -160,6 +160,19 @@ document.querySelectorAll("[data-countdown]").forEach(function (box) {
   setInterval(tick, 1000);
 });
 
+// Has this visitor already been greeted during this browsing session? Wrapped in
+// try/catch because Safari private browsing throws on storage access — if we can't
+// tell, show the pop-out rather than silently swallowing it.
+function seenThisVisit(key) {
+  try {
+    if (sessionStorage.getItem(key)) return true;
+    sessionStorage.setItem(key, "1");
+    return false;
+  } catch (e) {
+    return false;
+  }
+}
+
 // Join membership pop-out
 const joinModal = document.getElementById("join-modal");
 if (joinModal) {
@@ -186,9 +199,12 @@ if (joinModal) {
     if (e.key === "Escape") closeJoin();
   });
 
-  // The pop-out greets every visitor to the membership page —
-  // they must close it to reach the page behind it.
-  setTimeout(openJoin, 700);
+  // The pop-out greets each visitor ONCE per browsing session. It used to fire on
+  // every page load, so anyone moving around the site or coming back later met it
+  // again and again — and Google downranks pages that greet mobile visitors with a
+  // covering interstitial. Once per visit keeps the welcome and drops the nagging.
+  // sessionStorage (not localStorage) so a genuine return visit is still greeted.
+  if (!seenThisVisit("impact-seen-join")) setTimeout(openJoin, 700);
 }
 
 // Welcome pop-up (home page) — greets each visitor once
@@ -228,13 +244,31 @@ if (welcomeModal) {
       closeWelcome();
     });
   }
-  // The gala invitation greets every visit — guests must close it to continue
-  setTimeout(openWelcome, 900);
+  // Same rule as the membership pop-out — greet once per visit, not per page load.
+  // The hero arches are held paused by body.rings-wait until the invitation is
+  // dismissed, so on a visit where we skip the pop-out we must release them here.
+  // Without this the arches stay frozen for the whole rest of the session.
+  if (seenThisVisit("impact-seen-welcome")) {
+    document.body.classList.remove("rings-wait");
+  } else {
+    setTimeout(openWelcome, 900);
+  }
 }
 
-// On small screens, shrink each section title just enough to fit one line
+// On small screens, shrink each title just enough to fit one line.
+//
+// Opt-in via `.fit-one-line`. A blanket `.section-title` selector was here
+// before and did nothing at all: the mobile guard at the foot of style.css sets
+// `white-space: normal !important` on every .section-title under 1023px, so the
+// text always wrapped, scrollWidth never exceeded clientWidth, and the loop
+// never ran. The class carries its own `white-space: nowrap !important` so only
+// the headings Tia named are held on one line — every other title still wraps.
+// Only page-hero h1s are shrunk to fit now. Section titles used to be squeezed onto
+// one line too, which made them all different sizes — the set stopped looking like a
+// set. They now stay at full size and use CSS text-wrap:balance instead, which splits
+// them into even two-line pairs with no single word stranded on its own line.
 function fitSectionTitles() {
-  var titles = document.querySelectorAll(".section-title, .page-hero h1");
+  var titles = document.querySelectorAll(".page-hero h1");
   titles.forEach(function (el) {
     // Titles inside pop-outs are hidden at load (unmeasurable) — let them wrap
     if (el.closest(".join-backdrop")) return;
