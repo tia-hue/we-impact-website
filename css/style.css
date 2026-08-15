@@ -5504,3 +5504,18 @@ p.fine-print,
   .countup.landed { animation: none; background-image: none; -webkit-text-fill-color: currentColor; }
   .word-rise .w, .word-rise.run .w { opacity: 1; transform: none; animation: none; }
 }
+
+/* The Roadmap qualifier was the only one on the page set in caps and tracked,
+   so that card had two competing lines where the others have a statement then
+   a whisper. Matched to "once a year" and "quarterly, once funded". */
+.price-words .period {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  opacity: 1;
+  color: var(--ink-faint);
+  margin-top: 1.05rem;
+  line-height: 1.4;
+}
