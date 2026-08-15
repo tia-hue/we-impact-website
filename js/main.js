@@ -849,3 +849,60 @@ if (applyModal) {
 
   els.forEach(function (el) { obs.observe(el); });
 })();
+
+// Billing toggle — Monthly / Quarterly / Annual
+// Tia: the three stacked join buttons per tier looked plain. One segmented
+// control now drives both tiers; each card keeps a single button whose price
+// and mailto subject follow the selected cycle.
+(function () {
+  var toggles = document.querySelectorAll(".billing-toggle");
+  if (!toggles.length) return;
+
+  var PER = { monthly: "/month", quarterly: "/quarter", annual: "/year" };
+  var LABEL = { monthly: "monthly", quarterly: "quarterly", annual: "annually" };
+
+  function mailto(tier, cycle, amount) {
+    var subject = "Membership \u2014 " + tier + ", " + LABEL[cycle] + " ($" + amount + ")";
+    var body = "Hi Impact team,\n\nI'd like to join Impact as a " + tier +
+               " member, billed " + LABEL[cycle] + " ($" + amount + ")." +
+               "\n\nMy name:\nMy business:\nBest number:\n\nThank you,\n";
+    return "mailto:info@we-impact.com?subject=" + encodeURIComponent(subject) +
+           "&body=" + encodeURIComponent(body);
+  }
+
+  function apply(scope, cycle) {
+    scope.querySelectorAll(".tier-price").forEach(function (el) {
+      var amount = el.getAttribute("data-" + cycle);
+      if (!amount) return;
+      el.classList.add("is-swapping");
+      setTimeout(function () {
+        el.querySelector(".tp-amt").textContent = "$" + amount;
+        el.querySelector(".tp-per").textContent = PER[cycle];
+        el.classList.remove("is-swapping");
+      }, 160);
+    });
+    scope.querySelectorAll(".tier-join").forEach(function (btn) {
+      var tier = btn.getAttribute("data-tier");
+      var price = scope.querySelector('.tier-price[data-tier="' + tier + '"]');
+      if (!price) return;
+      var amount = price.getAttribute("data-" + cycle);
+      btn.querySelector(".tj-amt").textContent = "$" + amount;
+      btn.querySelector(".tj-per").textContent = PER[cycle];
+      btn.setAttribute("href", mailto(tier, cycle, amount));
+    });
+  }
+
+  toggles.forEach(function (tg) {
+    // each toggle drives the tier grid immediately after it
+    var scope = tg.nextElementSibling;
+    if (!scope) return;
+    apply(scope, "monthly");
+    tg.addEventListener("click", function (e) {
+      var btn = e.target.closest(".bt-opt");
+      if (!btn) return;
+      tg.querySelectorAll(".bt-opt").forEach(function (b) { b.classList.remove("is-on"); });
+      btn.classList.add("is-on");
+      apply(scope, btn.getAttribute("data-cycle"));
+    });
+  });
+})();

@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=137">
+  <link rel="stylesheet" href="css/style.css?v=139">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -212,13 +212,17 @@
           <p class="section-lead">Start where you are. Move up when you're ready.</p>
           <p style="margin-top:0.9rem;"><span class="founding-line"><span class="founding-label">Founding-member rate</span>Join at launch and keep this rate for as long as you stay.</span></p>
         </div>
+        <div class="billing-toggle" role="group" aria-label="Billing period">
+          <button type="button" class="bt-opt is-on" data-cycle="monthly">Monthly</button>
+          <button type="button" class="bt-opt" data-cycle="quarterly">Quarterly</button>
+          <button type="button" class="bt-opt" data-cycle="annual">Annual <span class="bt-save">2 months free</span></button>
+        </div>
         <div class="tier-grid reveal">
 
           <div class="tier">
             <h3 class="tier-name">Community</h3>
             <p class="tier-who">For the person with an idea, not yet a business</p>
-            <div class="tier-price">$59<span>/month</span></div>
-            <p class="tier-annual"><strong>$165</strong>/quarter &nbsp;·&nbsp; <strong>$590</strong>/year &mdash; two months free</p>
+            <div class="tier-price" data-tier="Community" data-monthly="59" data-quarterly="165" data-annual="590"><span class="tp-amt">$59</span><span class="tp-per">/month</span></div>
             <ul class="tier-list">
               <li><strong>Impact Night</strong> &mdash; a TED Talk, a member spotlight and happy hour, monthly</li>
               <li><strong>Networking</strong> with founders building in San Diego right now</li>
@@ -228,9 +232,7 @@
               <li>A seat at the Impact Launch Gala &mdash; <strong>included on annual</strong></li>
             </ul>
             <div class="tier-cta">
-              <a href="#" class="btn btn-outline btn-block" data-square-pending="community-monthly">Join monthly &mdash; $59</a>
-              <a href="#" class="btn btn-outline btn-block" data-square-pending="community-quarterly">Join quarterly &mdash; $165</a>
-              <a href="#" class="btn btn-outline btn-block" data-square-pending="community-annual">Join annually &mdash; $590</a>
+              <a href="#" class="btn btn-outline btn-block tier-join" data-tier="Community" data-square-pending="community">Join &mdash; <span class="tj-amt">$59</span><span class="tj-per">/month</span></a>
             </div>
           </div>
 
@@ -238,8 +240,7 @@
             <span class="tier-flag">Impact Launch Rate</span>
             <h3 class="tier-name">Member</h3>
             <p class="tier-who">For founders actively building</p>
-            <div class="tier-price"><s>$179</s>$129<span>/month</span></div>
-            <p class="tier-annual"><strong>$360</strong>/quarter &nbsp;·&nbsp; <strong>$1,290</strong>/year &mdash; locked for as long as you stay</p>
+            <div class="tier-price" data-tier="Member" data-monthly="129" data-quarterly="360" data-annual="1,290"><s class="tp-was">$179</s><span class="tp-amt">$129</span><span class="tp-per">/month</span></div>
             <ul class="tier-list">
               <li><strong>Everything in Community, plus:</strong></li>
               <li>Monthly workshops</li>
@@ -253,9 +254,7 @@
               <li><strong>Your gala seat is free</strong> &mdash; monthly or annual</li>
             </ul>
             <div class="tier-cta">
-              <a href="#" data-square-pending="member-price-mismatch" class="btn btn-primary btn-block">Join monthly &mdash; $129</a>
-              <a href="#" data-square-pending="member-price-mismatch" class="btn btn-outline btn-block">Join annually &mdash; $1,290</a>
-              <a href="#" class="btn btn-outline btn-block" data-square-pending="member-quarterly">Join quarterly &mdash; $360</a>
+              <a href="#" class="btn btn-primary btn-block tier-join" data-tier="Member" data-square-pending="member">Join &mdash; <span class="tj-amt">$129</span><span class="tj-per">/month</span></a>
             </div>
           </div>
 
@@ -337,13 +336,17 @@
       <h2 class="section-title" style="margin-bottom:0.5rem;">Join the Impact Membership</h2>
       <p class="section-lead" style="margin:0 auto 1.1rem; text-align:center;">Start where you are. Move up when you&rsquo;re ready.</p>
       <p style="margin:0 0 2rem;"><span class="founding-line"><span class="founding-label">Founding-member rate</span>Join at launch and keep this rate for as long as you stay.</span></p>
-      <div class="tier-grid tier-grid-modal">
+      <div class="billing-toggle" role="group" aria-label="Billing period">
+          <button type="button" class="bt-opt is-on" data-cycle="monthly">Monthly</button>
+          <button type="button" class="bt-opt" data-cycle="quarterly">Quarterly</button>
+          <button type="button" class="bt-opt" data-cycle="annual">Annual <span class="bt-save">2 months free</span></button>
+        </div>
+        <div class="tier-grid tier-grid-modal">
 
         <div class="tier">
           <h3 class="tier-name">Community</h3>
           <p class="tier-who">For the person with an idea, not yet a business</p>
-          <div class="tier-price">$59<span>/month</span></div>
-          <p class="tier-annual"><strong>$165</strong>/quarter &nbsp;·&nbsp; <strong>$590</strong>/year &mdash; two months free</p>
+          <div class="tier-price" data-tier="Community" data-monthly="59" data-quarterly="165" data-annual="590"><span class="tp-amt">$59</span><span class="tp-per">/month</span></div>
           <ul class="tier-list">
             <li><strong>Impact Night</strong> &mdash; a TED Talk, a member spotlight and happy hour, monthly</li>
             <li><strong>Networking</strong> with founders building in San Diego right now</li>
@@ -353,18 +356,15 @@
             <li>A seat at the Impact Launch Gala &mdash; <strong>included on annual</strong></li>
           </ul>
           <div class="tier-cta">
-            <a href="#" class="btn btn-outline btn-block" data-square-pending="community-monthly">Join monthly &mdash; $59</a>
-            <a href="#" class="btn btn-outline btn-block" data-square-pending="community-quarterly">Join quarterly &mdash; $165</a>
-              <a href="#" class="btn btn-outline btn-block" data-square-pending="community-annual">Join annually &mdash; $590</a>
-          </div>
+              <a href="#" class="btn btn-outline btn-block tier-join" data-tier="Community" data-square-pending="community">Join &mdash; <span class="tj-amt">$59</span><span class="tj-per">/month</span></a>
+            </div>
         </div>
 
         <div class="tier tier-featured">
           <span class="tier-flag">Impact Launch Rate</span>
           <h3 class="tier-name">Member</h3>
           <p class="tier-who">For founders actively building</p>
-          <div class="tier-price"><s>$179</s>$129<span>/month</span></div>
-          <p class="tier-annual"><strong>$360</strong>/quarter &nbsp;·&nbsp; <strong>$1,290</strong>/year &mdash; locked for as long as you stay</p>
+          <div class="tier-price" data-tier="Member" data-monthly="129" data-quarterly="360" data-annual="1,290"><s class="tp-was">$179</s><span class="tp-amt">$129</span><span class="tp-per">/month</span></div>
           <ul class="tier-list">
             <li><strong>Everything in Community, plus:</strong></li>
             <li>Monthly workshops</li>
@@ -378,10 +378,8 @@
               <li><strong>Your gala seat is free</strong> &mdash; monthly or annual</li>
           </ul>
           <div class="tier-cta">
-            <a href="#" data-square-pending="member-price-mismatch" class="btn btn-primary btn-block">Join monthly &mdash; $129</a>
-            <a href="#" data-square-pending="member-price-mismatch" class="btn btn-outline btn-block">Join annually &mdash; $1,290</a>
-              <a href="#" class="btn btn-outline btn-block" data-square-pending="member-quarterly">Join quarterly &mdash; $360</a>
-          </div>
+              <a href="#" class="btn btn-primary btn-block tier-join" data-tier="Member" data-square-pending="member">Join &mdash; <span class="tj-amt">$129</span><span class="tj-per">/month</span></a>
+            </div>
         </div>
 
       </div>
@@ -414,6 +412,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=137"></script>
+  <script src="js/main.js?v=139"></script>
 </body>
 </html>

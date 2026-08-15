@@ -4666,30 +4666,11 @@ p.fine-print,
   font-size: 2.1rem;
 }
 
-/* Placeholder buttons for the two Community products until Square exists.
-   Visibly inert so nobody clicks expecting a checkout, and impossible to miss
-   in review. Swap the href and delete data-square-pending when the URL lands. */
-[data-square-pending] {
-  opacity: 0.55;
-  pointer-events: none;
-  position: relative;
-}
-
-[data-square-pending]::after {
-  content: "Square link pending";
-  position: absolute;
-  left: 50%;
-  bottom: -1.15rem;
-  transform: translateX(-50%);
-  font-family: var(--sans);
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--amber);
-  white-space: nowrap;
-}
-
+/* Square isn't live yet, so these buttons open a pre-filled enquiry instead of
+   a checkout. Tia: users don't need to see that it's pending — it looked
+   unfinished. They now look and behave like any other button. The
+   data-square-pending attribute stays so the swap to real checkout URLs is a
+   find-and-replace when Square lands. */
 .tier-cta { padding-bottom: 0.4rem; }
 
 /* Sponsors get both doors: buy now if they have decided, or ask first if they
@@ -4714,9 +4695,7 @@ p.fine-print,
 }
 
 /* The pending badge sits below the button, so sponsor cards need room for it. */
-.sponsor-tier [data-square-pending] {
-  margin-bottom: 0.4rem;
-}
+
 
 /* The gala seat rules — four cases, so a list rather than a sentence. Saying
    "free for members, unless monthly Community, in which case $95" in prose reads
@@ -4756,10 +4735,7 @@ p.fine-print,
 /* Checkout buttons whose advertised price does not yet match Square. Inert and
    labelled so nobody transacts at the wrong amount. Delete the attribute and
    restore the href once Square is updated. */
-[data-square-pending="member-price-mismatch"]::after,
-[data-square-pending="gala-price-mismatch"]::after {
-  content: "Opens shortly";
-}
+
 
 /* T1. "That's what Impact Days are for." carries alone — Tia considers it the
    strong line and it was buried at the head of a paragraph. */
@@ -5200,4 +5176,118 @@ p.fine-print,
   .tier-cta .btn,
   .tier-cta .btn:hover { transform: none; }
   .tier-cta .btn:hover::after { animation: none; opacity: 0; }
+}
+
+/* =========== Billing toggle =========== */
+/* Tia: three stacked full-width buttons per tier looked plain and heavy.
+   One segmented control now drives both tiers, so each card carries a single
+   join button and the price becomes the thing you look at. */
+
+.billing-toggle {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  margin: 0 auto 2rem;
+  border-radius: 999px;
+  background: rgba(20, 55, 38, 0.07);
+  border: 1px solid rgba(20, 55, 38, 0.12);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bt-opt {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  padding: 0.6rem 1.15rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: color .28s ease, background-color .28s ease, box-shadow .28s ease;
+  white-space: nowrap;
+}
+
+.bt-opt:hover { color: var(--green-deep); }
+
+.bt-opt.is-on {
+  background: var(--green-deep);
+  color: var(--cream);
+  box-shadow: 0 6px 16px -8px rgba(20, 55, 38, .6);
+}
+
+.bt-save {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: rgba(201, 162, 74, 0.16);
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+}
+
+.bt-opt.is-on .bt-save { color: #14231b; background: var(--gold-soft, #dcc990); }
+
+/* The figure animates when the cycle changes rather than snapping. */
+.tier-price .tp-amt {
+  display: inline-block;
+  transition: transform .3s cubic-bezier(.2,.7,.3,1), opacity .3s ease;
+}
+.tier-price.is-swapping .tp-amt { transform: translateY(-8px); opacity: 0; }
+
+.tier-price .tp-was {
+  font-size: 0.5em;
+  opacity: 0.45;
+  margin-right: 0.35rem;
+  font-weight: 400;
+}
+
+.tier-price .tp-per { font-size: 0.42em; opacity: 0.72; margin-left: 0.15rem; }
+
+/* Single join button per tier — smaller than the old full-width stack. */
+.tier-cta .tier-join {
+  width: auto;
+  min-width: 68%;
+  padding: 0.85rem 1.6rem;
+  font-size: 0.92rem;
+  border-radius: 999px;
+}
+
+@media (max-width: 640px) {
+  .billing-toggle { flex-wrap: wrap; justify-content: center; }
+  .bt-opt { padding: 0.55rem 0.85rem; font-size: 0.78rem; }
+  .tier-cta .tier-join { min-width: 100%; }
+}
+
+/* =========== Roadmap card — "A full year" =========== */
+/* Tia: the Playfair read like a number that failed to be a number, and she
+   wanted trendier all caps in a face the site already uses. This is the
+   .value-word recipe — Montserrat 800 at 0.22em — scaled to the price slot,
+   so it carries the same weight as the serif figures either side of it. */
+.price-words {
+  font-family: "Montserrat", var(--sans);
+  font-size: 1.58rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.22;
+  color: var(--green-deep);
+}
+
+.price-words .period {
+  font-family: "Montserrat", var(--sans);
+  font-size: 0.56em;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.66;
+  margin-top: 0.85rem;
 }
