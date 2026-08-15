@@ -813,3 +813,39 @@ if (applyModal) {
     } catch (_) {}
   }
 }
+
+// Count-up on scholarship figures
+// Tia asked the scholarship page to feel alive. The $50,000 is the whole point
+// of that page, so it counts up once when it first scrolls into view — never
+// again, and not at all for anyone who prefers reduced motion.
+(function () {
+  var els = document.querySelectorAll(".countup");
+  if (!els.length) return;
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (still || !("IntersectionObserver" in window)) return;
+
+  function run(el) {
+    var to = parseInt(el.getAttribute("data-to"), 10);
+    var prefix = el.getAttribute("data-prefix") || "";
+    if (!to) return;
+    var dur = 1500, t0 = null;
+    function frame(t) {
+      if (t0 === null) t0 = t;
+      var p = Math.min((t - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);           // ease-out cubic
+      el.textContent = prefix + Math.round(to * eased).toLocaleString("en-US");
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      obs.unobserve(e.target);
+      run(e.target);
+    });
+  }, { threshold: 0.6 });
+
+  els.forEach(function (el) { obs.observe(el); });
+})();
