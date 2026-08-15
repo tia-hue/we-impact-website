@@ -835,6 +835,7 @@ if (applyModal) {
       var eased = 1 - Math.pow(1 - p, 3);           // ease-out cubic
       el.textContent = prefix + Math.round(to * eased).toLocaleString("en-US");
       if (p < 1) requestAnimationFrame(frame);
+      else el.classList.add("landed");
     }
     requestAnimationFrame(frame);
   }
@@ -905,4 +906,129 @@ if (applyModal) {
       apply(scope, btn.getAttribute("data-cycle"));
     });
   });
+})();
+
+// Scholarship page motion — progress rail, rule draws, staggered lists
+// Tia wanted this page to stand out rather than just function. Every piece
+// bails out under prefers-reduced-motion, and none of it runs on pages that
+// don't carry the markup.
+(function () {
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // --- reading progress rail ---
+  if (!still && document.querySelector(".plaque")) {
+    var bar = document.createElement("div");
+    bar.className = "read-progress";
+    document.body.appendChild(bar);
+    var ticking = false;
+    function draw() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = h > 0 ? ((window.scrollY / h) * 100) + "%" : "0%";
+      ticking = false;
+    }
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(draw); }
+    }, { passive: true });
+    draw();
+  }
+
+  if (still || !("IntersectionObserver" in window)) return;
+
+  // --- gold rules draw out from the centre when they arrive ---
+  var rules = document.querySelectorAll(".rule-draw");
+  if (rules.length) {
+    var ro = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("drawn");
+        ro.unobserve(e.target);
+      });
+    }, { threshold: 0.4 });
+    rules.forEach(function (el) { ro.observe(el); });
+  }
+
+  // --- lists stagger in ---
+  var groups = document.querySelectorAll(".stagger");
+  if (groups.length) {
+    var so = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("run");
+        so.unobserve(e.target);
+      });
+    }, { threshold: 0.25 });
+    groups.forEach(function (el) {
+      el.classList.add("armed");   // only hide once we know we can reveal
+      so.observe(el);
+    });
+  }
+})();
+
+// Plaques behave like metal: tilt under the pointer and catch a moving light.
+// Tia asked the scholarship page to really stand out. Pointer-driven, so it
+// costs nothing on touch devices, and it bails out entirely under
+// prefers-reduced-motion.
+(function () {
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var plaques = document.querySelectorAll(".plaque");
+  if (still || !fine || !plaques.length) return;
+
+  var MAX = 5;   // degrees — subtle, this is a brass plate, not a toy
+
+  plaques.forEach(function (card) {
+    var glow = document.createElement("span");
+    glow.className = "plaque-glow";
+    card.insertBefore(glow, card.firstChild);
+
+    var frame = null;
+    card.addEventListener("pointermove", function (e) {
+      if (frame) return;
+      frame = requestAnimationFrame(function () {
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width;
+        var py = (e.clientY - r.top) / r.height;
+        card.style.setProperty("--ry", ((px - 0.5) * MAX * 2).toFixed(2) + "deg");
+        card.style.setProperty("--rx", ((0.5 - py) * MAX * 2).toFixed(2) + "deg");
+        glow.style.setProperty("--gx", (px * 100).toFixed(1) + "%");
+        glow.style.setProperty("--gy", (py * 100).toFixed(1) + "%");
+        frame = null;
+      });
+    });
+
+    card.addEventListener("pointerleave", function () {
+      card.style.setProperty("--rx", "0deg");
+      card.style.setProperty("--ry", "0deg");
+    });
+  });
+})();
+
+// Section headings rise a word at a time.
+(function () {
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (still || !("IntersectionObserver" in window)) return;
+  var heads = document.querySelectorAll(".word-rise");
+  if (!heads.length) return;
+
+  heads.forEach(function (h) {
+    var words = h.textContent.trim().split(/\s+/);
+    h.textContent = "";
+    words.forEach(function (w, i) {
+      var span = document.createElement("span");
+      span.className = "w";
+      span.textContent = w;
+      span.style.animationDelay = (i * 0.055) + "s";
+      h.appendChild(span);
+      if (i < words.length - 1) h.appendChild(document.createTextNode(" "));
+    });
+  });
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("run");
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.5 });
+  heads.forEach(function (h) { obs.observe(h); });
 })();

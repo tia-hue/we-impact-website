@@ -5291,3 +5291,216 @@ p.fine-print,
   opacity: 0.66;
   margin-top: 0.85rem;
 }
+
+/* ============================================================
+   Scholarship page — motion pass
+   Tia: "make it the best it can be… super trendy, super modern,
+   beats our competitors." The foundation was fine but flat: the
+   hero didn't move at all, rules only faded, and the plaque hover
+   was a lift with no reward. Everything here is opt-in per element
+   and every piece is disabled under prefers-reduced-motion.
+   ============================================================ */
+
+/* --- 1. Scroll progress: a hairline of brass across the top --- */
+.read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0;
+  z-index: 999;
+  background: linear-gradient(90deg, var(--green-deep), var(--amber), var(--gold-soft, #dcc990));
+  box-shadow: 0 0 12px -2px rgba(201,162,74,.7);
+  transition: width .12s linear;
+  pointer-events: none;
+}
+
+/* --- 2. Hero entrance: staggered rise, runs once on load --- */
+.page-hero .hero-anim > * {
+  opacity: 0;
+  transform: translateY(22px);
+  animation: heroRise .95s cubic-bezier(.2,.7,.25,1) forwards;
+}
+.page-hero .hero-anim > *:nth-child(1) { animation-delay: .10s; }
+.page-hero .hero-anim > *:nth-child(2) { animation-delay: .22s; }
+.page-hero .hero-anim > *:nth-child(3) { animation-delay: .34s; }
+.page-hero .hero-anim > *:nth-child(4) { animation-delay: .46s; }
+.page-hero .hero-anim > *:nth-child(5) { animation-delay: .58s; }
+.page-hero .hero-anim > *:nth-child(6) { animation-delay: .70s; }
+.page-hero .hero-anim > *:nth-child(7) { animation-delay: .82s; }
+
+@keyframes heroRise {
+  to { opacity: 1; transform: none; }
+}
+
+/* --- 3. Gold rules draw out from the centre instead of fading --- */
+.rule-draw {
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 1.05s cubic-bezier(.2,.75,.25,1);
+}
+.rule-draw.drawn { transform: scaleX(1); }
+
+/* --- 4. Plaque hover: lift, warm the edge, lift the figure, run the sheen --- */
+.plaque {
+  transition:
+    transform .45s cubic-bezier(.2,.65,.3,1),
+    box-shadow .45s cubic-bezier(.2,.65,.3,1),
+    border-color .45s ease;
+}
+
+.plaque:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 58px -28px rgba(90, 62, 20, .55);
+  border-color: rgba(193, 122, 43, .62);
+}
+
+.plaque .price,
+.plaque .price-words {
+  transition: transform .45s cubic-bezier(.2,.65,.3,1);
+}
+.plaque:hover .price,
+.plaque:hover .price-words { transform: translateY(-3px) scale(1.03); }
+
+/* the engraved inner border brightens with the card */
+.plaque::before { transition: border-color .45s ease; }
+.plaque:hover::before { border-color: rgba(193, 122, 43, .58); }
+
+/* hovering re-triggers the sheen rather than waiting for its cycle */
+.plaque:hover::after { animation: plaqueSheen 1.15s ease-out; }
+
+/* --- 5. Cards and steps: icon reacts to its parent --- */
+.card .card-icon { transition: transform .45s cubic-bezier(.2,.65,.3,1), background-color .45s ease; }
+.card:hover .card-icon { transform: translateY(-4px) rotate(-6deg) scale(1.08); }
+
+/* --- 6. Staggered list reveals inside the detail sections --- */
+/* Content is visible by default. JS adds .armed only once it has an observer
+   watching, so a script failure can never leave the cards invisible — which is
+   exactly what happened the first time this was written. */
+.stagger.armed > * {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.stagger.armed.run > * {
+  animation: staggerIn .55s cubic-bezier(.2,.7,.25,1) forwards;
+}
+.stagger.armed.run > *:nth-child(1) { animation-delay: .04s; }
+.stagger.armed.run > *:nth-child(2) { animation-delay: .12s; }
+.stagger.armed.run > *:nth-child(3) { animation-delay: .20s; }
+.stagger.armed.run > *:nth-child(4) { animation-delay: .28s; }
+.stagger.armed.run > *:nth-child(5) { animation-delay: .36s; }
+.stagger.armed.run > *:nth-child(6) { animation-delay: .44s; }
+.stagger.armed.run > *:nth-child(7) { animation-delay: .52s; }
+.stagger.armed.run > *:nth-child(8) { animation-delay: .60s; }
+
+@keyframes staggerIn { to { opacity: 1; transform: none; } }
+
+/* --- 7. Buttons on this page get the same sweep as the join buttons --- */
+.plaque .btn { position: relative; overflow: hidden; }
+.plaque .btn::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: -60%;
+  width: 45%;
+  background: linear-gradient(100deg,
+    rgba(255,255,255,0) 0%, rgba(255,255,255,.4) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+}
+.plaque .btn:hover::after { opacity: 1; animation: ctaSweep .8s cubic-bezier(.3,.6,.3,1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .read-progress { display: none; }
+  .page-hero .hero-anim > * { opacity: 1; transform: none; animation: none; }
+  .rule-draw, .rule-draw.drawn { transform: none; transition: none; }
+  .plaque:hover { transform: none; }
+  .plaque:hover .price, .plaque:hover .price-words { transform: none; }
+  .plaque:hover::after { animation: none; }
+  .card:hover .card-icon { transform: none; }
+  .stagger > *, .stagger.armed > * { opacity: 1; transform: none; animation: none; }
+  .plaque .btn:hover::after { animation: none; opacity: 0; }
+}
+
+/* ============================================================
+   Scholarship plaques — tactile pass
+   Tia: "make it really stand out." These are engraved plates, so
+   they should behave like metal: tilt under the hand and catch a
+   moving light. Transform is composed from custom properties so
+   the JS tilt and the CSS hover-lift don't overwrite each other.
+   ============================================================ */
+
+.plaque {
+  --lift: 0px;
+  --rx: 0deg;
+  --ry: 0deg;
+  transform: perspective(1100px) translateY(var(--lift)) rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.plaque:hover { --lift: -10px; transform: perspective(1100px) translateY(var(--lift)) rotateX(var(--rx)) rotateY(var(--ry)); }
+
+/* The light that follows the cursor across the plate. */
+.plaque-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .4s ease;
+  background: radial-gradient(
+    380px circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 246, 214, .55) 0%,
+    rgba(255, 240, 200, .22) 32%,
+    rgba(255, 236, 190, 0) 62%);
+  mix-blend-mode: soft-light;
+  z-index: 1;
+}
+
+.plaque:hover .plaque-glow { opacity: 1; }
+
+/* Content sits above the light. */
+.plaque > *:not(.plaque-glow) { position: relative; z-index: 2; }
+
+/* The figure lifts off the plate a little in 3D. */
+.plaque .price,
+.plaque .price-words { transform: translateZ(26px); }
+.plaque:hover .price,
+.plaque:hover .price-words { transform: translateZ(38px) translateY(-3px) scale(1.03); }
+
+/* --- the payoff: gold sweeps across the figure when the count lands --- */
+.countup.landed {
+  background-image: linear-gradient(100deg,
+    currentColor 0%, currentColor 38%,
+    #e8c877 48%, #fff3cf 52%, #e8c877 56%,
+    currentColor 66%, currentColor 100%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: figureShine 1.15s cubic-bezier(.35,.6,.35,1) .1s 1;
+}
+
+@keyframes figureShine {
+  from { background-position: 130% 0; }
+  to   { background-position: -30% 0; }
+}
+
+/* --- section headings rise a word at a time --- */
+.word-rise .w {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(18px);
+}
+.word-rise.run .w {
+  animation: wordUp .62s cubic-bezier(.2,.7,.25,1) forwards;
+}
+@keyframes wordUp { to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .plaque, .plaque:hover { transform: none; }
+  .plaque .price, .plaque .price-words,
+  .plaque:hover .price, .plaque:hover .price-words { transform: none; }
+  .plaque-glow { display: none; }
+  .countup.landed { animation: none; background-image: none; -webkit-text-fill-color: currentColor; }
+  .word-rise .w, .word-rise.run .w { opacity: 1; transform: none; animation: none; }
+}
