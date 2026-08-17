@@ -5519,3 +5519,48 @@ p.fine-print,
   margin-top: 1.05rem;
   line-height: 1.4;
 }
+
+/* The First Step pairing line. Tia: it sat far to the left and didn't read as
+   deliberate. It's an aside about how the two scholarships relate, so it now
+   gets pull-quote treatment — centred, narrower, italic serif, with a short
+   brass rule marking it as a different voice from the body copy. */
+.pair-note {
+  max-width: 38rem;
+  margin: 2.6rem auto 0;
+  text-align: center;
+  position: relative;
+  padding-top: 2rem;
+}
+
+.pair-note::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(193,122,43,0), #c17a2b 26%, #c17a2b 74%, rgba(193,122,43,0));
+}
+
+.pair-note p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.22rem;
+  line-height: 1.62;
+  color: var(--ink-soft);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.pair-note em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--green-deep);
+}
+
+@media (max-width: 640px) {
+  .pair-note { max-width: 92%; padding-top: 1.6rem; }
+  .pair-note p { font-size: 1.08rem; }
+}
