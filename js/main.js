@@ -862,6 +862,21 @@ if (applyModal) {
   var PER = { monthly: "/month", quarterly: "/quarter", annual: "/year" };
   var LABEL = { monthly: "monthly", quarterly: "quarterly", annual: "annually" };
 
+  // Square checkout links, filled in as Tia creates them. Anything left blank
+  // falls back to the enquiry email, so a half-finished set still works.
+  var SQUARE = {
+    Community: {
+      monthly:   "https://square.link/u/5j1qtw6R",
+      quarterly: "",
+      annual:    ""
+    },
+    Member: {
+      monthly:   "",
+      quarterly: "",
+      annual:    ""
+    }
+  };
+
   function mailto(tier, cycle, amount) {
     var subject = "Membership \u2014 " + tier + ", " + LABEL[cycle] + " ($" + amount + ")";
     var body = "Hi Impact team,\n\nI'd like to join Impact as a " + tier +
@@ -889,7 +904,9 @@ if (applyModal) {
       var amount = price.getAttribute("data-" + cycle);
       btn.querySelector(".tj-amt").textContent = "$" + amount;
       btn.querySelector(".tj-per").textContent = PER[cycle];
-      btn.setAttribute("href", mailto(tier, cycle, amount));
+      var link = SQUARE[tier] && SQUARE[tier][cycle];
+      btn.setAttribute("href", link || mailto(tier, cycle, amount));
+      btn.classList.toggle("is-live", !!link);
     });
   }
 
