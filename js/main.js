@@ -866,9 +866,9 @@ if (applyModal) {
   // falls back to the enquiry email, so a half-finished set still works.
   var SQUARE = {
     Community: {
-      monthly:   "https://square.link/u/5j1qtw6R",
-      quarterly: "",
-      annual:    ""
+      monthly:   "https://square.link/u/k6Hprfza",
+      quarterly: "https://square.link/u/k6Hprfza",
+      annual:    "https://square.link/u/k6Hprfza"
     },
     Member: {
       monthly:   "",
