@@ -865,18 +865,18 @@ if (applyModal) {
   // Square checkout links, filled in as Tia creates them. Anything left blank
   // falls back to the enquiry email, so a half-finished set still works.
   var SQUARE = {
-    // Only genuine subscription links belong here. An item-level link that lets the
-    // buyer pick the cycle is NOT recurring — Square reports subscription_only:false
-    // and attaches no plan, so it would charge once and never again.
+    // Every link below verified at the data level: subscription_only:true with a
+    // subscription plan attached, so each one bills recurring. An item-level link
+    // that lets the buyer pick the cycle is NOT recurring - it charges once.
     Community: {
       monthly:   "https://square.link/u/5j1qtw6R",
-      quarterly: "",
-      annual:    ""
+      quarterly: "https://square.link/u/t8YcBW9T",
+      annual:    "https://square.link/u/Yeng6wt4"
     },
     Member: {
-      monthly:   "",
-      quarterly: "",
-      annual:    ""
+      monthly:   "https://square.link/u/JWlKCaiz",
+      quarterly: "https://square.link/u/jNzQ4dqR",
+      annual:    "https://square.link/u/nvLuRmna"
     }
   };
 
