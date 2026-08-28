@@ -5564,3 +5564,42 @@ p.fine-print,
   .pair-note { max-width: 92%; padding-top: 1.6rem; }
   .pair-note p { font-size: 1.08rem; }
 }
+
+/* Scholarship terms — the fine print, readable rather than buried */
+.terms-list {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding-left: 1.4rem;
+  counter-reset: term;
+  list-style: none;
+}
+.terms-list li {
+  position: relative;
+  counter-increment: term;
+  margin-bottom: 1.5rem;
+  padding-left: 2.4rem;
+  font-size: 0.96rem;
+  line-height: 1.68;
+  color: var(--ink-soft);
+}
+.terms-list li::before {
+  content: counter(term);
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: rgba(20, 55, 38, 0.07);
+  color: var(--green-deep);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.terms-list li strong { color: var(--green-deep); }
+@media (max-width: 640px) {
+  .terms-list { padding-left: 0; }
+  .terms-list li { padding-left: 2.1rem; font-size: 0.93rem; }
+}
