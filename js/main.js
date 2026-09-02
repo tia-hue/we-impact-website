@@ -534,16 +534,19 @@ if (applyModal) {
     // filled-in application. Key order here is the row order in the email, so it
     // mirrors the order the applicant answered in.
     // ---- the deadline actually closes the form -------------------------------
-  // Applications close at the end of September 1, 2026, Pacific. Without this
+  // Applications close at the end of September 18, 2026, Pacific. Without this
   // the page keeps saying "open now" and keeps taking submissions forever.
-  const DEADLINE = new Date("2026-09-02T00:00:00-07:00").getTime();
+  // NOTE: this constant is the real switch — the dates in the HTML are only text.
+  // If the deadline moves again, it must be changed here too or the form shuts
+  // itself off on the old date regardless of what every page says.
+  const DEADLINE = new Date("2026-09-19T00:00:00-07:00").getTime();
   function applicationsClosed() {
     return Date.now() >= DEADLINE;
   }
   function closeApplications() {
     document.querySelectorAll(".launch-note").forEach((el) => {
       if (/applications/i.test(el.textContent)) {
-        el.textContent = "Applications closed September 1, 2026";
+        el.textContent = "Applications closed September 18, 2026";
       }
     });
     document.querySelectorAll("[data-apply-open]").forEach((b) => {
