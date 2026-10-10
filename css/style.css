@@ -6051,3 +6051,16 @@ body.gala-bg .cd-label { color: rgba(220, 201, 144, 0.78); }
   #sponsor .sponsor-custom .sponsor-price { margin-bottom: 0.4rem; }
   #sponsor .sponsor-custom .sc-act { margin-top: 0.3rem; }
 }
+
+/* ---- Hero rhythm, now that the venue is two lines ----
+   Measured: date→venue 14px, venue→scholarship 16px. Near-equal gaps meant the
+   date and the venue read as separate things instead of one when-and-where
+   block. Pull the venue up under the date, push the scholarship line away.
+   Target: 12 / 5 inside the venue / 28 out. */
+.page-hero .container > .gala-venue { margin-top: 0.75rem; }
+.page-hero .container > .gala-lead-scholarship { margin-top: 1.75rem; }
+
+@media (max-width: 640px) {
+  .page-hero .container > .gala-venue { margin-top: 0.62rem; }
+  .page-hero .container > .gala-lead-scholarship { margin-top: 1.5rem; }
+}
