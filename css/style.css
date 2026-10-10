@@ -5812,3 +5812,242 @@ p.fine-print,
   .id-node, .id-step-label, .id-hero h1 span.w { opacity: 1; transform: none; animation: none }
   .id-node::after, .tier-grid-3 .tier-featured::after { animation: none; opacity: 0 }
 }
+
+/* =========== Gala sponsorship: legibility on the evening ground, and flair ===========
+   Three things were wrong on the dark gala backdrop, all the same bug: cards and
+   copy written for a light section kept their light-section colours.
+
+   The "Any amount" card was the worst case. Its heading and price computed to
+   rgb(20,55,38) — byte-identical to the backdrop behind them, so they rendered
+   as nothing at all. "Sponsorship inquiries" did the same thing. Measured, not
+   guessed: the ground at that scroll depth is #143726, which IS --green-deep.
+
+   Tia: "the any amount you choose button is a weird green color, it's hidden it
+   goes into the background... Sponsorship inquiries, make that white." */
+
+/* ---- Hero: the room, then the house, on their own lines ---- */
+.page-hero .container > .gala-venue .gv-room,
+.page-hero .container > .gala-venue .gv-house {
+  display: block;
+  /* Letterspacing hangs a trailing space off the last glyph, which drags
+     centred text left by half the tracking. Pad the same amount back. */
+  padding-left: 0.26em;
+}
+
+.page-hero .container > .gala-venue .gv-house {
+  margin-top: 0.46rem;
+  font-size: 0.9em;
+  letter-spacing: 0.3em;
+  padding-left: 0.3em;
+  opacity: 0.92;
+}
+
+@media (max-width: 640px) {
+  .page-hero .container > .gala-venue .gv-house {
+    margin-top: 0.34rem;
+    letter-spacing: 0.19em;
+    padding-left: 0.19em;
+  }
+}
+
+/* ---- Spacing through the sponsorship section ---- */
+#sponsor .section-head { margin-bottom: 2.9rem; }
+#sponsor .sponsor-grid { gap: 1.6rem; }
+
+/* ---- The four named tiers: arrive in sequence, lift on hover ----
+   The reveal observer strips .reveal and .visible 1300ms after a block enters,
+   so nothing here may depend on those classes to STAY applied. Cards are fully
+   visible at rest; the stagger is an animation that runs while .visible is
+   present and lands (360ms of delay + 700ms) well inside that window. */
+.sponsor-grid.reveal { opacity: 1; transform: none; transition: none; }
+
+.sponsor-tier {
+  transition:
+    transform 0.34s cubic-bezier(0.2, 0.65, 0.3, 1),
+    box-shadow 0.34s cubic-bezier(0.2, 0.65, 0.3, 1),
+    border-color 0.34s ease;
+}
+
+.sponsor-tier:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.34);
+  border-color: var(--amber);
+}
+
+@keyframes tierRise {
+  from { opacity: 0; transform: translateY(26px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+.sponsor-grid.visible .sponsor-tier {
+  animation: tierRise 0.7s cubic-bezier(0.2, 0.65, 0.3, 1) both;
+}
+.sponsor-grid.visible .sponsor-tier:nth-child(2) { animation-delay: 0.09s; }
+.sponsor-grid.visible .sponsor-tier:nth-child(3) { animation-delay: 0.18s; }
+.sponsor-grid.visible .sponsor-tier:nth-child(4) { animation-delay: 0.27s; }
+.sponsor-grid.visible .sponsor-tier:nth-child(5) { animation-delay: 0.36s; }
+
+/* Light travelling across the Presenting card, the way it moves across foil.
+   No overflow:hidden here — the "One available" flag sits outside the box. */
+.sponsor-headline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(104deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.5) 49%,
+    rgba(255, 255, 255, 0) 58%);
+  background-size: 240% 100%;
+  background-repeat: no-repeat;
+  animation: tierSheen 7.5s ease-in-out 1.4s infinite;
+}
+
+@keyframes tierSheen {
+  0%        { background-position: 150% 0; }
+  20%, 100% { background-position: -60% 0; }
+}
+
+.sponsor-flag { animation: flagPulse 3.6s ease-in-out infinite; }
+
+@keyframes flagPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 201, 144, 0.5); }
+  55%      { box-shadow: 0 0 0 8px rgba(220, 201, 144, 0); }
+}
+
+/* ---- "Any amount": across the whole box, and actually visible ----
+   Tia: "the spacing of any amount you choose is really odd, it needs to go
+   across that entire box." It now spans the grid and reads left to right:
+   what it is, what you get, how to give. */
+.sponsor-custom {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.85fr) minmax(0, 1.6fr) minmax(13rem, 0.95fr);
+  gap: 1.1rem 2.2rem;
+  align-items: center;
+  padding: 1.7rem 1.9rem;
+}
+
+.sponsor-custom .sc-head { text-align: left; }
+.sponsor-custom .sponsor-price { margin-bottom: 0; }
+.sponsor-custom ul { margin: 0; }
+.sponsor-custom li:last-child { margin-bottom: 0; }
+.sponsor-custom .sponsor-btn { margin-top: 0; }
+.sponsor-custom:hover { transform: none; box-shadow: none; }
+
+@media (max-width: 780px) {
+  .sponsor-custom {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: start;
+    padding: 1.6rem 1.4rem;
+  }
+  .sponsor-custom .sponsor-price { margin-bottom: 0.4rem; }
+}
+
+body.gala-bg .sponsor-custom {
+  border-color: rgba(220, 201, 144, 0.45);
+  background: rgba(220, 201, 144, 0.05);
+}
+body.gala-bg .sponsor-custom h3 { color: var(--paper); }
+body.gala-bg .sponsor-custom .sponsor-price { color: var(--gala-gold-mid); }
+body.gala-bg .sponsor-custom li { color: rgba(250, 246, 236, 0.82); }
+body.gala-bg .sponsor-custom li::before { background: var(--gala-gold-mid); opacity: 0.9; }
+body.gala-bg .sponsor-custom .sponsor-ask { color: rgba(250, 246, 236, 0.7); }
+body.gala-bg .sponsor-custom .sponsor-ask:hover { color: var(--gala-gold-mid); }
+
+body.gala-bg .sponsor-custom .btn-outline {
+  border: 1.5px solid var(--gala-gold-mid);
+  background: rgba(220, 201, 144, 0.13);
+  color: var(--paper);
+}
+body.gala-bg .sponsor-custom .btn-outline:hover {
+  background: var(--gala-gold);
+  border-color: var(--gala-gold);
+  color: #102b1d;
+}
+
+/* ---- The enquiry block under the tiers ---- */
+body.gala-bg #sponsor .contact-label { color: var(--paper); }
+body.gala-bg #sponsor .contact-bits a { color: var(--gala-gold-mid); }
+body.gala-bg #sponsor .contact-bits a:hover { color: var(--paper); }
+body.gala-bg #sponsor .contact-or { color: rgba(250, 246, 236, 0.6); }
+body.gala-bg #sponsor .fine-print { color: rgba(250, 246, 236, 0.62); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sponsor-grid.visible .sponsor-tier { animation: none; }
+  .sponsor-headline::after { animation: none; opacity: 0; }
+  .sponsor-flag { animation: none; }
+  .sponsor-tier:hover { transform: none; }
+}
+
+/* ---- The rest of the gala page, same dark-ground bug ----
+   Found by walking every text node on the page and compositing its colour
+   against the backdrop behind it. Three blocks were written for a light
+   section and never re-coloured for the evening theme. */
+
+/* "Free for members" was --logo-green on the backdrop: 1.58:1. It is the
+   payoff of that whole line, so it gets the brightest value, not the dimmest. */
+body.gala-bg .gala-free { color: var(--paper); }
+
+/* The seat-rules box — the block that tells someone their seat may already be
+   paid for. Every label in it was invisible. */
+body.gala-bg .gala-member-note {
+  background: rgba(220, 201, 144, 0.06);
+  border-color: rgba(220, 201, 144, 0.3);
+}
+body.gala-bg .gala-member-label { color: var(--gala-gold-mid); }
+body.gala-bg .gala-seat-rules li { color: rgba(250, 246, 236, 0.84); }
+body.gala-bg .gala-seat-rules li strong { color: var(--paper); }
+body.gala-bg .gala-seat-rules li::before { background: var(--gala-gold-mid); opacity: 0.9; }
+body.gala-bg .gala-member-note > p { color: rgba(250, 246, 236, 0.75); }
+body.gala-bg .gala-member-note > p strong { color: var(--gala-gold-mid); }
+
+/* Countdown labels sat at 3.49:1 — legible, but under the small-text bar. */
+body.gala-bg .cd-label { color: rgba(220, 201, 144, 0.78); }
+
+/* ---- Tier grid: a pyramid, with no hole in it ----
+   Moving "Any amount" to full width left Friend of Impact orphaned in a
+   two-column row with dead space beside it. Three across for the lower tiers
+   closes that and reads as a ladder: one headline, three levels, one open door. */
+#sponsor .sponsor-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 64rem;
+}
+
+#sponsor .sponsor-headline,
+#sponsor .sponsor-custom { grid-column: 1 / -1; }
+
+/* Two cards in a three-column row would orphan one, so go straight to a
+   single column below the point where three stop fitting. */
+@media (max-width: 980px) {
+  #sponsor .sponsor-grid {
+    grid-template-columns: 1fr;
+    max-width: 30rem;
+  }
+}
+
+/* The close: button, then who to call, then the tax line. It was drifting. */
+#sponsor .contact-line { margin-top: 1.1rem !important; }
+#sponsor .fine-print { margin-top: 0.8rem !important; max-width: 46rem; margin-left: auto; margin-right: auto; }
+
+/* Equal-height tiers so the three CTAs land on one line. The bullet list takes
+   up the slack, which is why the buttons were drifting before. */
+#sponsor .sponsor-grid { align-items: stretch; }
+#sponsor .sponsor-tier:not(.sponsor-custom) { display: flex; flex-direction: column; }
+#sponsor .sponsor-tier:not(.sponsor-custom) ul { flex: 1 1 auto; }
+
+/* The grid drops to one column at 980px, so the open-tier card has to collapse
+   at the same point — otherwise its three columns get squeezed into a 30rem box
+   between 781px and 980px. */
+@media (max-width: 980px) {
+  #sponsor .sponsor-custom {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: start;
+    padding: 1.6rem 1.4rem;
+  }
+  #sponsor .sponsor-custom .sponsor-price { margin-bottom: 0.4rem; }
+  #sponsor .sponsor-custom .sc-act { margin-top: 0.3rem; }
+}
