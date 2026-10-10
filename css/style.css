@@ -6058,9 +6058,17 @@ body.gala-bg .cd-label { color: rgba(220, 201, 144, 0.78); }
    block. Pull the venue up under the date, push the scholarship line away.
    Target: 12 / 5 inside the venue / 28 out. */
 .page-hero .container > .gala-venue { margin-top: 0.75rem; }
-.page-hero .container > .gala-lead-scholarship { margin-top: 1.75rem; }
 
 @media (max-width: 640px) {
   .page-hero .container > .gala-venue { margin-top: 0.62rem; }
-  .page-hero .container > .gala-lead-scholarship { margin-top: 1.5rem; }
+}
+
+/* The scholarship line's gap is set by `body.gala-bg .page-hero
+   p.gala-lead-scholarship` — class+element, and more specific than anything
+   written on the class alone. The same trap is already documented at that
+   rule. Matching its selector is the only way to move this, and the clamp is
+   what needs changing: 3.4vw floors out at 16px on a phone while desktop gets
+   the full 30px, which is why the gap only looked wrong on mobile. */
+body.gala-bg .page-hero p.gala-lead-scholarship {
+  margin-top: clamp(24px, 3.4vw, 30px);
 }
