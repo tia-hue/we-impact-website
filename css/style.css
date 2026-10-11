@@ -5890,16 +5890,16 @@ p.fine-print,
    .visible 1300ms after a block enters, and anything still animating then snaps
    to its end state. 0.86s + 0.36s of stagger = 1.22s, which fits. Do not
    lengthen either number without changing that timeout. */
-@keyframes tierPopGlow {
+@keyframes tierIlluminate {
   0% {
     opacity: 0;
-    transform: scale(0.9) translateY(16px);
+    transform: translateY(14px);
     box-shadow: 0 0 0 0 rgba(220, 201, 144, 0), var(--shadow-soft);
   }
-  48% {
+  42% {
     opacity: 1;
     transform: none;
-    box-shadow: 0 0 56px 7px rgba(220, 201, 144, 0.58), var(--shadow-soft);
+    box-shadow: 0 0 58px 8px rgba(220, 201, 144, 0.62), var(--shadow-soft);
   }
   100% {
     opacity: 1;
@@ -5909,12 +5909,12 @@ p.fine-print,
 }
 
 .sponsor-grid.visible .sponsor-tier {
-  animation: tierPopGlow 0.86s cubic-bezier(0.22, 1.1, 0.36, 1) both;
+  animation: tierIlluminate 0.95s cubic-bezier(0.2, 0.65, 0.3, 1) both;
 }
-.sponsor-grid.visible .sponsor-tier:nth-child(2) { animation-delay: 0.09s; }
-.sponsor-grid.visible .sponsor-tier:nth-child(3) { animation-delay: 0.18s; }
-.sponsor-grid.visible .sponsor-tier:nth-child(4) { animation-delay: 0.27s; }
-.sponsor-grid.visible .sponsor-tier:nth-child(5) { animation-delay: 0.36s; }
+.sponsor-grid.visible .sponsor-tier:nth-child(2) { animation-delay: 0.07s; }
+.sponsor-grid.visible .sponsor-tier:nth-child(3) { animation-delay: 0.14s; }
+.sponsor-grid.visible .sponsor-tier:nth-child(4) { animation-delay: 0.21s; }
+.sponsor-grid.visible .sponsor-tier:nth-child(5) { animation-delay: 0.28s; }
 
 
 .sponsor-flag { animation: flagPulse 3.6s ease-in-out infinite; }
@@ -6079,3 +6079,9 @@ body.gala-bg .cd-label { color: rgba(220, 201, 144, 0.78); }
 body.gala-bg .page-hero p.gala-lead-scholarship {
   margin-top: clamp(24px, 3.4vw, 30px);
 }
+
+
+/* The venue band reads as two lines, the room above the house. */
+.verse blockquote .vb-room,
+.verse blockquote .vb-house { display: block; }
+.verse blockquote .vb-house { margin-top: 0.12em; }
