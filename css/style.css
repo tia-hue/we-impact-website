@@ -5887,27 +5887,6 @@ p.fine-print,
 .sponsor-grid.visible .sponsor-tier:nth-child(4) { animation-delay: 0.27s; }
 .sponsor-grid.visible .sponsor-tier:nth-child(5) { animation-delay: 0.36s; }
 
-/* Light travelling across the Presenting card, the way it moves across foil.
-   No overflow:hidden here — the "One available" flag sits outside the box. */
-.sponsor-headline::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(104deg,
-    rgba(255, 255, 255, 0) 40%,
-    rgba(255, 255, 255, 0.5) 49%,
-    rgba(255, 255, 255, 0) 58%);
-  background-size: 240% 100%;
-  background-repeat: no-repeat;
-  animation: tierSheen 7.5s ease-in-out 1.4s infinite;
-}
-
-@keyframes tierSheen {
-  0%        { background-position: 150% 0; }
-  20%, 100% { background-position: -60% 0; }
-}
 
 .sponsor-flag { animation: flagPulse 3.6s ease-in-out infinite; }
 
@@ -5977,7 +5956,6 @@ body.gala-bg #sponsor .fine-print { color: rgba(250, 246, 236, 0.62); }
 
 @media (prefers-reduced-motion: reduce) {
   .sponsor-grid.visible .sponsor-tier { animation: none; }
-  .sponsor-headline::after { animation: none; opacity: 0; }
   .sponsor-flag { animation: none; }
   .sponsor-tier:hover { transform: none; }
 }
