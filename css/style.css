@@ -5874,13 +5874,42 @@ p.fine-print,
   border-color: var(--amber);
 }
 
-@keyframes tierRise {
-  from { opacity: 0; transform: translateY(26px) scale(0.985); }
-  to   { opacity: 1; transform: none; }
+/* Each card pops in and is lit from behind as it lands, one after another.
+   The glow is an animated box-shadow on the card itself. A pseudo-element at
+   z-index:-1 looks right in theory and renders as nothing: it drops out of the
+   section's stacking context and the body gradient paints over it. It measured
+   at full opacity while being invisible on screen.
+
+   NAME IT UNIQUELY. A later @keyframes block with an existing name wins
+   document-wide, silently. A `tierRise` here was overriding the one the
+   membership and Impact Days tier grids use, and a `tierSheen` here had already
+   killed their sweep outright. Check `grep -c '@keyframes <name>'` before
+   adding one.
+
+   TIMING IS CONSTRAINED. The reveal observer in js/main.js removes .reveal and
+   .visible 1300ms after a block enters, and anything still animating then snaps
+   to its end state. 0.86s + 0.36s of stagger = 1.22s, which fits. Do not
+   lengthen either number without changing that timeout. */
+@keyframes tierPopGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(16px);
+    box-shadow: 0 0 0 0 rgba(220, 201, 144, 0), var(--shadow-soft);
+  }
+  48% {
+    opacity: 1;
+    transform: none;
+    box-shadow: 0 0 56px 7px rgba(220, 201, 144, 0.58), var(--shadow-soft);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    box-shadow: 0 0 0 0 rgba(220, 201, 144, 0), var(--shadow-soft);
+  }
 }
 
 .sponsor-grid.visible .sponsor-tier {
-  animation: tierRise 0.7s cubic-bezier(0.2, 0.65, 0.3, 1) both;
+  animation: tierPopGlow 0.86s cubic-bezier(0.22, 1.1, 0.36, 1) both;
 }
 .sponsor-grid.visible .sponsor-tier:nth-child(2) { animation-delay: 0.09s; }
 .sponsor-grid.visible .sponsor-tier:nth-child(3) { animation-delay: 0.18s; }
