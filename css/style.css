@@ -6085,3 +6085,14 @@ body.gala-bg .page-hero p.gala-lead-scholarship {
 .verse blockquote .vb-room,
 .verse blockquote .vb-house { display: block; }
 .verse blockquote .vb-house { margin-top: 0.12em; }
+
+
+/* The founder portrait, lifted. Tia: head should reach the apex of the arch,
+   not sit under a crown of empty wall. Nothing is edited into the photograph —
+   this only chooses which part of the frame shows. */
+.founder-photo .photo-frame { aspect-ratio: 330 / 455; }
+.founder-photo .photo-frame img {
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 6%;
+}
