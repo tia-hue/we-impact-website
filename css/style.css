@@ -6096,3 +6096,47 @@ body.gala-bg .page-hero p.gala-lead-scholarship {
   object-fit: cover;
   object-position: 50% 6%;
 }
+
+
+/* ---- Individual gala seat: a full-width band, not a fourth column --------
+   As a plain .sponsor-tier it became a fourth card in a three-across row, so
+   it dropped onto its own line at a third of the width and read as an
+   afterthought. Tia asked for it to stand out and keep its own box, so it
+   spans the grid: price left, what is included in the middle, checkout right.
+   It sits under Friend of Impact and above "Any amount". ------------------- */
+#sponsor .sponsor-tier.sponsor-seat {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 14rem minmax(0, 1fr) 13.5rem;
+  gap: 2rem;
+  align-items: center;
+  border: 2px solid var(--green-deep);
+  background: linear-gradient(150deg, #ffffff 0%, #f1f6f1 100%);
+  padding: 1.9rem 1.8rem;
+}
+#sponsor .sponsor-tier.sponsor-seat h3 { margin: 0; }
+#sponsor .sponsor-tier.sponsor-seat .sponsor-price {
+  font-size: 2.9rem;
+  line-height: 1;
+  color: var(--green-deep);
+  margin-top: 0.3rem;
+}
+#sponsor .sponsor-tier.sponsor-seat .ss-note {
+  margin: 0.55rem 0 0;
+  font-family: var(--sans);
+  font-size: 0.86rem;
+  color: var(--green);
+}
+#sponsor .sponsor-tier.sponsor-seat ul { margin: 0; columns: 2; column-gap: 1.8rem; }
+#sponsor .sponsor-tier.sponsor-seat ul li { break-inside: avoid; margin-top: 0; }
+#sponsor .sponsor-tier.sponsor-seat .ss-act { display: flex; flex-direction: column; gap: 0.55rem; }
+#sponsor .sponsor-tier.sponsor-seat .ss-act .sponsor-ask { margin-top: 0; text-align: center; }
+
+@media (max-width: 980px) {
+  #sponsor .sponsor-tier.sponsor-seat {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    padding: 1.6rem 1.4rem;
+  }
+  #sponsor .sponsor-tier.sponsor-seat ul { columns: 1; }
+}
