@@ -6192,3 +6192,161 @@ body.gala-bg .page-hero p.gala-lead-scholarship {
 body.gala-bg #sponsor .press-line { color: rgba(250, 246, 236, 0.72); }
 body.gala-bg #sponsor .press-line a { color: rgba(250, 246, 236, 0.95); text-decoration: underline; }
 body.gala-bg #sponsor .press-line a:hover { color: #fff; }
+
+
+/* =========================================================
+   PRESS & MEDIA PAGE  (press.html)
+   ========================================================= */
+.press-hero { padding-bottom: 3.2rem; }
+.press-hero h1 { margin-bottom: 0.7rem; }
+.press-hero > .container > p { max-width: 46rem; margin: 0 auto; }
+
+/* the contact card is the point of the page — it is the loudest thing on it */
+.press-card {
+  margin: 2.6rem auto 0;
+  max-width: 44rem;
+  background: var(--green-deep);
+  color: var(--paper);
+  border-radius: var(--radius);
+  padding: 2.4rem 2rem 2.2rem;
+  text-align: center;
+  box-shadow: var(--shadow-lift);
+  border: 1px solid rgba(233, 184, 114, 0.35);
+}
+.press-card-label {
+  display: inline-block;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber-soft);
+  margin-bottom: 0.9rem;
+}
+/* .page-hero p is (0,1,1) and was beating these bare classes, so the name rendered
+   dark green on dark green. Qualified to (0,3,0) so the dark card wins. */
+.press-hero .press-card .press-card-name {
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 4.4vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--paper);
+  margin: 0 auto 0.35rem;
+  max-width: none;
+}
+.press-hero .press-card .press-card-role {
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(250, 246, 236, 0.55);
+  margin: 0 auto 1.4rem;
+  max-width: none;
+}
+.press-card-mail {
+  display: inline-block;
+  font-size: clamp(1.02rem, 2.6vw, 1.22rem);
+  font-weight: 600;
+  color: var(--paper);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-color: rgba(233, 184, 114, 0.6);
+  word-break: break-word;
+}
+.press-card-mail:hover { color: #fff; text-decoration-color: var(--amber-soft); }
+.press-card-ctas {
+  display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;
+  margin-top: 1.7rem;
+}
+.press-card-ctas .btn-primary {
+  background: var(--amber-soft);
+  color: var(--green-deep);
+  border-color: var(--amber-soft);
+}
+.press-card-ctas .btn-primary:hover { background: #f2c98c; border-color: #f2c98c; color: var(--green-deep); }
+.press-card-ctas .btn-outline { border-color: rgba(250,246,236,.5); color: var(--paper); background: transparent; }
+.press-card-ctas .btn-outline:hover { background: rgba(250,246,236,.12); border-color: var(--paper); }
+
+.press-roles {
+  display: grid; gap: 1.4rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+.press-role {
+  background: #fff;
+  border: 1px solid rgba(34, 102, 68, 0.14);
+  border-radius: var(--radius);
+  padding: 1.9rem 1.7rem;
+  box-shadow: var(--shadow-soft);
+}
+.press-role h3 {
+  font-family: var(--serif); font-weight: 500; font-size: 1.32rem;
+  color: var(--green-deep); margin-bottom: 0.6rem;
+}
+.press-role p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 1rem; }
+.press-role a { font-weight: 600; font-size: 0.9rem; color: var(--green-dark);
+  text-decoration: underline; text-underline-offset: 3px; }
+.press-role a:hover { color: var(--green-deep); }
+
+.press-facts {
+  display: grid; gap: 0 2.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  margin: 2.4rem 0 2.6rem;
+  border-top: 1px solid var(--line);
+}
+.press-facts > div {
+  display: flex; justify-content: space-between; gap: 1.2rem;
+  padding: 0.85rem 0; border-bottom: 1px solid var(--line);
+}
+.press-facts dt {
+  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-faint); white-space: nowrap; padding-top: 0.18rem;
+}
+.press-facts dd { font-size: 0.98rem; color: var(--ink); text-align: right; font-weight: 500; }
+
+.press-boiler { max-width: 46rem; }
+.press-boiler h3 {
+  font-family: var(--serif); font-weight: 500; font-size: 1.45rem;
+  color: var(--green-deep); margin-bottom: 0.8rem;
+}
+.press-boiler p { color: var(--ink-soft); margin-bottom: 1.1rem; }
+.press-quote {
+  font-family: var(--serif); font-style: italic; font-size: 1.18rem; line-height: 1.6;
+  color: var(--green-deep); border-left: 3px solid var(--amber-soft);
+  padding-left: 1.2rem; margin-top: 1.6rem;
+}
+.press-attr {
+  font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-faint); padding-left: 1.2rem;
+}
+.press-closing .btn-lg { font-size: 1.02rem; padding: 1rem 2.2rem; }
+
+@media (max-width: 640px) {
+  .press-card { padding: 2rem 1.3rem 1.8rem; }
+  .press-card-ctas .btn { width: 100%; }
+  .press-facts > div { flex-direction: column; gap: 0.2rem; }
+  .press-facts dd { text-align: left; }
+}
+
+/* =========== Homepage press band =========== */
+.press-band { background: var(--green-deep); color: var(--paper); }
+.press-band .container {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 2rem; flex-wrap: wrap;
+}
+.press-band-text { flex: 1 1 22rem; }
+.press-band .eyebrow { color: var(--amber-soft); }
+.press-band h2 {
+  font-family: var(--serif); font-weight: 500; font-size: clamp(1.5rem, 3.4vw, 2rem);
+  color: var(--paper); margin: 0.35rem 0 0.5rem; line-height: 1.2;
+}
+.press-band p { color: rgba(250, 246, 236, 0.72); font-size: 0.97rem; max-width: 34rem; }
+.press-band p strong { color: var(--paper); font-weight: 600; }
+.press-band-cta { flex: 0 0 auto; text-align: right; }
+.press-band-cta .btn { white-space: nowrap; }
+.press-band-mail {
+  display: block; margin-top: 0.7rem; font-size: 0.88rem;
+  color: rgba(250, 246, 236, 0.75); text-decoration: underline; text-underline-offset: 3px;
+}
+.press-band-mail:hover { color: var(--paper); }
+@media (max-width: 760px) {
+  .press-band .container { flex-direction: column; align-items: flex-start; }
+  .press-band-cta { text-align: left; width: 100%; }
+  .press-band-cta .btn { width: 100%; }
+}
