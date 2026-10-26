@@ -6140,3 +6140,55 @@ body.gala-bg .page-hero p.gala-lead-scholarship {
   }
   #sponsor .sponsor-tier.sponsor-seat ul { columns: 1; }
 }
+
+
+/* =========== Media & press contact (Sharifah Hardie) =========== */
+.footer-links .footer-press {
+  flex-basis: 100%;
+  font-size: 0.85rem;
+  color: rgba(250, 248, 243, 0.55);
+  margin-top: 0.3rem;
+}
+.footer-links .footer-press a { color: rgba(250, 248, 243, 0.78); }
+.footer-links .footer-press a:hover { color: var(--cream); }
+
+/* the press block sits inside .aside-card, which is a dark green ground — it takes the
+   same light treatment the card already gives .email-line, not the light-ground colours */
+.press-contact {
+  margin-top: 1.5rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid rgba(250, 248, 243, 0.18);
+}
+.press-contact h4 {
+  font-size: 0.70rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-soft);
+  margin-bottom: 0.5rem;
+}
+.aside-card .press-contact p {
+  font-size: 0.88rem;
+  color: rgba(250, 248, 243, 0.72);
+  margin-bottom: 0.5rem;
+}
+.aside-card .press-contact p strong { color: var(--cream); font-weight: 600; }
+.press-contact a {
+  font-weight: 600;
+  word-break: break-word;
+  color: var(--cream);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.press-contact a:hover { color: #fff; }
+
+.press-line {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin-top: 0.9rem;
+}
+
+/* press line sits on the dark gala ground in #sponsor, so it needs the light treatment
+   the same way .fine-print already does */
+body.gala-bg #sponsor .press-line { color: rgba(250, 246, 236, 0.72); }
+body.gala-bg #sponsor .press-line a { color: rgba(250, 246, 236, 0.95); text-decoration: underline; }
+body.gala-bg #sponsor .press-line a:hover { color: #fff; }
