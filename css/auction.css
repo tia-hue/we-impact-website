@@ -1,0 +1,1120 @@
+/* =====================================================
+   Silent Auction (auction.html) — page-scoped styles.
+   Sits on top of style.css and the body.gala-bg evening theme.
+   Shared files stay untouched; everything here is scoped to
+   body.auction-page (or to classes only this page uses) so it
+   cannot leak onto other pages.
+   Playfair defaults to oldstyle figures, so every Playfair
+   number on this page is forced to lining figures.
+
+   Two layers:
+     1. Layout and rest state. Complete and readable on its own,
+        with no JS and with reduced motion.
+     2. Motion (bottom of file). Lives entirely inside
+        @media (prefers-reduced-motion: no-preference), and only
+        hides content under html.js, which an inline script in
+        <head> sets and withdraws if js/auction.js never arrives.
+        In-view sequences key off .au-in, which js/auction.js adds
+        and never removes (main.js's .reveal observer strips its
+        classes after 1300ms, too soon for these).
+
+   Keyframe names all start with "au" so none can override a
+   keyframe of the same name in style.css.
+   ===================================================== */
+
+body.auction-page {
+  --au-gold: #c2a962;
+  --au-gold-mid: #dcc990;
+  --au-gold-pale: #f0e6c5;
+  --au-hair: rgba(220, 201, 144, 0.28);
+  --au-hair-soft: rgba(220, 201, 144, 0.16);
+  --au-text: rgba(250, 246, 236, 0.84);
+  --au-text-soft: rgba(250, 246, 236, 0.66);
+  --au-ink: #0e2418;
+  --au-ease: cubic-bezier(.2, .7, .2, 1);
+
+  /* One spacing scale for the whole page */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 96px;
+}
+
+body.auction-page .page-hero,
+body.auction-page .lot,
+body.auction-page .glance,
+body.auction-page .how {
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
+}
+
+/* Headings balance, leads avoid widows */
+body.auction-page h1,
+body.auction-page h2,
+body.auction-page h3 { text-wrap: balance; }
+body.auction-page .lot-lead,
+body.auction-page .lot-list li,
+body.auction-page .lot-notes li,
+body.auction-page .how-steps p,
+body.auction-page .how-benefit,
+body.auction-page .au-fine { text-wrap: pretty; }
+/* centred leads read better balanced */
+body.auction-page .auction-lead,
+body.auction-page .au-cta-lead { text-wrap: balance; }
+
+/* Keyboard focus in champagne gold (the shared default is the orange amber) */
+body.auction-page :focus-visible {
+  outline: 1.5px solid var(--au-gold-mid);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+body.auction-page .btn:focus-visible { border-radius: 999px; outline-offset: 4px; }
+
+/* One easing for every hover on the page */
+body.auction-page .btn {
+  transition:
+    transform 0.4s var(--au-ease),
+    box-shadow 0.4s var(--au-ease),
+    background-color 0.4s var(--au-ease),
+    border-color 0.4s var(--au-ease),
+    color 0.4s var(--au-ease);
+}
+
+/* ---------- Hero ---------- */
+body.auction-page .auction-hero { padding: var(--sp-8) 0 var(--sp-7); }
+
+body.gala-bg.auction-page .page-hero h1 {
+  font-size: clamp(40px, 9.6vw, 64px);
+  margin-bottom: var(--sp-4);
+}
+
+body.gala-bg.auction-page .page-hero p.auction-lead {
+  font-family: var(--sans);
+  font-size: clamp(16px, 4.2vw, 19px);
+  line-height: 1.6;
+  color: var(--au-text);
+  max-width: 34rem;
+  margin: var(--sp-5) auto 0;
+}
+
+body.gala-bg.auction-page .page-hero p.gala-lead-scholarship {
+  font-size: clamp(20px, 5vw, 30px);
+  margin-top: var(--sp-5);
+}
+
+body.auction-page .gala-lead-scholarship a {
+  color: var(--au-gold-mid);
+  border-bottom: 1px solid rgba(220, 201, 144, 0.4);
+  transition: border-color 0.4s var(--au-ease), color 0.4s var(--au-ease);
+}
+
+body.auction-page .auction-hero .gala-ctas { margin-top: var(--sp-6); }
+
+@media (min-width: 960px) {
+  body.auction-page .auction-hero { padding: var(--sp-9) 0 var(--sp-8); }
+}
+
+@media (max-width: 480px) {
+  body.auction-page .auction-hero .gala-ctas { flex-direction: column; align-items: stretch; max-width: 320px; margin-left: auto; margin-right: auto; }
+}
+
+/* Primary button: a champagne sheen that sweeps across it. It sits between
+   the button's fill and its label (z-index -1 inside an isolated button), so
+   the label never washes out. Rest state: parked off the left edge. */
+body.auction-page .gala-ctas .btn-primary {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+body.auction-page .gala-ctas .btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(105deg,
+    rgba(255, 250, 235, 0) 28%,
+    rgba(255, 250, 235, 0.38) 44%,
+    rgba(255, 255, 250, 0.75) 50%,
+    rgba(255, 250, 235, 0.38) 56%,
+    rgba(255, 250, 235, 0) 72%);
+  transform: translateX(-125%);
+  transition: none;
+}
+
+/* ---------- At a glance: six thumbnails ---------- */
+body.auction-page .glance { padding: var(--sp-5) 0 var(--sp-8); }
+
+.glance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-5) var(--sp-4);
+  list-style: none;
+}
+
+.glance-grid a {
+  display: block;
+  color: inherit;
+  border-radius: 3px;
+}
+
+.glance-grid figure {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--au-hair);
+  border-radius: 3px;
+  background: var(--au-ink);
+}
+
+.glance-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform 0.9s var(--au-ease);
+}
+
+/* The hairline frame: top/bottom rules (::before) and side rules (::after),
+   each drawn out from the centre by a scale transform. Hidden at rest. */
+.glance-grid figure::before,
+.glance-grid figure::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.7s var(--au-ease), opacity 0.35s var(--au-ease);
+}
+.glance-grid figure::before {
+  border-top: 1px solid rgba(240, 230, 197, 0.92);
+  border-bottom: 1px solid rgba(240, 230, 197, 0.92);
+  transform: scaleX(0);
+}
+.glance-grid figure::after {
+  border-left: 1px solid rgba(240, 230, 197, 0.92);
+  border-right: 1px solid rgba(240, 230, 197, 0.92);
+  transform: scaleY(0);
+  transition-delay: 0.08s;
+  box-shadow: inset 0 0 40px rgba(8, 22, 14, 0.28);
+}
+
+.glance-name {
+  display: block;
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--paper);
+  text-wrap: balance;
+  margin-top: var(--sp-3);
+  transition: transform 0.6s var(--au-ease);
+}
+
+.glance-val {
+  display: block;
+  font-family: "Montserrat", var(--sans);
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--au-gold-pale);
+  opacity: 0.72;
+  margin-top: var(--sp-1);
+  transition: opacity 0.6s var(--au-ease), transform 0.6s var(--au-ease);
+}
+
+/* Hover (real pointers only, so a tap goes straight to the link with no
+   stuck state), keyboard focus, and .is-hover (forced, for review stills) */
+@media (hover: hover) {
+  .glance-grid a:hover img { transform: scale(1.06); }
+  .glance-grid a:hover figure::before,
+  .glance-grid a:hover figure::after { opacity: 1; transform: none; }
+  .glance-grid a:hover .glance-name { transform: translateY(-3px); }
+  .glance-grid a:hover .glance-val { opacity: 1; transform: translateY(-2px); }
+}
+.glance-grid a:focus-visible img,
+.glance-grid a.is-hover img { transform: scale(1.06); }
+.glance-grid a:focus-visible figure::before,
+.glance-grid a:focus-visible figure::after,
+.glance-grid a.is-hover figure::before,
+.glance-grid a.is-hover figure::after { opacity: 1; transform: none; }
+.glance-grid a:focus-visible .glance-name,
+.glance-grid a.is-hover .glance-name { transform: translateY(-3px); }
+.glance-grid a:focus-visible .glance-val,
+.glance-grid a.is-hover .glance-val { opacity: 1; transform: translateY(-2px); }
+body.auction-page .glance-grid a:focus-visible { outline-offset: 6px; }
+
+@media (min-width: 760px) {
+  .glance-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-6) var(--sp-5); }
+  .glance-name { font-size: 19px; }
+  .glance-val { font-size: 11px; }
+}
+
+@media (min-width: 960px) {
+  body.auction-page .glance { padding: var(--sp-6) 0 var(--sp-9); }
+}
+
+/* ---------- Section heading ---------- */
+.au-head { text-align: center; margin-bottom: var(--sp-6); }
+.au-head .eyebrow { margin-bottom: var(--sp-3); }
+body.gala-bg.auction-page .au-head h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(28px, 6.4vw, 44px);
+  line-height: 1.18;
+  color: var(--paper);
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 960px) {
+  .lots .au-head { margin-bottom: var(--sp-7); }
+}
+
+/* ---------- The lots ---------- */
+body.auction-page .lots { padding: 0 0 var(--sp-7); }
+
+.lot {
+  border: 1px solid var(--au-hair);
+  border-radius: 4px;
+  background: rgba(250, 246, 236, 0.035);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+  margin-bottom: var(--sp-6);
+  scroll-margin-top: 84px;
+}
+
+.lot:last-child { margin-bottom: 0; }
+
+.lot-media { margin: 0; }
+
+/* The hero photo sits in a frame so it can be unveiled and drift inside it */
+.lot-frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--au-ink);
+}
+
+.lot-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--au-ink);
+}
+
+.lot-gallery {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.lot-gallery img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+  background: var(--au-ink);
+  opacity: 0.86;
+  outline: 1px solid rgba(220, 201, 144, 0);
+  outline-offset: -1px;
+  transition:
+    transform 0.6s var(--au-ease),
+    opacity 0.6s var(--au-ease),
+    outline-color 0.6s var(--au-ease),
+    box-shadow 0.6s var(--au-ease);
+}
+
+.lot-gallery img:only-child { aspect-ratio: 16 / 7; }
+
+@media (hover: hover) {
+  .lot-gallery img:hover {
+    transform: translateY(-3px);
+    opacity: 1;
+    outline-color: rgba(220, 201, 144, 0.9);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+  }
+}
+.lot-gallery img.is-hover {
+  transform: translateY(-3px);
+  opacity: 1;
+  outline-color: rgba(220, 201, 144, 0.9);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+}
+
+.lot-body { padding: var(--sp-6) var(--sp-5); }
+
+/* Emblem + lot number: an engraved crest above the title */
+.lot-crest {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.lot-emblem {
+  flex: 0 0 auto;
+  display: block;
+  width: 56px;
+  height: 56px;
+  color: var(--au-gold-mid);
+  overflow: visible;
+}
+.lot-emblem .le-ring { stroke: var(--au-gold); opacity: 0.6; }
+
+.lot-no {
+  font-family: "Montserrat", var(--sans);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--au-gold);
+  margin: 0;
+  padding-left: var(--sp-4);
+  border-left: 1px solid var(--au-hair);
+  line-height: 28px;
+}
+
+body.gala-bg.auction-page .lot-name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(28px, 7.4vw, 40px);
+  line-height: 1.12;
+  color: var(--paper);
+  letter-spacing: -0.01em;
+}
+
+.lot-name .lot-sub {
+  display: block;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.62em;
+  color: var(--au-gold-mid);
+  margin-top: var(--sp-2);
+  letter-spacing: 0;
+}
+
+.lot-place {
+  font-family: "Montserrat", var(--sans);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--au-text-soft);
+  margin-top: var(--sp-3);
+}
+
+.lot-rule {
+  width: 64px;
+  height: 1px;
+  margin: var(--sp-5) 0;
+  background: linear-gradient(90deg, var(--au-gold), rgba(194, 169, 98, 0));
+  transform-origin: left center;
+}
+
+.lot-value {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.lot-value .lv-label {
+  font-family: "Montserrat", var(--sans);
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--au-gold);
+}
+
+/* The amount is set in gold leaf: a gradient clipped to the text, whose bright
+   band rests off to the right until it sweeps across once on arrival */
+.lot-value .lv-amt {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--au-gold-pale);
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum" 1;
+  background: linear-gradient(100deg,
+    var(--au-gold-pale) 0%,
+    var(--au-gold-pale) 40%,
+    #fffaf0 48%,
+    #ffffff 50%,
+    #fffaf0 52%,
+    var(--au-gold-pale) 60%,
+    var(--au-gold-pale) 100%);
+  background-size: 300% 100%;
+  background-position: 100% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.lot-lead {
+  font-size: 16.5px;
+  line-height: 1.7;
+  color: var(--au-text);
+}
+
+.lot-h {
+  font-family: "Montserrat", var(--sans);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--au-gold-mid);
+  margin: var(--sp-6) 0 var(--sp-3);
+}
+
+.lot-list { list-style: none; border-bottom: 1px solid var(--au-hair-soft); }
+
+/* Each row: a hairline rule above (::after) and a small gold diamond (::before) */
+.lot-list li {
+  position: relative;
+  padding: 10px 0 10px 24px;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--au-text);
+}
+
+.lot-list li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: var(--au-hair-soft);
+  transform-origin: left center;
+}
+
+.lot-list li::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 19px;
+  width: 5px;
+  height: 5px;
+  background: var(--au-gold);
+  transform: rotate(45deg);
+}
+
+/* Good to know — a quiet hairline disclosure */
+.lot-notes { margin-top: var(--sp-5); }
+
+.lot-notes summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) 0;
+  font-family: "Montserrat", var(--sans);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--au-gold-mid);
+  border-bottom: 1px solid var(--au-hair);
+  transition: color 0.4s var(--au-ease);
+}
+
+.lot-notes summary::-webkit-details-marker { display: none; }
+
+.lot-notes summary::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  border-right: 1px solid var(--au-gold-mid);
+  border-bottom: 1px solid var(--au-gold-mid);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.5s var(--au-ease);
+  flex-shrink: 0;
+}
+
+.lot-notes[open]:not(.is-closing) summary::after { transform: translateY(2px) rotate(-135deg); }
+
+@media (hover: hover) {
+  .lot-notes summary:hover { color: var(--au-gold-pale); }
+}
+
+.lot-notes .ln-wrap { overflow: hidden; }
+
+.lot-notes ul { list-style: none; padding: var(--sp-2) 0 var(--sp-1); }
+
+.lot-notes li {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--au-text-soft);
+  padding: 6px 0 6px 18px;
+  position: relative;
+}
+
+.lot-notes li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 17px;
+  width: 7px;
+  height: 1px;
+  background: rgba(220, 201, 144, 0.6);
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+  .lot-photo { aspect-ratio: 3 / 2; }
+}
+
+@media (min-width: 600px) {
+  .lot-body { padding: var(--sp-7) var(--sp-7) var(--sp-7); }
+  .lot-emblem { width: 64px; height: 64px; }
+}
+
+/* Desktop: a photo mosaic across the top, then intro and details in two
+   columns. Even lots mirror the mosaic so the page alternates. */
+@media (min-width: 960px) {
+  body.auction-page .lots .container { max-width: 1180px; }
+  .lot { margin-bottom: var(--sp-7); }
+  .lot:last-child { margin-bottom: 0; }
+  .lot-media {
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 6px;
+    height: 470px;
+    padding: var(--sp-3) var(--sp-3) 0;
+  }
+  .lot:nth-child(even of .lot) .lot-media { grid-template-columns: 3fr 7fr; }
+  .lot:nth-child(even of .lot) .lot-gallery { order: -1; }
+  .lot-frame { height: 100%; min-height: 0; }
+  .lot-photo { height: 100%; min-height: 0; aspect-ratio: auto; }
+  .lot-gallery {
+    margin-top: 0;
+    grid-auto-flow: row;
+    grid-auto-rows: minmax(0, 1fr);
+    grid-auto-columns: auto;
+    height: 100%;
+    min-height: 0;
+  }
+  .lot-gallery img,
+  .lot-gallery img:only-child { height: 100%; min-height: 0; aspect-ratio: auto; }
+  .lot-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--sp-8);
+    padding: var(--sp-7) var(--sp-7) var(--sp-7);
+  }
+  .lot-emblem { width: 72px; height: 72px; }
+  .lot-detail .lot-h { margin-top: 0; }
+  /* Line "What's included" up with the lot number beside the crest */
+  .lot-detail { padding-top: 29px; }
+  .lot-lead { font-size: 17px; }
+}
+
+.nw { white-space: nowrap; }
+
+/* Dark ink on the gold button: cream on #c2a962 is too faint to read */
+body.gala-bg.auction-page .btn-primary { color: #10291b; }
+
+/* ---------- How it works ---------- */
+body.auction-page .how { padding: var(--sp-7) 0; }
+
+.how-card {
+  max-width: 760px;
+  margin: 0 auto;
+  border: 1px solid rgba(220, 201, 144, 0.5);
+  outline: 1px solid rgba(220, 201, 144, 0.22);
+  outline-offset: -8px;
+  border-radius: 2px;
+  padding: var(--sp-7) var(--sp-5) var(--sp-6);
+  text-align: center;
+}
+
+.how-steps {
+  list-style: none;
+  display: grid;
+  gap: var(--sp-6);
+  margin-top: var(--sp-2);
+}
+
+.how-steps li { position: relative; }
+
+.how-steps .hs-num {
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 26px;
+  line-height: 32px;
+  color: var(--au-gold-mid);
+  margin-bottom: var(--sp-2);
+}
+
+.how-steps h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 1.25;
+  color: var(--paper);
+  margin-bottom: var(--sp-2);
+}
+
+.how-steps p {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--au-text);
+  max-width: 30rem;
+  margin: 0 auto;
+}
+
+.how-rule {
+  width: 120px;
+  height: 1px;
+  margin: var(--sp-6) auto var(--sp-5);
+  background: linear-gradient(90deg, rgba(194, 169, 98, 0), var(--au-gold) 50%, rgba(194, 169, 98, 0));
+}
+
+.how-benefit {
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.45;
+  color: var(--paper);
+}
+
+.how-benefit a {
+  color: var(--au-gold-mid);
+  border-bottom: 1px solid rgba(220, 201, 144, 0.4);
+  transition: border-color 0.4s var(--au-ease), color 0.4s var(--au-ease);
+}
+
+@media (hover: hover) {
+  .how-benefit a:hover,
+  body.auction-page .gala-lead-scholarship a:hover,
+  .au-contact a:hover { color: var(--au-gold-pale); border-bottom-color: var(--au-gold-pale); }
+}
+
+@media (min-width: 760px) {
+  body.auction-page .how { padding: var(--sp-8) 0; }
+  .how-card { padding: var(--sp-8) var(--sp-7) var(--sp-7); }
+  .how-steps { grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); }
+  /* A hairline joins each numeral to the next (gap 32px, 30px clear of each numeral) */
+  .how-steps li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 16px;
+    left: calc(50% + 30px);
+    width: calc(100% + var(--sp-6) - 60px);
+    height: 1px;
+    background: linear-gradient(90deg, rgba(220, 201, 144, 0.15), rgba(220, 201, 144, 0.7) 50%, rgba(220, 201, 144, 0.15));
+    transform-origin: left center;
+  }
+}
+
+/* ---------- Closing CTA ---------- */
+body.auction-page .au-cta {
+  position: relative;
+  overflow: hidden;
+  padding: var(--sp-7) 0 var(--sp-9);
+  text-align: center;
+}
+
+body.auction-page .au-cta > .container { position: relative; z-index: 1; }
+
+/* Smaller, quieter echo of the hero's rays, rising from below. They sit in
+   a "sky" layer whose top fades out, so there is no hard edge where the
+   section begins (the rays carry their own conic mask, so the fade has to
+   live on a parent). */
+.au-cta-sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000 55%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000 55%);
+}
+
+body.gala-bg.auction-page .au-cta-rays {
+  width: 1900px;
+  height: 1900px;
+  opacity: 0.22;
+  animation: none;
+}
+
+/* A low warm glow behind the buttons */
+.au-cta-glow {
+  position: absolute;
+  left: 50%;
+  bottom: -220px;
+  width: 900px;
+  height: 520px;
+  margin-left: -450px;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, rgba(220, 201, 144, 0.16), rgba(220, 201, 144, 0) 65%);
+}
+
+body.gala-bg.auction-page .au-cta p.au-cta-lead {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--au-text);
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.au-cta .gala-ctas { margin-top: var(--sp-5); }
+
+@media (max-width: 480px) {
+  .au-cta .gala-ctas { flex-direction: column; align-items: stretch; max-width: 320px; margin-left: auto; margin-right: auto; }
+}
+
+.au-contact {
+  margin-top: var(--sp-6);
+  font-size: 14.5px;
+  color: var(--au-text-soft);
+}
+
+.au-contact a {
+  color: var(--au-gold-mid);
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(220, 201, 144, 0);
+  transition: border-color 0.4s var(--au-ease), color 0.4s var(--au-ease);
+}
+
+.au-fine {
+  margin: var(--sp-5) auto 0;
+  max-width: 36rem;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: rgba(250, 246, 236, 0.5);
+}
+
+/* Forced hover for review stills */
+body.auction-page .gala-ctas .btn-primary.is-hover { transform: translateY(-2px); background: #a98f4b; }
+body.auction-page .gala-ctas .btn-primary.is-hover::after { transform: translateX(0); }
+
+
+/* =====================================================
+   MOTION
+   Everything below runs only for prefers-reduced-motion:
+   no-preference. Only transform and opacity animate, plus
+   stroke-dashoffset for the line-art emblems and
+   background-position for the gold-leaf sheen on text
+   (the same technique as the site's `glisten`).
+   ===================================================== */
+
+@keyframes auRise {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes auRiseSm {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes auFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes auSlideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes auDrawX {
+  from { opacity: 1; transform: scaleX(0); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+@keyframes auPop {
+  from { opacity: 0; transform: rotate(45deg) scale(0); }
+  to { opacity: 1; transform: rotate(45deg) scale(1); }
+}
+@keyframes auStroke {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes auSheen {
+  from { transform: translateX(-125%); }
+  to { transform: translateX(125%); }
+}
+@keyframes auLeaf {
+  from { background-position: 100% center; }
+  to { background-position: 0% center; }
+}
+@keyframes auWipe {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+@keyframes auEdge {
+  0% { opacity: 0; transform: translateX(0); }
+  12% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+@keyframes auEdgeRev {
+  0% { opacity: 0; transform: translateX(0); }
+  12% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-100%); }
+}
+@keyframes auPhotoIn {
+  from { transform: scale(1.12); }
+  to { transform: scale(1.04); }
+}
+@keyframes auDrift {
+  from { transform: scale(1.04) translate(0, 0); }
+  to { transform: scale(1.1) translate(-1.6%, -1.1%); }
+}
+@keyframes auDriftRev {
+  from { transform: scale(1.04) translate(0, 0); }
+  to { transform: scale(1.1) translate(1.6%, -1.1%); }
+}
+@keyframes auRaysIn {
+  from { opacity: 0; }
+  to { opacity: 0.22; }
+}
+@keyframes auGlow {
+  from { opacity: 0.55; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1.04); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* ---------- Hero entrance: eyebrow, title, rule, date, lead, CTA ---------- */
+  body.auction-page .auction-hero .container > * {
+    animation: auRise 0.9s var(--au-ease) both;
+  }
+  body.auction-page .auction-hero .container > .eyebrow-gold {
+    animation: auRise 0.9s var(--au-ease) 0.05s both, glisten 4.5s ease-in-out 2.4s infinite;
+  }
+  body.auction-page .auction-hero .container > h1 { animation-delay: 0.2s; }
+  body.auction-page .auction-hero .container > .founder-rule {
+    animation: auDrawX 1s var(--au-ease) 0.4s both;
+  }
+  body.auction-page .auction-hero .container > .gala-date {
+    animation: auRise 0.9s var(--au-ease) 0.52s both, glisten 4.5s ease-in-out 2.8s infinite;
+  }
+  body.auction-page .auction-hero .container > .gala-venue { animation-delay: 0.64s; }
+  body.auction-page .auction-hero .container > .auction-lead { animation-delay: 0.8s; }
+  body.auction-page .auction-hero .container > .gala-lead-scholarship { animation-delay: 0.94s; }
+  body.auction-page .auction-hero .container > .gala-ctas { animation-delay: 1.08s; }
+
+  /* Buy Tickets: one sweep once the buttons land, and again on every hover */
+  body.auction-page .auction-hero .gala-ctas .btn-primary::after {
+    animation: auSheen 1.2s var(--au-ease) 1.9s 1;
+  }
+  .js body.auction-page .au-cta .gala-ctas .btn-primary::after { animation: none; }
+  .js body.auction-page .au-cta.au-in .gala-ctas .btn-primary::after {
+    animation: auSheen 1.2s var(--au-ease) 1.2s 1;
+  }
+  @media (hover: hover) {
+    body.auction-page .gala-ctas .btn-primary:hover::after {
+      animation: none;
+      transform: translateX(125%);
+      transition: transform 0.95s var(--au-ease);
+    }
+  }
+  body.auction-page .gala-ctas .btn-primary.is-hover::after { animation: none; }
+
+  /* ---------- At a glance: tiles stagger in ---------- */
+  .js .glance-grid li { opacity: 0; }
+  .js .glance-grid.au-in li { animation: auRise 0.9s var(--au-ease) both; }
+  .js .glance-grid.au-in li:nth-child(2) { animation-delay: 0.08s; }
+  .js .glance-grid.au-in li:nth-child(3) { animation-delay: 0.16s; }
+  .js .glance-grid.au-in li:nth-child(4) { animation-delay: 0.24s; }
+  .js .glance-grid.au-in li:nth-child(5) { animation-delay: 0.32s; }
+  .js .glance-grid.au-in li:nth-child(6) { animation-delay: 0.4s; }
+
+  /* ---------- Section heads ---------- */
+  .js .lots .au-head > * { opacity: 0; }
+  .js .lots .au-head.au-in > * { animation: auRise 0.9s var(--au-ease) both; }
+  .js .lots .au-head.au-in > h2 { animation-delay: 0.12s; }
+
+  /* ---------- Lot photo: a curtain draws back, then a slow drift ---------- */
+  .lot-frame::before,
+  .lot-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+  /* the curtain, in the card's own deep green */
+  .js .lot-frame::after {
+    background: #10291b;
+    transform-origin: right center;
+    transform: scaleX(1);
+  }
+  /* its gold leading edge */
+  .js .lot-frame::before {
+    z-index: 2;
+    border-left: 1px solid rgba(240, 230, 197, 0.9);
+    opacity: 0;
+  }
+  .js .lot:nth-child(even of .lot) .lot-frame::after { transform-origin: left center; }
+  .js .lot:nth-child(even of .lot) .lot-frame::before { border-left: 0; border-right: 1px solid rgba(240, 230, 197, 0.9); }
+
+  .js .lot-media.au-in .lot-frame::after { animation: auWipe 1.3s cubic-bezier(.7, 0, .2, 1) 0.05s both; }
+  .js .lot-media.au-in .lot-frame::before { animation: auEdge 1.3s cubic-bezier(.7, 0, .2, 1) 0.05s both; }
+  .js .lot:nth-child(even of .lot) .lot-media.au-in .lot-frame::before { animation-name: auEdgeRev; }
+
+  .js .lot-media .lot-photo { transform: scale(1.12); }
+  .js .lot-media.au-in .lot-photo {
+    animation:
+      auPhotoIn 1.8s var(--au-ease) 0.05s both,
+      auDrift 26s ease-in-out 1.85s infinite alternate;
+    animation-play-state: running, paused;
+  }
+  .js .lot:nth-child(even of .lot) .lot-media.au-in .lot-photo { animation-name: auPhotoIn, auDriftRev; }
+  .js .lot-media.au-in.au-live .lot-photo { animation-play-state: running, running; }
+
+  /* gallery thumbnails fade up once the curtain has passed (opacity only,
+     so the hover lift keeps working afterwards) */
+  .js .lot-media .lot-gallery { opacity: 0; }
+  .js .lot-media.au-in .lot-gallery { animation: auFade 1s var(--au-ease) 0.7s both; }
+
+  /* ---------- Lot intro: emblem draws, number and title arrive ---------- */
+  .js .lot-emblem > * { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .js .lot-intro.au-in .lot-emblem > * { animation: auStroke 1.4s cubic-bezier(.45, .05, .25, 1) both; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(1) { animation-duration: 1.8s; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(2) { animation-duration: 1.8s; animation-delay: 0.12s; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(3) { animation-delay: 0.35s; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(4) { animation-delay: 0.45s; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(5) { animation-delay: 0.55s; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(6) { animation-delay: 0.65s; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(7) { animation-delay: 0.75s; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(8) { animation-delay: 0.85s; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(9) { animation-delay: 0.95s; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(10) { animation-delay: 1.05s; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(11) { animation-delay: 1.15s; }
+  .js .lot-intro.au-in .lot-emblem > :nth-child(n+12) { animation-delay: 1.25s; }
+
+  .js .lot-intro .lot-no,
+  .js .lot-intro .lot-name,
+  .js .lot-intro .lot-sub,
+  .js .lot-intro .lot-place,
+  .js .lot-intro .lot-value,
+  .js .lot-intro .lot-lead { opacity: 0; }
+  .js .lot-intro .lot-rule { transform: scaleX(0); }
+
+  .js .lot-intro.au-in .lot-no { animation: auSlideIn 0.9s var(--au-ease) 0.2s both; }
+  .js .lot-intro.au-in .lot-name { animation: auRise 1s var(--au-ease) 0.28s both; }
+  .js .lot-intro.au-in .lot-sub { animation: auRiseSm 0.9s var(--au-ease) 0.5s both; }
+  .js .lot-intro.au-in .lot-place { animation: auFade 0.9s var(--au-ease) 0.62s both; }
+  .js .lot-intro.au-in .lot-rule { animation: auDrawX 0.9s var(--au-ease) 0.7s both; }
+  .js .lot-intro.au-in .lot-value { animation: auRiseSm 0.9s var(--au-ease) 0.78s both; }
+  .js .lot-intro.au-in .lv-amt { animation: auLeaf 1.6s ease-in-out 1.3s both; }
+  .js .lot-intro.au-in .lot-lead { animation: auRiseSm 0.9s var(--au-ease) 0.9s both; }
+
+  /* ---------- What's included: rows stagger, rule and diamond draw ---------- */
+  .lot-list li:nth-child(1) { --i: 0; }
+  .lot-list li:nth-child(2) { --i: 1; }
+  .lot-list li:nth-child(3) { --i: 2; }
+  .lot-list li:nth-child(4) { --i: 3; }
+  .lot-list li:nth-child(5) { --i: 4; }
+  .lot-list li:nth-child(6) { --i: 5; }
+  .lot-list li:nth-child(n+7) { --i: 6; }
+
+  .js .lot-detail .lot-h,
+  .js .lot-detail .lot-notes,
+  .js .lot-detail .lot-list li { opacity: 0; }
+  .js .lot-detail .lot-list li::after { transform: scaleX(0); }
+  .js .lot-detail .lot-list li::before { opacity: 0; transform: rotate(45deg) scale(0); }
+  .js .lot-detail .lot-list { border-bottom-color: transparent; }
+
+  .js .lot-detail.au-in .lot-h { animation: auFade 0.8s var(--au-ease) both; }
+  .js .lot-detail.au-in .lot-list li {
+    animation: auRiseSm 0.8s var(--au-ease) both;
+    animation-delay: calc(0.12s + var(--i, 0) * 0.08s);
+  }
+  .js .lot-detail.au-in .lot-list li::after {
+    animation: auDrawX 0.9s var(--au-ease) both;
+    animation-delay: calc(0.12s + var(--i, 0) * 0.08s);
+  }
+  .js .lot-detail.au-in .lot-list li::before {
+    animation: auPop 0.6s var(--au-ease) both;
+    animation-delay: calc(0.4s + var(--i, 0) * 0.08s);
+  }
+  .js .lot-detail.au-in .lot-list {
+    transition: border-color 0.8s var(--au-ease) 0.7s;
+    border-bottom-color: var(--au-hair-soft);
+  }
+  .js .lot-detail.au-in .lot-notes { animation: auFade 0.8s var(--au-ease) 0.8s both; }
+
+  /* Good to know: rows drift up as the panel opens */
+  .lot-notes[open] .ln-wrap li { animation: auRiseSm 0.6s var(--au-ease) both; }
+  .lot-notes[open] .ln-wrap li:nth-child(2) { animation-delay: 0.04s; }
+  .lot-notes[open] .ln-wrap li:nth-child(3) { animation-delay: 0.08s; }
+  .lot-notes[open] .ln-wrap li:nth-child(4) { animation-delay: 0.12s; }
+  .lot-notes[open] .ln-wrap li:nth-child(5) { animation-delay: 0.16s; }
+  .lot-notes[open] .ln-wrap li:nth-child(n+6) { animation-delay: 0.2s; }
+  .lot-notes.is-closing .ln-wrap li { animation: none; }
+
+  /* ---------- How it works: numerals in sequence, joined by hairlines ---------- */
+  .js .how-card .au-head > *,
+  .js .how-card .hs-num,
+  .js .how-card .how-steps h3,
+  .js .how-card .how-steps p,
+  .js .how-card .how-benefit { opacity: 0; }
+  .js .how-card .how-rule,
+  .js .how-card .how-steps li::after { transform: scaleX(0); }
+
+  .js .how-card.au-in .au-head > * { animation: auRise 0.9s var(--au-ease) both; }
+  .js .how-card.au-in .au-head > h2 { animation-delay: 0.1s; }
+
+  .js .how-card.au-in .hs-num { animation: auRise 0.9s var(--au-ease) both; }
+  .js .how-card.au-in .how-steps h3,
+  .js .how-card.au-in .how-steps p { animation: auRiseSm 0.9s var(--au-ease) both; }
+  .js .how-card.au-in .how-steps li::after { animation: auDrawX 0.8s var(--au-ease) both; }
+
+  .js .how-card.au-in .how-steps li:nth-child(1) .hs-num { animation-delay: 0.35s; }
+  .js .how-card.au-in .how-steps li:nth-child(1) h3 { animation-delay: 0.45s; }
+  .js .how-card.au-in .how-steps li:nth-child(1) p { animation-delay: 0.55s; }
+  .js .how-card.au-in .how-steps li:nth-child(1)::after { animation-delay: 0.6s; }
+  .js .how-card.au-in .how-steps li:nth-child(2) .hs-num { animation-delay: 0.95s; }
+  .js .how-card.au-in .how-steps li:nth-child(2) h3 { animation-delay: 1.05s; }
+  .js .how-card.au-in .how-steps li:nth-child(2) p { animation-delay: 1.15s; }
+  .js .how-card.au-in .how-steps li:nth-child(2)::after { animation-delay: 1.2s; }
+  .js .how-card.au-in .how-steps li:nth-child(3) .hs-num { animation-delay: 1.55s; }
+  .js .how-card.au-in .how-steps li:nth-child(3) h3 { animation-delay: 1.65s; }
+  .js .how-card.au-in .how-steps li:nth-child(3) p { animation-delay: 1.75s; }
+  .js .how-card.au-in .how-rule { animation: auDrawX 1s var(--au-ease) 1.9s both; transform-origin: center; }
+  .js .how-card.au-in .how-benefit { animation: auRiseSm 0.9s var(--au-ease) 2.05s both; }
+
+  /* ---------- Closing CTA: quiet rays and a breathing glow ---------- */
+  body.gala-bg.auction-page .au-cta-rays {
+    animation:
+      auRaysIn 2.4s ease 0.2s both,
+      raysSpin 140s linear infinite;
+  }
+  .au-cta-glow { animation: auGlow 7s ease-in-out infinite alternate; }
+  .js body.gala-bg.auction-page .au-cta:not(.au-in) .au-cta-rays,
+  .js .au-cta:not(.au-in) .au-cta-glow { animation-play-state: paused; }
+
+  .js .au-cta > .container > * { opacity: 0; }
+  .js .au-cta.au-in > .container > * { animation: auRise 0.9s var(--au-ease) both; }
+  .js .au-cta.au-in > .container > :nth-child(2) { animation-delay: 0.1s; }
+  .js .au-cta.au-in > .container > :nth-child(3) { animation-delay: 0.22s; }
+  .js .au-cta.au-in > .container > :nth-child(4) { animation-delay: 0.34s; }
+  .js .au-cta.au-in > .container > :nth-child(5) { animation-delay: 0.46s; }
+  .js .au-cta.au-in > .container > :nth-child(6) { animation-delay: 0.54s; }
+}
+
+/* ?static: every in-view class is on and motion is off, so a screenshot shows
+   the finished page. Harmless in production. */
+html.au-static *,
+html.au-static *::before,
+html.au-static *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
