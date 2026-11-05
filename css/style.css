@@ -6350,3 +6350,38 @@ body.gala-bg #sponsor .press-line a:hover { color: #fff; }
   .press-band-cta { text-align: left; width: 100%; }
   .press-band-cta .btn { width: 100%; }
 }
+
+/* =========== Director of Community Outreach (Lauren Perkins) =========== */
+.staff-title {
+  font-weight: 700;
+  font-size: 0.82em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  white-space: nowrap;
+}
+.site-footer .staff-title,
+.aside-card .staff-title,
+.press-band .staff-title,
+.au-contact .staff-title,
+.err-contact .staff-title { color: var(--amber-soft); }
+.footer-links .footer-outreach { margin-top: 0; }
+.footer-links .footer-outreach a { white-space: nowrap; }
+.press-band-outreach { margin-top: 0.8rem; font-size: 0.95rem; }
+.press-band-outreach a { color: inherit; white-space: nowrap; }
+.press-contact a[href^="tel:"] { white-space: nowrap; }
+.press-hero .press-card.press-card-outreach { margin-top: 1.4rem; }
+.press-hero .press-card .press-card-title {
+  display: table;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+  background: var(--amber-soft);
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  margin: 0.2rem auto 1.3rem;
+  max-width: none;
+}
+@media (max-width: 520px) { .staff-title { white-space: normal; } }
